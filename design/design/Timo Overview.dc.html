@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/styles.css">
+<script src="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="./lu-icon.js"></script>
+<style>
+body{margin:0;background:#f2f2f3;color:#1d1f20;font-family:Barlow,system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#416180;text-underline-offset:3px}a:hover{color:#2c455d}
+:focus{outline:none}:focus-visible{outline:2px solid #5980a6;outline-offset:2px}
+</style>
+</helmet>
+<section style="padding:56px 64px 96px;display:flex;flex-direction:column;gap:80px;background:#f2f2f3;background-image:linear-gradient(rgba(29,31,32,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(29,31,32,.045) 1px,transparent 1px);background-size:40px 40px;min-width:max-content">
+  <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;max-width:1720px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="position:relative;align-self:flex-start;padding:8px 14px;border:1px solid rgba(29,31,32,.16);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:26px;letter-spacing:.14em;line-height:1;display:flex;align-items:center;gap:.45em"><span style="position:relative;width:.72em;height:.72em;display:grid;place-items:center;flex:none"><span style="position:absolute;inset:0;border-radius:50%;border:1px solid #749dc4"></span><span style="position:absolute;inset:-.24em;border-radius:50%;border:1px solid #d4d4d7"></span><span style="width:.26em;height:.26em;background:#5980a6"></span></span>TIMO<bp-c></bp-c></div>
+      <h1 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:64px;line-height:1;letter-spacing:-0.01em">Timo Time Tracker</h1>
+      <p style="margin:0;max-width:720px;font-size:18px;color:#5d5d60;text-wrap:pretty">Presence-based time registration. One proximity UUID for every beacon; <span style="font-family:ui-monospace,Menlo,monospace;font-size:15px;color:#1d1f20">major</span> identifies the company, <span style="font-family:ui-monospace,Menlo,monospace;font-size:15px;color:#1d1f20">minor</span> the location. Entering a beacon region checks you in, leaving checks you out — with a sound, a notification and an on-screen confirmation.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+      <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Language / Taal</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16);border-radius:4px;overflow:hidden;width:180px;background:#f2f2f3">
+        <sc-for list="{{ langs }}" as="l" hint-placeholder-count="2">
+          <button onClick="{{ l.onClick }}" style="height:38px;border:0;border-left:{{ l.bl }};background:{{ l.bg }};color:{{ l.fg }};font-size:14px;font-weight:600;cursor:pointer">{{ l.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </header>
+
+  <div data-screen-label="Clickable prototype" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #1d1f20;padding-bottom:10px;max-width:1720px">
+      <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#5d5d60">01</span>
+      <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px">Clickable prototype — iOS & Android</h2>
+    </div>
+    <div style="display:flex;gap:56px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#5d5d60">iOS</div>
+        <dc-import name="Timo Mobile" platform="ios" lang="{{ lang }}" start="login" sim="full" confirm-style="sheet" hint-size="392px,1180px"></dc-import>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#5d5d60">Android</div>
+        <dc-import name="Timo Mobile" platform="android" lang="{{ lang }}" start="login" sim="full" confirm-style="sheet" hint-size="392px,1180px"></dc-import>
+      </div>
+      <div style="width:340px;display:flex;flex-direction:column;gap:18px;padding-top:28px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:24px">Try it</div>
+        <ol style="margin:0;padding:0 0 0 20px;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.5;text-wrap:pretty">
+          <li>Send a sign-in link, then use <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px">demo: open the link</span> on the inbox screen.</li>
+          <li>Grant the three permissions — each opens the platform's own system dialog.</li>
+          <li>In the simulator under the phone, <strong>Walk in</strong> at a beacon: you hear a chime and see the confirmation. <strong>Leave</strong> checks you out.</li>
+          <li>Switch to <strong>Phone locked</strong> and walk in again — the confirmation arrives as a lock-screen notification.</li>
+          <li>Walking in at another beacon while checked in closes the first registration and opens a new one at the new location.</li>
+          <li>Use <strong>+1h</strong> to move the clock, then open Registrations to filter by period, location or “Needs attention”, and request a correction.</li>
+        </ol>
+        <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:14px;font-size:13px;color:#5d5d60;display:flex;flex-direction:column;gap:6px">
+          <bp-c></bp-c>
+          <div style="font-weight:600;color:#1d1f20">Platform differences shown</div>
+          <div>Dynamic Island vs. punch-hole status bar · large titles & chevron back vs. Material top app bar · tab bar vs. navigation bar with pill indicator · iOS vs. Material switches, alerts and lock-screen notifications · “Allow all the time” location wording on Android.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-screen-label="Confirmation options" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #1d1f20;padding-bottom:10px;max-width:1720px">
+      <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#5d5d60">02</span>
+      <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px">Check-in / check-out confirmation — options</h2>
+      <span style="font-size:15px;color:#5d5d60">Shown when the app is open. <strong style="color:#1d1f20">1b is the chosen direction</strong> and is used in the prototype.</span>
+    </div>
+    <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap">
+      <div id="1a" style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;width:392px">
+        <div style="display:flex;gap:10px;align-items:center"><span style="padding:3px 8px;background:#1d1f20;color:#f2f2f3;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600">1a</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">Full-screen takeover</span></div>
+        <div style="font-size:14px;color:#5d5d60;text-wrap:pretty;min-height:42px">Unmissable at the door; big time for a glance. Best for shared-entrance moments. Auto-closes after 6 s.</div>
+        <dc-import name="Timo Mobile" platform="ios" lang="{{ lang }}" start="home" sim="mini" demo="confirm" confirm-style="full" hint-size="392px,880px"></dc-import>
+      </div>
+      <div id="1b" style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;width:392px">
+        <div style="display:flex;gap:10px;align-items:center"><span style="padding:3px 8px;background:#1d1f20;color:#f2f2f3;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600">1b</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">Bottom sheet</span><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border:1px solid #5980a6;background:#d6ebff;color:#2c455d;font-size:12px;font-weight:600"><lu-i name="check" size="13" stroke="2"></lu-i>Chosen</span></div>
+        <div style="font-size:14px;color:#5d5d60;text-wrap:pretty;min-height:42px">Keeps context, shows time + worked hours + location, and offers a correction right away if it's wrong.</div>
+        <dc-import name="Timo Mobile" platform="ios" lang="{{ lang }}" start="home" sim="mini" demo="confirm" confirm-style="sheet" hint-size="392px,880px"></dc-import>
+      </div>
+      <div id="1c" style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;width:392px">
+        <div style="display:flex;gap:10px;align-items:center"><span style="padding:3px 8px;background:#1d1f20;color:#f2f2f3;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600">1c</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">Top banner</span></div>
+        <div style="font-size:14px;color:#5d5d60;text-wrap:pretty;min-height:42px">Lightest touch; mirrors the system notification. Fine once users trust the tracking.</div>
+        <dc-import name="Timo Mobile" platform="ios" lang="{{ lang }}" start="home" sim="mini" demo="confirm" confirm-style="banner" hint-size="392px,880px"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <div data-screen-label="Home options" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #1d1f20;padding-bottom:10px;max-width:1720px">
+      <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#5d5d60">03</span>
+      <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px">Home — options</h2>
+    </div>
+    <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap">
+      <div id="1d" style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;width:392px">
+        <div style="display:flex;gap:10px;align-items:center"><span style="padding:3px 8px;background:#1d1f20;color:#f2f2f3;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600">1d</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">Status + running timer</span></div>
+        <div style="font-size:14px;color:#5d5d60;text-wrap:pretty;min-height:42px">Answers “am I checked in?” first, then today and the week against contract hours.</div>
+        <dc-import name="Timo Mobile" platform="ios" lang="{{ lang }}" start="home" sim="mini" home-variant="status" hint-size="392px,880px"></dc-import>
+      </div>
+      <div id="1e" style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;width:392px">
+        <div style="display:flex;gap:10px;align-items:center"><span style="padding:3px 8px;background:#1d1f20;color:#f2f2f3;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600">1e</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">Day timeline + week</span></div>
+        <div style="font-size:14px;color:#5d5d60;text-wrap:pretty;min-height:42px">Hours-first. The day track shows gaps and location switches; Monday's unclosed registration reads as “?”.</div>
+        <dc-import name="Timo Mobile" platform="ios" lang="{{ lang }}" start="home" sim="mini" home-variant="timeline" hint-size="392px,880px"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <div data-screen-label="All screens" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #1d1f20;padding-bottom:10px;max-width:1720px">
+      <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#5d5d60">04</span>
+      <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px">Screens</h2>
+      <span style="font-size:15px;color:#5d5d60">Every phone is live — tap through.</span>
+    </div>
+    <sc-for list="{{ platforms }}" as="pf" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#5d5d60">{{ pf.label }}</div>
+        <div style="display:flex;gap:40px;align-items:flex-start">
+          <sc-for list="{{ pf.screens }}" as="sc" hint-placeholder-count="8">
+            <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px">{{ sc.label }}</div>
+              <dc-import name="Timo Mobile" platform="{{ pf.key }}" lang="{{ lang }}" start="{{ sc.start }}" demo="{{ sc.demo }}" sim="none" hint-size="392px,822px"></dc-import>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div data-screen-label="Admin web app" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #1d1f20;padding-bottom:10px;max-width:1720px">
+      <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#5d5d60">05</span>
+      <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px">Company admin — web</h2>
+      <span style="font-size:15px;color:#5d5d60">Presence, timesheet approval, anomalies, payroll export, beacons, people. Clickable.</span>
+    </div>
+    <div style="position:relative;width:1320px;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);background:#f2f2f3">
+      <div style="height:38px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid rgba(29,31,32,.16);background:#e9e9ea">
+        <span style="width:10px;height:10px;border-radius:50%;border:1px solid #98989b"></span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #98989b"></span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #98989b"></span>
+        <div style="margin-left:16px;flex:0 1 420px;height:24px;border:1px solid rgba(29,31,32,.16);background:#f2f2f3;display:flex;align-items:center;padding:0 10px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#5d5d60">admin.timo.app/northpier</div>
+      </div>
+      <dc-import name="Timo Admin" lang="{{ lang }}" hint-size="1320px,900px"></dc-import>
+      <bp-c></bp-c>
+    </div>
+  </div>
+
+  <div data-screen-label="System admin" style="display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;align-items:baseline;gap:18px;border-bottom:1px solid #1d1f20;padding-bottom:10px;max-width:1720px">
+      <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#5d5d60">06</span>
+      <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px">Timo system admin — web</h2>
+      <span style="font-size:15px;color:#5d5d60">Registers companies (assigns the major), programs beacons (assigns minors) and fulfils beacon requests. Company admins only place and link what they're supplied.</span>
+    </div>
+    <div style="position:relative;width:1320px;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);background:#f2f2f3">
+      <div style="height:38px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid rgba(29,31,32,.16);background:#e9e9ea">
+        <span style="width:10px;height:10px;border-radius:50%;border:1px solid #98989b"></span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #98989b"></span><span style="width:10px;height:10px;border-radius:50%;border:1px solid #98989b"></span>
+        <div style="margin-left:16px;flex:0 1 420px;height:24px;border:1px solid rgba(29,31,32,.16);background:#f2f2f3;display:flex;align-items:center;padding:0 10px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#5d5d60">platform.timo.app</div>
+      </div>
+      <dc-import name="Timo System Admin" lang="{{ lang }}" hint-size="1320px,880px"></dc-import>
+      <bp-c></bp-c>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lang: 'en' };
+  renderVals() {
+    const lang = this.state.lang;
+    const screens = [
+      { label: 'Register', start: 'register', demo: '' },
+      { label: 'Magic link sent', start: 'magic', demo: '' },
+      { label: 'Onboarding', start: 'onboard', demo: '' },
+      { label: 'Permission dialog', start: 'onboard', demo: 'dialog' },
+      { label: 'Registrations', start: 'history', demo: '' },
+      { label: 'Registration detail', start: 'detail', demo: '' },
+      { label: 'Request correction', start: 'correct', demo: '' },
+      { label: 'Profile & settings', start: 'profile', demo: '' },
+      { label: 'Lock-screen notification', start: 'lock', demo: '' }
+    ];
+    return {
+      lang,
+      langs: [['en', 'English'], ['nl', 'Nederlands']].map(([k, l], i) => ({ label: l, onClick: () => this.setState({ lang: k }), bg: lang === k ? '#1d1f20' : 'transparent', fg: lang === k ? '#f2f2f3' : '#1d1f20', bl: i ? '1px solid rgba(29,31,32,.16)' : '0' })),
+      platforms: [{ key: 'ios', label: 'iOS', screens }, { key: 'android', label: 'Android', screens }]
+    };
+  }
+}
+</script>
+</body>
+</html>

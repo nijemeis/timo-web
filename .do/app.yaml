@@ -1,0 +1,76 @@
+# DigitalOcean App Platform spec for Timo (API + company admin + system admin).
+# Create: doctl apps create --spec .do/app.yaml  (fill the SECRET values first, or edit them in the DO UI).
+# Values marked SECRET are entered at creation / in the DO UI and never committed.
+name: timo
+# Same region as the managed Postgres cluster — an ocean between app and database costs ~0.4 s per query.
+region: tor
+
+services:
+  - name: web
+    github:
+      repo: nijemeis/timo-web
+      branch: main
+      deploy_on_push: true
+    environment_slug: node-js
+    build_command: npm ci && npm run build
+    # Single instance: migrations + the base seed run on start, and the 23:59 auto check-out sweep runs in-process.
+    run_command: npm run start:prod
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    instance_count: 1
+    http_port: 8080
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 25
+      period_seconds: 15
+      failure_threshold: 3
+    routes:
+      - path: /
+    envs:
+      # Pooled (PgBouncer, transaction mode) URL: <timo-pool URI>&pgbouncer=true&connection_limit=5
+      - key: DATABASE_URL
+        type: SECRET
+        value: REPLACE_WITH_POOL_URL
+        scope: RUN_AND_BUILD_TIME
+      # Direct cluster URL — only Prisma migrations use it (PgBouncer can't run them).
+      - key: DIRECT_DATABASE_URL
+        value: ${timo-db.DATABASE_URL}
+        scope: RUN_AND_BUILD_TIME
+      - key: NODE_ENV
+        # RUN_TIME only — at build time it would strip devDependencies (prisma, typescript, tsx).
+        value: production
+        scope: RUN_TIME
+      - key: APP_URL
+        value: ${APP_URL}
+        scope: RUN_AND_BUILD_TIME
+      - key: AUTH_SECRET
+        type: SECRET
+        value: REPLACE_IN_DO_UI
+        scope: RUN_TIME
+      - key: ADMIN_EMAIL
+        value: admin@timo.local
+        scope: RUN_TIME
+      - key: ADMIN_PASSWORD
+        type: SECRET
+        value: REPLACE_IN_DO_UI
+        scope: RUN_TIME
+      # Resend API key for magic-link / invite emails. Empty = emails are only logged.
+      - key: RESEND_API_KEY
+        type: SECRET
+        value: ""
+        scope: RUN_TIME
+      - key: EMAIL_FROM
+        value: Timo <no-reply@timo.app>
+        scope: RUN_TIME
+      # The fictional demo company (Northpier Logistics) can sign in without email. Empty this before go-live.
+      - key: DEMO_LOGIN_DOMAINS
+        value: northpier.example
+        scope: RUN_TIME
+
+databases:
+  # Separate `timo` database on the shared managed cluster (with Dealiteful / Nije3d / Pisconauta).
+  - name: timo-db
+    engine: PG
+    version: "17"
+    production: true
+    cluster_name: dealiteful-pgsql-tor1-98577
+    db_name: timo

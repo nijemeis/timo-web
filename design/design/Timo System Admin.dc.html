@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/styles.css">
+<script src="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="./lu-icon.js"></script>
+<style>
+body{margin:0;background:#f2f2f3;color:#1d1f20;font-family:Barlow,system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#416180;text-underline-offset:3px}a:hover{color:#2c455d}
+button,input,textarea,select{font-family:inherit}
+:focus{outline:none}:focus-visible{outline:2px solid #5980a6;outline-offset:2px}
+input::placeholder,textarea::placeholder{color:#7a7a7d}
+@keyframes tmFade{from{opacity:0}to{opacity:1}}
+</style>
+</helmet>
+<div data-screen-label="System admin" style="position:relative;width:100%;min-width:1180px;min-height:860px;display:grid;grid-template-columns:236px minmax(0,1fr);background:#f2f2f3;color:#1d1f20;font-family:Barlow,system-ui,sans-serif;font-size:14px;line-height:1.45">
+  <aside style="border-right:1px solid rgba(29,31,32,.16);padding:22px 16px;display:flex;flex-direction:column;gap:24px;background:#e9e9ea">
+    <div style="display:flex;flex-direction:column;gap:14px;padding:0 6px">
+      <div style="position:relative;align-self:flex-start;padding:6px 11px;border:1px solid rgba(29,31,32,.16);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px;letter-spacing:.14em;line-height:1;display:flex;align-items:center;gap:.45em"><span style="position:relative;width:.72em;height:.72em;display:grid;place-items:center;flex:none"><span style="position:absolute;inset:0;border-radius:50%;border:1px solid #749dc4"></span><span style="position:absolute;inset:-.24em;border-radius:50%;border:1px solid #d4d4d7"></span><span style="width:.26em;height:.26em;background:#5980a6"></span></span>TIMO<bp-c></bp-c></div>
+      <div>
+        <div style="font-weight:600;font-size:15px">{{ t.platform }}</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5d5d60">UUID 5A4B0C1E…7A10</div>
+      </div>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="3">
+        <button onClick="{{ n.onClick }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border:0;border-radius:4px;background:{{ n.bg }};color:{{ n.fg }};font-size:14px;font-weight:{{ n.fw }};text-align:left;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">
+          <lu-i name="{{ n.icon }}" size="18"></lu-i><span style="flex:1">{{ n.label }}</span>
+          <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span style="min-width:22px;height:20px;padding:0 6px;display:grid;place-items:center;background:#1d2d3d;color:#f2f2f3;font-size:12px;font-weight:600">{{ n.count }}</span></sc-if>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding:0 6px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16);border-radius:4px;overflow:hidden">
+        <sc-for list="{{ langs }}" as="l" hint-placeholder-count="2">
+          <button onClick="{{ l.onClick }}" style="height:30px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:12px;font-weight:600;cursor:pointer">{{ l.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div style="width:34px;height:34px;border:1px solid rgba(29,31,32,.16);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;color:#416180">JW</div>
+        <div><div style="font-weight:600">Joris Willems</div><div style="font-size:12px;color:#5d5d60">{{ t.sysRole }}</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="min-width:0;padding:24px 32px 40px;display:flex;flex-direction:column;gap:22px">
+    <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ kicker }}</div>
+        <h1 style="margin:2px 0 0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:38px;line-height:1.05;letter-spacing:-0.01em">{{ title }}</h1>
+      </div>
+      <sc-if value="{{ isCompanies }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ openReg }}" style="position:relative;height:38px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="building-2" size="18"></lu-i>{{ t.regCompany }}<bp-c></bp-c></button>
+      </sc-if>
+      <sc-if value="{{ isInventory }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ openProg }}" style="position:relative;height:38px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="cpu" size="18"></lu-i>{{ t.program }}<bp-c></bp-c></button>
+      </sc-if>
+    </header>
+
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid rgba(29,31,32,.16)">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+        <div style="padding:14px 16px;border-left:{{ k.bl }};display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ k.label }}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1.05;font-variant-numeric:tabular-nums">{{ k.value }}</span>
+          <span style="font-size:12px;color:#5d5d60">{{ k.sub }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isCompanies }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <thead><tr style="text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5d5d60">
+            <th style="padding:8px 8px 8px 0;font-weight:600;border-bottom:1px solid #1d1f20">Major</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.company }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;text-align:right">{{ t.locations }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;text-align:right">{{ t.beacons }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;text-align:right">{{ t.users }}</th><th style="padding:8px 0 8px 8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.status }}</th>
+          </tr></thead>
+          <tbody>
+            <sc-for list="{{ companies }}" as="c" hint-placeholder-count="6">
+              <tr onClick="{{ c.onSelect }}" style="border-bottom:1px solid rgba(29,31,32,.16);background:{{ c.bg }};cursor:pointer">
+                <td style="padding:10px 8px 10px 0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;font-variant-numeric:tabular-nums">{{ c.major }}</td>
+                <td style="padding:10px 8px"><div style="font-weight:600">{{ c.name }}</div><div style="font-size:12px;color:#5d5d60">{{ c.admin }}</div></td>
+                <td style="padding:10px 8px;text-align:right;font-variant-numeric:tabular-nums">{{ c.locs }}</td>
+                <td style="padding:10px 8px;text-align:right;font-variant-numeric:tabular-nums">{{ c.beacons }}</td>
+                <td style="padding:10px 8px;text-align:right;font-variant-numeric:tabular-nums">{{ c.users }}</td>
+                <td style="padding:10px 0 10px 8px"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ c.sBd }};background:{{ c.sBg }};color:{{ c.sFg }}">{{ c.status }}</span></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+        <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:18px;display:flex;flex-direction:column;gap:14px">
+          <bp-c></bp-c>
+          <div>
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">Major {{ sel.major }}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:26px;line-height:1.1">{{ sel.name }}</div>
+            <div style="font-size:13px;color:#5d5d60">{{ sel.admin }} · {{ t.since }} {{ sel.since }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600;padding-bottom:6px">{{ t.allocated }}</div>
+            <sc-if value="{{ selNoBeacons }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#5d5d60;padding:8px 0;border-top:1px solid rgba(29,31,32,.16)">{{ t.noBeacons }}</div></sc-if>
+            <sc-for list="{{ selBeacons }}" as="b" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid rgba(29,31,32,.16);font-size:13px">
+                <span style="font-family:ui-monospace,Menlo,monospace;font-weight:600">{{ b.minor }}</span>
+                <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ b.where }}</span>
+                <span style="font-size:12px;color:#5d5d60">{{ b.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ programForSel }}" style="height:36px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;color:#1d1f20;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="cpu" size="16"></lu-i>{{ t.programFor }} {{ sel.major }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isInventory }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <sc-for list="{{ invChips }}" as="c" hint-placeholder-count="5">
+          <button onClick="{{ c.onClick }}" style="height:32px;padding:0 12px;border:1px solid {{ c.bd }};border-radius:4px;background:{{ c.bg }};color:{{ c.fg }};font-size:13px;font-weight:600;cursor:pointer;display:flex;gap:6px;align-items:center">{{ c.label }}<span style="color:#5d5d60;font-weight:500">{{ c.n }}</span></button>
+        </sc-for>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5d5d60">
+          <th style="padding:8px 8px 8px 0;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.serial }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">Major</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">Minor</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.company }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.placedAt }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">Firmware</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;text-align:right">{{ t.battery }}</th><th style="padding:8px 0 8px 8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.status }}</th>
+        </tr></thead>
+        <tbody>
+          <sc-for list="{{ inventory }}" as="b" hint-placeholder-count="10">
+            <tr style="border-bottom:1px solid rgba(29,31,32,.16)">
+              <td style="padding:9px 8px 9px 0;font-family:ui-monospace,Menlo,monospace;font-size:13px">{{ b.serial }}</td>
+              <td style="padding:9px 8px;font-family:ui-monospace,Menlo,monospace;font-size:13px">{{ b.major }}</td>
+              <td style="padding:9px 8px;font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:600">{{ b.minor }}</td>
+              <td style="padding:9px 8px">{{ b.company }}</td>
+              <td style="padding:9px 8px;color:#5d5d60">{{ b.where }}</td>
+              <td style="padding:9px 8px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#5d5d60">{{ b.fw }}</td>
+              <td style="padding:9px 8px;text-align:right;font-variant-numeric:tabular-nums">{{ b.bat }}</td>
+              <td style="padding:9px 0 9px 8px"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ b.sBd }};background:{{ b.sBg }};color:{{ b.sFg }}">{{ b.status }}</span></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </sc-if>
+
+    <sc-if value="{{ isRequests }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ noOpenReqs }}" hint-placeholder-val="{{ false }}"><div style="padding:16px 0;color:#5d5d60;font-size:15px;display:flex;gap:10px;align-items:center"><lu-i name="circle-check" size="20" style="color:#416180"></lu-i>{{ t.noReqs }}</div></sc-if>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+        <sc-for list="{{ openReqs }}" as="r" hint-placeholder-count="2">
+          <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:16px;display:flex;flex-direction:column;gap:12px">
+            <bp-c></bp-c>
+            <div style="display:flex;justify-content:space-between;gap:10px">
+              <div><div style="font-size:12px;font-family:ui-monospace,Menlo,monospace;color:#5d5d60">{{ r.id }} · {{ r.date }}</div><div style="font-weight:600;font-size:16px">{{ r.company }} <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#5d5d60;font-weight:400">major {{ r.major }}</span></div><div style="font-size:13px;color:#5d5d60">{{ r.loc }} · {{ r.by }}</div></div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1">{{ r.qty }}<span style="font-size:15px;color:#5d5d60;font-weight:500"> ×</span></div>
+            </div>
+            <sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;padding:8px 10px;background:#e9e9ea">“{{ r.note }}”</div></sc-if>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding-top:10px;border-top:1px solid rgba(29,31,32,.16)">
+              <div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.nextMinors }}</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:15px;font-weight:600">{{ r.minors }}</div></div>
+              <button onClick="{{ r.onShip }}" style="position:relative;height:36px;padding:0 14px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="truck" size="16"></lu-i>{{ t.progShip }}</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.handled }}</div>
+        <sc-for list="{{ doneReqs }}" as="r" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:90px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:9px 0;border-top:1px solid rgba(29,31,32,.16);font-size:13px">
+            <span style="font-family:ui-monospace,Menlo,monospace;color:#5d5d60">{{ r.id }}</span>
+            <span><span style="font-weight:600">{{ r.company }}</span> · {{ r.qty }} × {{ r.loc }}</span>
+            <span style="font-family:ui-monospace,Menlo,monospace">minor {{ r.minors }}</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ r.sBd }};background:{{ r.sBg }};color:{{ r.sFg }}">{{ r.status }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </main>
+
+  <sc-if value="{{ regOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDlg }}" style="position:absolute;inset:0;background:rgba(29,31,32,.32);z-index:10;animation:tmFade .15s ease-out"></div>
+    <div style="position:absolute;top:110px;left:50%;margin-left:-250px;width:500px;z-index:11;background:#f2f2f3;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);padding:24px;display:flex;flex-direction:column;gap:16px">
+      <bp-c></bp-c>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1.1">{{ t.regCompany }}</div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.companyName }}
+        <input value="{{ regName }}" onChange="{{ onRegName }}" placeholder="Hofman Installatietechniek" style="height:36px;padding:0 10px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20" style-focus="border-color:#5980a6"></input>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.adminEmail }}
+        <input value="{{ regEmail }}" onChange="{{ onRegEmail }}" placeholder="admin@company.nl" style="height:36px;padding:0 10px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20" style-focus="border-color:#5980a6"></input>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16)">
+        <div style="padding:12px 14px"><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.majorAssigned }}</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1.05">{{ nextMajor }}</div><div style="font-size:12px;color:#5d5d60">{{ t.nextFree }}</div></div>
+        <label style="padding:12px 14px;border-left:1px solid rgba(29,31,32,.16);display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.firstBeacons }}
+          <input type="number" min="0" value="{{ regQty }}" onChange="{{ onRegQty }}" style="height:36px;padding:0 10px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:16px;color:#1d1f20;letter-spacing:0;text-transform:none"></input>
+          <span style="font-size:12px;letter-spacing:0;text-transform:none;font-weight:400">minor {{ regMinors }}</span>
+        </label>
+      </div>
+      <div style="font-size:13px;color:#5d5d60;text-wrap:pretty;display:flex;gap:8px"><lu-i name="info" size="16"></lu-i>{{ t.regHelp }}</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button onClick="{{ closeDlg }}" style="height:36px;padding:0 14px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-weight:600;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">{{ t.cancel }}</button>
+        <button onClick="{{ doRegister }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;cursor:pointer" style-hover="background:#597ea3">{{ t.register }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ progOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDlg }}" style="position:absolute;inset:0;background:rgba(29,31,32,.32);z-index:10;animation:tmFade .15s ease-out"></div>
+    <div style="position:absolute;top:110px;left:50%;margin-left:-250px;width:500px;z-index:11;background:#f2f2f3;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);padding:24px;display:flex;flex-direction:column;gap:16px">
+      <bp-c></bp-c>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1.1">{{ t.program }}</div>
+      <div style="display:grid;grid-template-columns:1fr 110px;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.company }}
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ companyOpts }}" as="o" hint-placeholder-count="6"><button onClick="{{ o.onClick }}" style="height:30px;padding:0 10px;border:1px solid {{ o.bd }};border-radius:4px;background:{{ o.bg }};color:{{ o.fg }};font-size:13px;font-weight:600;cursor:pointer">{{ o.label }}</button></sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.qty }}
+          <input type="number" min="1" value="{{ progQty }}" onChange="{{ onProgQty }}" style="height:36px;padding:0 10px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"></input>
+        </label>
+      </div>
+      <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:12px 14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-family:ui-monospace,Menlo,monospace;font-size:13px">
+        <div><div style="font-family:Barlow,sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">UUID</div>5A4B0C1E…</div>
+        <div><div style="font-family:Barlow,sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Major</div>{{ progMajor }}</div>
+        <div><div style="font-family:Barlow,sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Minor</div>{{ progMinors }}</div>
+      </div>
+      <div style="font-size:13px;color:#5d5d60;text-wrap:pretty;display:flex;gap:8px"><lu-i name="info" size="16"></lu-i>{{ t.progHelp }}</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button onClick="{{ closeDlg }}" style="height:36px;padding:0 14px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-weight:600;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">{{ t.cancel }}</button>
+        <button onClick="{{ doProgram }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;cursor:pointer" style-hover="background:#597ea3">{{ t.programBtn }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:32px;bottom:28px;z-index:12;padding:12px 16px;background:#1d1f20;color:#f2f2f3;font-size:14px;display:flex;gap:10px;align-items:center;animation:tmFade .2s ease-out"><lu-i name="check" size="17"></lu-i>{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:880},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;nl&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'nl'&quot;},&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;companies&quot;,&quot;inventory&quot;,&quot;requests&quot;],&quot;default&quot;:&quot;companies&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const T = {
+  en: { platform: 'Platform admin', sysRole: 'Timo system admin', nav: ['Companies', 'Beacon inventory', 'Requests'], kick: ['Tenants & major IDs', 'Every programmed beacon', 'From company admins'],
+    kCompanies: 'Companies', kBeacons: 'Beacons in field', kStock: 'In stock', kOpen: 'Open requests', kCompSub: 'Majors', kBSub: 'Across all companies', kStockSub: 'Unprogrammed, ready to ship', kOpenSub: 'Waiting for programming',
+    regCompany: 'Register company', program: 'Program beacons', company: 'Company', locations: 'Locations', beacons: 'Beacons', users: 'Users', status: 'Status', since: 'since',
+    active: 'Active', onboarding: 'Onboarding', allocated: 'Allocated minors', noBeacons: 'No beacons programmed yet.', programFor: 'Program beacons for major',
+    serial: 'Serial', placedAt: 'Placed at', battery: 'Battery', all: 'All', stInField: 'Active', stSupplied: 'Supplied', stShipped: 'Shipped', stStock: 'In stock', stLow: 'Low battery', notPlaced: 'Not placed yet',
+    nextMinors: 'Minors to program', progShip: 'Program & ship', handled: 'Handled', noReqs: 'No open requests.', stShippedR: 'Shipped', stDelivered: 'Delivered',
+    companyName: 'Company name', adminEmail: 'First company admin', majorAssigned: 'Major (assigned)', nextFree: 'Next free ID — fixed for this company', firstBeacons: 'First beacons', regHelp: 'The company admin receives a magic link. The beacons are programmed with UUID + this major and consecutive minors, and appear in their admin as Supplied.', cancel: 'Cancel', register: 'Register',
+    qty: 'Quantity', progHelp: 'Takes beacons from stock and writes the fixed UUID, the company major and the next free minors. They appear in the company admin as Supplied.', programBtn: 'Program',
+    tReg: 'Company registered — major', tProg: 'beacons programmed for major', tShip: 'Request shipped —' },
+  nl: { platform: 'Platformbeheer', sysRole: 'Timo-systeembeheerder', nav: ['Bedrijven', 'Beacon-voorraad', 'Aanvragen'], kick: ['Klanten & major-ID\u2019s', 'Elke geprogrammeerde beacon', 'Van bedrijfsbeheerders'],
+    kCompanies: 'Bedrijven', kBeacons: 'Beacons in gebruik', kStock: 'Op voorraad', kOpen: 'Open aanvragen', kCompSub: 'Majors', kBSub: 'Over alle bedrijven', kStockSub: 'Ongeprogrammeerd, klaar voor verzending', kOpenSub: 'Wachten op programmeren',
+    regCompany: 'Bedrijf registreren', program: 'Beacons programmeren', company: 'Bedrijf', locations: 'Locaties', beacons: 'Beacons', users: 'Gebruikers', status: 'Status', since: 'sinds',
+    active: 'Actief', onboarding: 'In onboarding', allocated: 'Toegekende minors', noBeacons: 'Nog geen beacons geprogrammeerd.', programFor: 'Beacons programmeren voor major',
+    serial: 'Serienummer', placedAt: 'Geplaatst bij', battery: 'Batterij', all: 'Alle', stInField: 'Actief', stSupplied: 'Geleverd', stShipped: 'Verzonden', stStock: 'Op voorraad', stLow: 'Batterij bijna leeg', notPlaced: 'Nog niet geplaatst',
+    nextMinors: 'Te programmeren minors', progShip: 'Programmeren & verzenden', handled: 'Afgehandeld', noReqs: 'Geen open aanvragen.', stShippedR: 'Verzonden', stDelivered: 'Geleverd',
+    companyName: 'Bedrijfsnaam', adminEmail: 'Eerste bedrijfsbeheerder', majorAssigned: 'Major (toegekend)', nextFree: 'Eerstvolgende vrije ID — vast voor dit bedrijf', firstBeacons: 'Eerste beacons', regHelp: 'De bedrijfsbeheerder ontvangt een inloglink. De beacons krijgen de UUID + deze major en opeenvolgende minors, en verschijnen in hun beheer als Geleverd.', cancel: 'Annuleren', register: 'Registreren',
+    qty: 'Aantal', progHelp: 'Neemt beacons uit voorraad en schrijft de vaste UUID, de bedrijfsmajor en de eerstvolgende vrije minors. Ze verschijnen bij het bedrijf als Geleverd.', programBtn: 'Programmeren',
+    tReg: 'Bedrijf geregistreerd — major', tProg: 'beacons geprogrammeerd voor major', tShip: 'Aanvraag verzonden —' }
+};
+const PLACES = { 1042: { 1: 'HQ Utrecht · Main entrance', 2: 'HQ Utrecht · Warehouse B', 3: 'HQ Utrecht · Loading dock', 7: 'Amsterdam Hub · Reception', 8: 'Amsterdam Hub · Floor 2', 12: 'Rotterdam Depot · Gate' } };
+const range = (a, n) => n <= 0 ? '—' : n === 1 ? String(a) : a + '–' + (a + n - 1);
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const b = [];
+    let sn = 3001;
+    const add = (major, minors, st, place) => minors.forEach(m => b.push({ serial: 'TB-26-0' + (sn++), major, minor: m, st, place: place ? place(m) : '', bat: st === 'stock' ? null : 40 + ((m * 37 + major) % 60), fw: '2.4.' + (1 + (m % 3)) }));
+    add(1041, [1, 2, 3, 4, 5], 'field', m => ['Bouwkeet Zuid · Poort', 'Bouwkeet Zuid · Kantine', 'Kantoor Arnhem · Entree', 'Kantoor Arnhem · Magazijn', 'Kantoor Arnhem · Zij-ingang'][m - 1]);
+    add(1042, [1, 2, 3, 7, 8, 12], 'field', m => PLACES[1042][m]);
+    add(1042, [13, 14], 'supplied');
+    add(1042, [15, 16], 'shipped');
+    add(1043, [1, 2], 'field', m => ['Atelier · Voordeur', 'Atelier · Werkplaats'][m - 1]);
+    add(1044, [1, 2, 3, 4, 5, 6, 7, 8], 'field', m => 'Locatie ' + ['Noord', 'Noord', 'West', 'West', 'Centrum', 'Centrum', 'Oost', 'Oost'][m - 1] + (m % 2 ? ' · Entree' : ' · Personeelsingang'));
+    add(1045, [1, 2, 3, 4], 'field', m => ['Werkplaats · Poort', 'Werkplaats · Kantoor', 'Hal 2 · Entree', 'Hal 2 · Laaddeur'][m - 1]);
+    add(1046, [1], 'supplied');
+    for (let i = 0; i < 6; i++) b.push({ serial: 'TB-26-0' + (sn++), major: null, minor: null, st: 'stock', place: '', bat: null, fw: '2.4.3' });
+    b.forEach(x => { if (x.st === 'field' && x.bat < 20) x.st = 'low'; });
+    this.state = {
+      view: props.view || 'companies', lang: props.lang || 'en', sel: 1042, invF: 'all', beacons: b,
+      companies: [
+        { major: 1041, name: 'Veldhuis Bouw', admin: 'r.veldhuis@veldhuisbouw.nl', locs: 2, users: 38, since: 'Mar 2025', st: 'active' },
+        { major: 1042, name: 'Northpier Logistics', admin: 'mark.jansen@northpier.nl', locs: 3, users: 12, since: 'Jan 2026', st: 'active' },
+        { major: 1043, name: 'Studio Kade', admin: 'hallo@studiokade.nl', locs: 1, users: 9, since: 'Feb 2026', st: 'active' },
+        { major: 1044, name: 'Zorggroep Linde', admin: 'ict@zorggroeplinde.nl', locs: 4, users: 214, since: 'Apr 2026', st: 'active' },
+        { major: 1045, name: 'Brouwer Techniek', admin: 'p.brouwer@brouwertechniek.nl', locs: 2, users: 27, since: 'Jun 2026', st: 'active' },
+        { major: 1046, name: 'Café Molen', admin: 'eigenaar@cafemolen.nl', locs: 1, users: 0, since: 'Sep 2026', st: 'onboarding' }],
+      reqs: [
+        { id: 'R-0092', major: 1044, qty: 4, loc: 'Locatie Oost — nieuwe vleugel', by: 'ict@zorggroeplinde.nl', date: '22 Sep', note: 'New wing opens 1 October, two entrances.', st: 'open' },
+        { id: 'R-0093', major: 1045, qty: 1, loc: 'Hal 2', by: 'p.brouwer@brouwertechniek.nl', date: '24 Sep', note: 'Replacement for a damaged unit at the loading door.', st: 'open' },
+        { id: 'R-0091', major: 1042, qty: 2, loc: 'Amsterdam Hub', by: 'Mark Jansen', date: '23 Sep', st: 'shipped', minors: '15–16' },
+        { id: 'R-0087', major: 1042, qty: 2, loc: 'Rotterdam Depot', by: 'Lotte Visser', date: '12 Sep', st: 'delivered', minors: '13–14' }],
+      dlg: null, regName: '', regEmail: '', regQty: 2, progMajor: 1042, progQty: 2, toast: null
+    };
+  }
+  componentDidUpdate(pp) { if (pp.lang !== this.props.lang && this.props.lang) this.setState({ lang: this.props.lang }); }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  toast(m) { clearTimeout(this.tt); this.setState({ toast: m }); this.tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+  nextMinor(major, beacons) { const ms = beacons.filter(b => b.major === major).map(b => b.minor); return ms.length ? Math.max(...ms) + 1 : 1; }
+  program(major, qty, st) {
+    const s = this.state; let pool = s.beacons.slice(); let start = this.nextMinor(major, pool); let done = 0;
+    pool = pool.map(b => { if (b.st === 'stock' && done < qty) { const m = start + done; done++; return { ...b, major, minor: m, st, bat: 100 }; } return b; });
+    let sn = 4000 + pool.length;
+    while (done < qty) { pool.push({ serial: 'TB-26-0' + (sn++), major, minor: start + done, st, place: '', bat: 100, fw: '2.4.3' }); done++; }
+    return { beacons: pool, minors: range(start, qty) };
+  }
+  renderVals() {
+    const s = this.state, t = T[s.lang] || T.en;
+    const views = ['companies', 'inventory', 'requests'], vi = views.indexOf(s.view);
+    const openReqs = s.reqs.filter(r => r.st === 'open');
+    const tag = k => ({ ok: { sBd: 'rgba(29,31,32,.16)', sBg: '#e7e7ea', sFg: '#424244' }, ready: { sBd: '#5980a6', sBg: '#eef6ff', sFg: '#416180' }, alert: { sBd: '#1d2d3d', sBg: '#1d2d3d', sFg: '#f2f2f3' }, stock: { sBd: 'rgba(29,31,32,.16)', sBg: 'transparent', sFg: '#5d5d60' } })[k];
+    const cName = m => (s.companies.find(c => c.major === m) || {}).name || '—';
+    const stLabel = st => ({ field: t.stInField, supplied: t.stSupplied, shipped: t.stShipped, stock: t.stStock, low: t.stLow })[st];
+    const stTag = st => tag({ field: 'ok', supplied: 'ready', shipped: 'ready', stock: 'stock', low: 'alert' }[st]);
+    const inField = s.beacons.filter(b => b.st === 'field' || b.st === 'low').length;
+    const stock = s.beacons.filter(b => b.st === 'stock').length;
+    const nextMajor = Math.max(...s.companies.map(c => c.major)) + 1;
+    const sel = s.companies.find(c => c.major === s.sel) || s.companies[0];
+    const selB = s.beacons.filter(b => b.major === sel.major).sort((a, b) => a.minor - b.minor);
+    const invFilters = ['all', 'field', 'supplied', 'shipped', 'stock'];
+    const invList = s.beacons.filter(b => s.invF === 'all' || b.st === s.invF || (s.invF === 'field' && b.st === 'low'))
+      .sort((a, b) => (a.major || 9999) - (b.major || 9999) || (a.minor || 0) - (b.minor || 0));
+    const pMinors = range(this.nextMinor(Number(s.progMajor), s.beacons), Number(s.progQty) || 0);
+    return {
+      t, kicker: t.kick[vi], title: t.nav[vi],
+      nav: views.map((v, i) => ({ label: t.nav[i], icon: ['building-2', 'boxes', 'inbox'][i], onClick: () => this.setState({ view: v }), bg: s.view === v ? '#1d1f20' : 'transparent', fg: s.view === v ? '#f2f2f3' : '#1d1f20', fw: s.view === v ? 600 : 500, hasCount: i === 2 && openReqs.length > 0, count: openReqs.length })),
+      langs: [['en', 'EN'], ['nl', 'NL']].map(([k, l]) => ({ label: l, onClick: () => this.setState({ lang: k }), bg: s.lang === k ? '#1d1f20' : 'transparent', fg: s.lang === k ? '#f2f2f3' : '#1d1f20' })),
+      isCompanies: s.view === 'companies', isInventory: s.view === 'inventory', isRequests: s.view === 'requests',
+      kpis: [[t.kCompanies, s.companies.length, t.kCompSub + ' ' + s.companies[0].major + '–' + (nextMajor - 1)], [t.kBeacons, inField, t.kBSub], [t.kStock, stock, t.kStockSub], [t.kOpen, openReqs.length, t.kOpenSub]]
+        .map(([label, value, sub], i) => ({ label, value, sub, bl: i ? '1px solid rgba(29,31,32,.16)' : '0' })),
+      companies: s.companies.map(c => { const cb = s.beacons.filter(b => b.major === c.major); return { major: c.major, name: c.name, admin: c.admin, locs: c.locs, users: c.users,
+        beacons: cb.filter(b => b.st === 'field' || b.st === 'low').length + ' / ' + cb.length, status: c.st === 'active' ? t.active : t.onboarding, ...tag(c.st === 'active' ? 'ok' : 'ready'),
+        bg: s.sel === c.major ? '#e7e7ea' : 'transparent', onSelect: () => this.setState({ sel: c.major }) }; }),
+      sel, selBeacons: selB.map(b => ({ minor: b.minor, where: b.place || t.notPlaced, status: stLabel(b.st) })), selNoBeacons: selB.length === 0,
+      programForSel: () => this.setState({ dlg: 'prog', progMajor: sel.major, progQty: 2 }),
+      invChips: invFilters.map(k => ({ label: k === 'all' ? t.all : stLabel(k), n: k === 'all' ? s.beacons.length : s.beacons.filter(b => b.st === k || (k === 'field' && b.st === 'low')).length, onClick: () => this.setState({ invF: k }), bd: s.invF === k ? '#5980a6' : 'rgba(29,31,32,.16)', bg: s.invF === k ? '#d6ebff' : 'transparent', fg: s.invF === k ? '#2c455d' : '#1d1f20' })),
+      inventory: invList.map(b => ({ serial: b.serial, major: b.major || '—', minor: b.minor || '—', company: b.major ? cName(b.major) : '—', where: b.place || (b.major ? t.notPlaced : '—'), fw: b.fw, bat: b.bat == null ? '—' : b.bat + '%', status: stLabel(b.st), ...stTag(b.st) })),
+      openReqs: openReqs.map(r => ({ ...r, company: cName(r.major), hasNote: !!r.note, minors: range(this.nextMinor(r.major, s.beacons), r.qty),
+        onShip: () => { const res = this.program(r.major, r.qty, 'shipped'); this.setState({ beacons: res.beacons, reqs: s.reqs.map(x => x.id === r.id ? { ...x, st: 'shipped', minors: res.minors } : x) }); this.toast(t.tShip + ' ' + cName(r.major) + ', minor ' + res.minors); } })),
+      noOpenReqs: openReqs.length === 0,
+      doneReqs: s.reqs.filter(r => r.st !== 'open').map(r => ({ id: r.id, company: cName(r.major), qty: r.qty, loc: r.loc, minors: r.minors, status: r.st === 'shipped' ? t.stShippedR : t.stDelivered, ...tag(r.st === 'shipped' ? 'ready' : 'ok') })),
+      regOpen: s.dlg === 'reg', progOpen: s.dlg === 'prog', closeDlg: () => this.setState({ dlg: null }),
+      openReg: () => this.setState({ dlg: 'reg' }), openProg: () => this.setState({ dlg: 'prog' }),
+      regName: s.regName, regEmail: s.regEmail, regQty: s.regQty, nextMajor, regMinors: range(1, Number(s.regQty) || 0),
+      onRegName: e => this.setState({ regName: e.target.value }), onRegEmail: e => this.setState({ regEmail: e.target.value }), onRegQty: e => this.setState({ regQty: e.target.value }),
+      doRegister: () => {
+        const name = s.regName || 'Hofman Installatietechniek', q = Number(s.regQty) || 0;
+        const c = { major: nextMajor, name, admin: s.regEmail || 'admin@' + name.toLowerCase().split(' ')[0] + '.nl', locs: 0, users: 0, since: 'Sep 2026', st: 'onboarding' };
+        const res = q ? this.program(nextMajor, q, 'shipped') : { beacons: s.beacons };
+        this.setState({ companies: [...s.companies, c], beacons: res.beacons, dlg: null, sel: nextMajor, regName: '', regEmail: '' });
+        this.toast(t.tReg + ' ' + nextMajor + ' · ' + name);
+      },
+      companyOpts: s.companies.map(c => { const on = Number(s.progMajor) === c.major; return { label: c.major + ' · ' + c.name, onClick: () => this.setState({ progMajor: c.major }), bd: on ? '#5980a6' : 'rgba(29,31,32,.16)', bg: on ? '#d6ebff' : 'transparent', fg: on ? '#2c455d' : '#1d1f20' }; }),
+      progMajor: s.progMajor, progQty: s.progQty, progMinors: pMinors,
+      onProgMajor: e => this.setState({ progMajor: Number(e.target.value) }), onProgQty: e => this.setState({ progQty: e.target.value }),
+      doProgram: () => { const q = Number(s.progQty) || 0; if (!q) return; const res = this.program(Number(s.progMajor), q, 'supplied'); this.setState({ beacons: res.beacons, dlg: null }); this.toast(q + ' ' + t.tProg + ' ' + s.progMajor + ' — minor ' + res.minors); },
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

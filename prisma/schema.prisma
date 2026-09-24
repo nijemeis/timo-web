@@ -1,0 +1,369 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Production runs the app through a PgBouncer pool; migrations need the direct cluster URL.
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+enum CompanyStatus {
+  onboarding
+  active
+}
+
+enum Role {
+  employee
+  manager
+  company_admin
+  system_admin
+}
+
+enum UserStatus {
+  invited
+  active
+}
+
+enum Placement {
+  entrance
+  zone
+}
+
+/// Lifecycle of a physical beacon. "low battery" and "offline" are derived from battery/lastSeenAt.
+enum BeaconStatus {
+  stock
+  shipped
+  supplied
+  active
+}
+
+enum RequestStatus {
+  requested
+  shipped
+  delivered
+}
+
+enum RegStatus {
+  open
+  ok
+  auto
+  pending
+}
+
+enum RegSource {
+  beacon
+  manual_correction
+  admin
+}
+
+enum CorrectionType {
+  forgot_checkout
+  wrong_times
+  missing
+}
+
+enum CorrectionStatus {
+  pending
+  approved
+  declined
+}
+
+enum EventType {
+  enter
+  exit
+}
+
+model Company {
+  id              String        @id @default(cuid())
+  /// iBeacon major — one per company, assigned sequentially by Timo, never reused.
+  major           Int           @unique
+  name            String
+  status          CompanyStatus @default(onboarding)
+  /// Self-registration code, e.g. NP-1042.
+  code            String        @unique
+  graceMinutes    Int           @default(3)
+  timezone        String        @default("Europe/Amsterdam")
+  /// Email domain(s) used to route "Sign in with company SSO", comma separated.
+  ssoDomains      String?
+  ssoIssuer       String?
+  ssoClientId     String?
+  ssoClientSecret String?
+  createdAt       DateTime      @default(now())
+
+  locations     Location[]
+  beacons       Beacon[]
+  users         User[]
+  requests      BeaconRequest[]
+  registrations Registration[]
+  exports       Export[]
+  audit         AuditLog[]
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name      String
+  /// Short label for compact splits, e.g. "HQ", "AMS".
+  short     String?
+  capacity  Int      @default(10)
+  timezone  String   @default("Europe/Amsterdam")
+  createdAt DateTime @default(now())
+
+  beacons       Beacon[]
+  registrations Registration[]
+  requests      BeaconRequest[]
+
+  @@index([companyId])
+}
+
+model Beacon {
+  id          String       @id @default(cuid())
+  serial      String       @unique
+  major       Int?
+  minor       Int?
+  companyId   String?
+  company     Company?     @relation(fields: [companyId], references: [id])
+  locationId  String?
+  location    Location?    @relation(fields: [locationId], references: [id])
+  spot        String?
+  placement   Placement    @default(entrance)
+  status      BeaconStatus @default(stock)
+  battery     Int?
+  firmware    String?
+  lastSeenAt  DateTime?
+  programmedAt DateTime?
+  deliveredAt DateTime?
+  activatedAt DateTime?
+  requestId   String?
+  request     BeaconRequest? @relation(fields: [requestId], references: [id])
+  createdAt   DateTime     @default(now())
+
+  registrations Registration[]
+
+  /// A minor is unique within its major; allocation happens under a lock on the company row.
+  @@unique([major, minor])
+  @@index([companyId])
+}
+
+model BeaconRequest {
+  id             String        @id @default(cuid())
+  /// Human reference, shown as R-0091.
+  number         Int           @unique @default(autoincrement())
+  companyId      String
+  company        Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  quantity       Int
+  locationId     String?
+  location       Location?     @relation(fields: [locationId], references: [id])
+  note           String?
+  requestedById  String?
+  requestedBy    User?         @relation(fields: [requestedById], references: [id])
+  status         RequestStatus @default(requested)
+  assignedMinors Int[]
+  createdAt      DateTime      @default(now())
+  shippedAt      DateTime?
+  deliveredAt    DateTime?
+
+  beacons Beacon[]
+}
+
+model User {
+  id            String     @id @default(cuid())
+  companyId     String?
+  company       Company?   @relation(fields: [companyId], references: [id])
+  name          String
+  email         String     @unique
+  team          String?
+  role          Role       @default(employee)
+  contractHours Float      @default(40)
+  status        UserStatus @default(invited)
+  locale        String?
+  /// Only system admins use a password (bootstrap); everyone else signs in by magic link or SSO.
+  passwordHash  String?
+  createdAt     DateTime   @default(now())
+  lastActiveAt  DateTime?
+
+  sessions      Session[]
+  devices       Device[]
+  events        BeaconEvent[]
+  registrations Registration[]
+  corrections   CorrectionRequest[] @relation("requester")
+  decided       CorrectionRequest[] @relation("decider")
+  requests      BeaconRequest[]
+  approvals     TimesheetApproval[] @relation("approvee")
+  approved      TimesheetApproval[] @relation("approver")
+
+  @@index([companyId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+/// Single-use sign-in link. Only the hash of the token is stored.
+model MagicLink {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  email     String
+  /// Where the link should land: the web admin or the mobile app.
+  client    String    @default("web")
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([email])
+}
+
+/// In-flight OIDC login (state + PKCE verifier), consumed by the callback.
+model SsoState {
+  state     String   @id
+  companyId String
+  verifier  String
+  nonce     String
+  client    String
+  createdAt DateTime @default(now())
+}
+
+model Device {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Random id generated once per app install.
+  installId  String
+  platform   String
+  model      String?
+  appVersion String?
+  pushToken  String?
+  lastSeenAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  events BeaconEvent[]
+
+  @@unique([userId, installId])
+}
+
+/// Raw, append-only enter/exit events as reported by the phones.
+model BeaconEvent {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deviceId   String
+  device     Device    @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  uuid       String
+  major      Int
+  minor      Int
+  type       EventType
+  at         DateTime
+  rssi       Int?
+  /// The app's local sequence number; (deviceId, seq) makes uploads idempotent.
+  seq        Int
+  /// What the engine did with it (checkin, checkout, switch, ignored:…).
+  outcome    String?
+  receivedAt DateTime  @default(now())
+
+  @@unique([deviceId, seq])
+  @@index([userId, at])
+  @@index([major, at])
+}
+
+model Registration {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId     String
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  beaconId      String?
+  beacon        Beacon?   @relation(fields: [beaconId], references: [id])
+  minor         Int?
+  locationId    String?
+  location      Location? @relation(fields: [locationId], references: [id])
+  spot          String?
+  checkInAt     DateTime
+  checkOutAt    DateTime?
+  /// When the phone last saw the beacon while this registration was open.
+  lastSeenAt    DateTime?
+  status        RegStatus @default(open)
+  source        RegSource @default(beacon)
+  /// Times as first recorded — corrections never overwrite the audit trail.
+  originalInAt  DateTime?
+  originalOutAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  corrections CorrectionRequest[]
+
+  @@index([userId, checkInAt])
+  @@index([companyId, checkInAt])
+  @@index([status])
+}
+
+model CorrectionRequest {
+  id             String           @id @default(cuid())
+  registrationId String?
+  registration   Registration?    @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User             @relation("requester", fields: [userId], references: [id], onDelete: Cascade)
+  type           CorrectionType
+  requestedIn    DateTime
+  requestedOut   DateTime
+  locationId     String?
+  note           String?
+  status         CorrectionStatus @default(pending)
+  /// Registration status before the request, restored when declined.
+  priorStatus    RegStatus?
+  decidedById    String?
+  decidedBy      User?            @relation("decider", fields: [decidedById], references: [id])
+  decidedAt      DateTime?
+  createdAt      DateTime         @default(now())
+
+  @@index([userId])
+  @@index([status])
+}
+
+model TimesheetApproval {
+  userId       String
+  user         User     @relation("approvee", fields: [userId], references: [id], onDelete: Cascade)
+  /// ISO week, e.g. 2026-W39.
+  weekIso      String
+  approvedById String
+  approvedBy   User     @relation("approver", fields: [approvedById], references: [id])
+  approvedAt   DateTime @default(now())
+
+  @@id([userId, weekIso])
+}
+
+model Export {
+  id          String   @id @default(cuid())
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  period      String
+  format      String
+  grouping    String
+  fields      String[]
+  fileName    String
+  rows        Int
+  createdById String?
+  createdAt   DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  actorId   String?
+  action    String
+  entity    String
+  entityId  String?
+  data      Json?
+  at        DateTime @default(now())
+
+  @@index([companyId, at])
+}

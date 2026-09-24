@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/styles.css">
+<script src="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="./lu-icon.js"></script>
+<style>
+body{margin:0;background:#f2f2f3;color:#1d1f20;font-family:Barlow,system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#416180;text-underline-offset:3px}a:hover{color:#2c455d}
+button,input,textarea{font-family:inherit}
+:focus{outline:none}:focus-visible{outline:2px solid #5980a6;outline-offset:2px}
+input::placeholder,textarea::placeholder{color:#7a7a7d}
+@keyframes tmFade{from{opacity:0}to{opacity:1}}
+@keyframes tmUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes tmDown{from{transform:translateY(-160%)}to{transform:none}}
+@keyframes tmPing{0%{transform:scale(.7);opacity:.8}100%{transform:scale(2.4);opacity:0}}
+@keyframes tmPop{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
+</style>
+</helmet>
+<div style="display:inline-flex;flex-direction:column;align-items:center;gap:16px;font-family:Barlow,system-ui,sans-serif;color:#1d1f20">
+  <div style="width:392px;height:822px;padding:11px;border-radius:52px;background:#1d1f20;box-shadow:0 12px 32px rgba(43,43,45,.22), inset 0 0 0 1px #424244;flex:none">
+    <div style="position:relative;width:370px;height:800px;border-radius:42px;overflow:hidden;background:#f2f2f3;display:flex;flex-direction:column">
+
+      <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:none;height:54px;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 36px;font-size:16px;font-weight:600;position:relative;z-index:5">
+          <span style="font-variant-numeric:tabular-nums">{{ clock }}</span>
+          <div style="display:flex;gap:6px;align-items:center"><lu-i name="signal" size="17" stroke="2"></lu-i><lu-i name="wifi" size="17" stroke="2"></lu-i><lu-i name="battery-full" size="22" stroke="1.75"></lu-i></div>
+        </div>
+        <div style="position:absolute;top:11px;left:50%;margin-left:-62px;width:124px;height:36px;border-radius:20px;background:#0d0e0f;z-index:50"></div>
+      </sc-if>
+      <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;height:40px;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:500;position:relative;z-index:5">
+          <span style="font-variant-numeric:tabular-nums">{{ clock }}</span>
+          <div style="display:flex;gap:5px;align-items:center"><lu-i name="wifi" size="15" stroke="2"></lu-i><lu-i name="signal" size="15" stroke="2"></lu-i><lu-i name="battery-full" size="18" stroke="1.75"></lu-i></div>
+        </div>
+        <div style="position:absolute;top:14px;left:50%;margin-left:-7px;width:14px;height:14px;border-radius:50%;background:#0d0e0f;z-index:50"></div>
+      </sc-if>
+
+      <sc-if value="{{ showHdr }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:none;padding:0 16px">
+            <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+              <div style="height:44px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center">
+                <button onClick="{{ goBack }}" style="justify-self:start;display:flex;align-items:center;gap:0;margin-left:-8px;background:transparent;border:0;color:#416180;font-size:17px;cursor:pointer;padding:4px"><lu-i name="chevron-left" size="26" stroke="2"></lu-i>{{ backLabel }}</button>
+                <div style="font-size:17px;font-weight:600">{{ hdrTitle }}</div>
+                <div></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ largeTitle }}" hint-placeholder-val="{{ true }}">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px;line-height:1.1;letter-spacing:-0.01em;padding:8px 4px 12px">{{ hdrTitle }}</div>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:none;height:64px;display:flex;align-items:center;gap:4px;padding:0 12px">
+            <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ goBack }}" style="width:48px;height:48px;display:grid;place-items:center;background:transparent;border:0;border-radius:24px;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)"><lu-i name="arrow-left" size="24"></lu-i></button>
+            </sc-if>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:24px;padding:0 8px">{{ hdrTitle }}</div>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;position:relative">
+
+        <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+          <div data-screen-label="Login" style="min-height:100%;padding:56px 24px 32px;display:flex;flex-direction:column;gap:36px">
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <div style="position:relative;align-self:flex-start;padding:10px 16px;border:1px solid rgba(29,31,32,.16);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:30px;letter-spacing:.14em;line-height:1;display:flex;align-items:center;gap:.45em"><span style="position:relative;width:.72em;height:.72em;display:grid;place-items:center;flex:none"><span style="position:absolute;inset:0;border-radius:50%;border:1px solid #749dc4"></span><span style="position:absolute;inset:-.24em;border-radius:50%;border:1px solid #d4d4d7"></span><span style="width:.26em;height:.26em;background:#5980a6"></span></span>TIMO<bp-c></bp-c></div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1.08;text-wrap:pretty">{{ t.tagline }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.emailLabel }}
+                <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="name@company.com" style="height:48px;padding:0 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:16px;color:#1d1f20" style-focus="border-color:#5980a6"></input>
+              </label>
+              <button onClick="{{ sendLink }}" style="position:relative;height:50px;background:#5980a6;color:#f2f2f3;border:0;border-radius:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="mail" size="19"></lu-i>{{ t.sendLink }}<bp-c></bp-c></button>
+              <div style="display:flex;align-items:center;gap:12px;color:#7a7a7d;font-size:13px"><div style="flex:1;height:1px;background:rgba(29,31,32,.16)"></div>{{ t.or }}<div style="flex:1;height:1px;background:rgba(29,31,32,.16)"></div></div>
+              <button onClick="{{ sendLink }}" style="height:50px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;color:#1d1f20;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:rgba(29,31,32,.07)" style-active="background:rgba(29,31,32,.14)"><lu-i name="building-2" size="19"></lu-i>{{ t.sso }}</button>
+            </div>
+            <div style="margin-top:auto;display:flex;gap:6px;justify-content:center;font-size:15px;color:#5d5d60">{{ t.noAccount }}<a href="#" onClick="{{ toRegister }}" style="font-weight:600">{{ t.register }}</a></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Register" style="min-height:100%;padding:24px 24px 32px;display:flex;flex-direction:column;gap:28px">
+            <button onClick="{{ toLogin }}" style="align-self:flex-start;display:flex;align-items:center;gap:4px;margin-left:-6px;background:transparent;border:0;color:#416180;font-size:16px;cursor:pointer;padding:4px"><lu-i name="chevron-left" size="22" stroke="2"></lu-i>{{ t.signIn }}</button>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px;line-height:1.08">{{ t.regTitle }}</div>
+              <div style="font-size:15px;color:#5d5d60;text-wrap:pretty">{{ t.regSub }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.nameLabel }}
+                <input value="{{ name }}" onChange="{{ onName }}" placeholder="Sanne de Vries" style="height:48px;padding:0 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:16px;color:#1d1f20" style-focus="border-color:#5980a6"></input>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.emailLabel }}
+                <input type="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="name@company.com" style="height:48px;padding:0 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:16px;color:#1d1f20" style-focus="border-color:#5980a6"></input>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.codeLabel }}
+                <input value="{{ code }}" onChange="{{ onCode }}" placeholder="NP-1042" style="height:48px;padding:0 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:16px;color:#1d1f20;font-family:ui-monospace,Menlo,monospace;letter-spacing:.06em" style-focus="border-color:#5980a6"></input>
+                <span style="font-weight:400;font-size:13px;color:#5d5d60;text-wrap:pretty">{{ t.codeHelp }}</span>
+              </label>
+            </div>
+            <button onClick="{{ sendLink }}" style="position:relative;margin-top:auto;height:50px;background:#5980a6;color:#f2f2f3;border:0;border-radius:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="mail" size="19"></lu-i>{{ t.sendMagic }}<bp-c></bp-c></button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isMagic }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Magic link" style="min-height:100%;padding:72px 24px 32px;display:flex;flex-direction:column;gap:28px">
+            <div style="position:relative;width:72px;height:72px;border:1px solid rgba(29,31,32,.16);display:grid;place-items:center;color:#416180"><lu-i name="mail-check" size="32"></lu-i><bp-c></bp-c></div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:36px;line-height:1.08">{{ t.magicTitle }}</div>
+              <div style="font-size:16px;color:#5d5d60;text-wrap:pretty">{{ t.magicSub }} <strong style="color:#1d1f20;font-weight:600">{{ email }}</strong>. {{ t.magicExp }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <button onClick="{{ openLink }}" style="position:relative;height:50px;background:#5980a6;color:#f2f2f3;border:0;border-radius:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="inbox" size="19"></lu-i>{{ t.openMail }}<bp-c></bp-c></button>
+              <button onClick="{{ noop }}" style="height:44px;background:transparent;border:0;color:#416180;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:rgba(89,128,166,.1)">{{ t.resend }}</button>
+            </div>
+            <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px;align-items:center">
+              <button onClick="{{ openLink }}" style="height:36px;padding:0 14px;background:transparent;border:1px dashed #98989b;border-radius:4px;color:#5d5d60;font-size:13px;font-family:ui-monospace,Menlo,monospace;cursor:pointer" style-hover="border-color:#5980a6;color:#416180">{{ t.demoOpen }}</button>
+              <a href="#" onClick="{{ toLogin }}" style="font-size:14px">{{ t.useOther }}</a>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isOnboard }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Onboarding" style="min-height:100%;padding:28px 24px 32px;display:flex;flex-direction:column;gap:28px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ t.setup }} · {{ permStep }}/3</div>
+              <div style="display:flex;gap:4px">
+                <sc-for list="{{ permDots }}" as="d" hint-placeholder-count="3"><div style="width:28px;height:3px;background:{{ d.bg }}"></div></sc-for>
+              </div>
+            </div>
+            <div style="position:relative;height:210px;border:1px solid rgba(29,31,32,.16);display:grid;place-items:center;color:#416180;overflow:visible">
+              <div style="position:absolute;width:64px;height:64px;border-radius:50%;border:1px solid #749dc4;animation:tmPing 2.4s ease-out infinite"></div>
+              <div style="position:absolute;width:64px;height:64px;border-radius:50%;border:1px solid #749dc4;animation:tmPing 2.4s ease-out 1.2s infinite"></div>
+              <div style="position:relative;width:64px;height:64px;background:#f2f2f3;border:1px solid #5980a6;display:grid;place-items:center"><lu-i name="{{ permIcon }}" size="30"></lu-i></div>
+              <bp-c></bp-c>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1.08">{{ permTitle }}</div>
+              <div style="font-size:16px;color:#5d5d60;text-wrap:pretty;line-height:1.5">{{ permBody }}</div>
+            </div>
+            <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+              <button onClick="{{ permContinue }}" style="position:relative;height:50px;background:#5980a6;color:#f2f2f3;border:0;border-radius:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;cursor:pointer" style-hover="background:#597ea3" style-active="background:#416180">{{ t.cont }}<bp-c></bp-c></button>
+              <button onClick="{{ permSkip }}" style="height:44px;background:transparent;border:0;color:#416180;font-size:16px;font-weight:600;cursor:pointer">{{ t.later }}</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ homeA }}" hint-placeholder-val="{{ true }}">
+            <div data-screen-label="Home" style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:24px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ dateLong }}</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:32px;line-height:1.1">{{ greeting }}</div>
+              </div>
+              <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:18px;display:flex;flex-direction:column;gap:14px">
+                <bp-c></bp-c>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                  <div style="display:flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:{{ stateColor }}">
+                    <span style="position:relative;width:8px;height:8px;background:{{ stateColor }}"><sc-if value="{{ inside }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;border:1px solid #5980a6;animation:tmPing 2s ease-out infinite"></span></sc-if></span>{{ stateLabel }}
+                  </div>
+                  <sc-if value="{{ inside }}" hint-placeholder-val="{{ false }}"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5d5d60">{{ beaconTxt }}</span></sc-if>
+                </div>
+                <sc-if value="{{ inside }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:64px;line-height:.95;font-variant-numeric:tabular-nums;letter-spacing:-0.01em">{{ timer }}</div>
+                  <div style="display:flex;align-items:flex-start;gap:8px;font-size:15px">
+                    <lu-i name="map-pin" size="18" style="color:#416180;margin-top:1px"></lu-i>
+                    <div><div style="font-weight:600">{{ locName }}</div><div style="color:#5d5d60;font-size:14px">{{ locSpot }} · {{ t.since }} {{ sinceTxt }}</div></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ notInside }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;gap:14px;align-items:center;padding:6px 0">
+                    <div style="position:relative;width:52px;height:52px;flex:none;display:grid;place-items:center;color:#416180">
+                      <div style="position:absolute;inset:6px;border-radius:50%;border:1px solid #749dc4;animation:tmPing 2.6s ease-out infinite"></div>
+                      <lu-i name="radio-tower" size="26"></lu-i>
+                    </div>
+                    <div style="font-size:15px;color:#5d5d60;text-wrap:pretty">{{ t.walkPast }}</div>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16)">
+                <div style="padding:14px;display:flex;flex-direction:column;gap:2px;border-right:1px solid rgba(29,31,32,.16)">
+                  <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ t.today }}</div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;font-variant-numeric:tabular-nums">{{ todayTotal }}</div>
+                </div>
+                <div style="padding:14px;display:flex;flex-direction:column;gap:2px">
+                  <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ t.thisWeek }}</div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;font-variant-numeric:tabular-nums">{{ weekTotal }}</div>
+                  <div style="height:3px;background:#e7e7ea;margin-top:4px"><div style="height:3px;background:#5980a6;width:{{ weekPct }}"></div></div>
+                  <div style="font-size:12px;color:#5d5d60;margin-top:2px">{{ t.of40 }}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500;padding-bottom:4px">{{ t.todayRegs }}</div>
+                <sc-if value="{{ noToday }}" hint-placeholder-val="{{ false }}"><div style="font-size:15px;color:#5d5d60;padding:10px 0">{{ t.noneToday }}</div></sc-if>
+                <sc-for list="{{ todayRows }}" as="r" hint-placeholder-count="1">
+                  <button onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:12px;padding:12px 0;background:transparent;border:0;border-top:1px solid rgba(29,31,32,.16);text-align:left;cursor:pointer;color:#1d1f20" style-hover="background:rgba(29,31,32,.04)">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;font-variant-numeric:tabular-nums">{{ r.range }}</div>
+                      <div style="font-size:14px;color:#5d5d60">{{ r.loc }}</div>
+                    </div>
+                    <div style="font-size:15px;font-weight:600;font-variant-numeric:tabular-nums">{{ r.dur }}</div>
+                    <lu-i name="chevron-right" size="18" style="color:#98989b"></lu-i>
+                  </button>
+                </sc-for>
+              </div>
+              <a href="#" onClick="{{ goMissing }}" style="font-size:14px;display:flex;align-items:center;gap:6px"><lu-i name="circle-help" size="16"></lu-i>{{ t.missing }}</a>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ homeB }}" hint-placeholder-val="{{ false }}">
+            <div data-screen-label="Home — timeline" style="padding:12px 20px 28px;display:flex;flex-direction:column;gap:26px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+                <div>
+                  <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ dateLong }}</div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:64px;line-height:.95;font-variant-numeric:tabular-nums">{{ todayTotal }}</div>
+                </div>
+                <div style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:{{ stateColor }};display:flex;align-items:center;gap:6px;padding-bottom:8px"><span style="width:8px;height:8px;background:{{ stateColor }}"></span>{{ stateLabel }}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="position:relative;height:40px;border:1px solid rgba(29,31,32,.16);background:repeating-linear-gradient(90deg,transparent 0,transparent calc(25% - 1px),rgba(29,31,32,.08) calc(25% - 1px),rgba(29,31,32,.08) 25%)">
+                  <sc-for list="{{ trackSegs }}" as="s" hint-placeholder-count="1">
+                    <div style="position:absolute;top:6px;bottom:6px;left:{{ s.left }};width:{{ s.width }};background:{{ s.bg }}"></div>
+                  </sc-for>
+                  <div style="position:absolute;top:-6px;bottom:-6px;width:1px;background:#1d1f20;left:{{ nowLeft }}"></div>
+                  <bp-c></bp-c>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:#5d5d60;font-variant-numeric:tabular-nums"><span>07:00</span><span>10:00</span><span>13:00</span><span>16:00</span><span>19:00</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:center;padding:14px;border:1px solid rgba(29,31,32,.16)">
+                <div style="width:48px;height:48px;border:1px solid #5980a6;display:grid;place-items:center;color:#416180"><lu-i name="{{ locIcon }}" size="24"></lu-i></div>
+                <div style="min-width:0">
+                  <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ t.curLoc }}</div>
+                  <div style="font-weight:600;font-size:16px">{{ locLine }}</div>
+                  <div style="font-size:14px;color:#5d5d60">{{ locSub }}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                  <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ t.thisWeek }}</div>
+                  <div style="font-size:14px;font-weight:600;font-variant-numeric:tabular-nums">{{ weekTotal }} <span style="color:#5d5d60;font-weight:400">{{ t.of40 }}</span></div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;height:140px;align-items:end">
+                  <sc-for list="{{ weekBars }}" as="b" hint-placeholder-count="5">
+                    <div style="display:flex;flex-direction:column;gap:6px;align-items:stretch;height:100%;justify-content:flex-end">
+                      <div style="font-size:12px;text-align:center;color:#5d5d60;font-variant-numeric:tabular-nums">{{ b.hrs }}</div>
+                      <div style="height:{{ b.h }};background:{{ b.bg }};border:1px solid #5980a6"></div>
+                      <div style="font-size:12px;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:{{ b.fg }}">{{ b.label }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <sc-if value="{{ isHistory }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Registrations" style="padding:0 20px 28px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(29,31,32,.16);border-radius:4px;overflow:hidden">
+              <sc-for list="{{ periods }}" as="p" hint-placeholder-count="3">
+                <button onClick="{{ p.onClick }}" style="height:38px;border:0;border-left:{{ p.bl }};background:{{ p.bg }};color:{{ p.fg }};font-size:14px;font-weight:600;cursor:pointer">{{ p.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.onClick }}" style="flex:none;height:34px;padding:0 12px;border:1px solid {{ c.bd }};border-radius:4px;background:{{ c.bg }};color:{{ c.fg }};font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px"><lu-i name="{{ c.icon }}" size="15"></lu-i>{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0 2px">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:30px;font-variant-numeric:tabular-nums">{{ sumTotal }}</div>
+              <div style="font-size:14px;color:#5d5d60">{{ sumCount }}</div>
+            </div>
+            <sc-if value="{{ noDays }}" hint-placeholder-val="{{ false }}"><div style="font-size:15px;color:#5d5d60;padding:24px 0">{{ t.empty }}</div></sc-if>
+            <sc-for list="{{ days }}" as="day" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column">
+                <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600;border-bottom:1px solid #1d1f20"><span>{{ day.label }}</span><span style="font-variant-numeric:tabular-nums">{{ day.total }}</span></div>
+                <sc-for list="{{ day.rows }}" as="r" hint-placeholder-count="1">
+                  <button onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:12px;padding:12px 0;background:transparent;border:0;border-bottom:1px solid rgba(29,31,32,.16);text-align:left;cursor:pointer;color:#1d1f20" style-hover="background:rgba(29,31,32,.04)">
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;font-variant-numeric:tabular-nums">{{ r.range }}</div>
+                      <div style="font-size:14px;color:#5d5d60">{{ r.loc }}</div>
+                      <sc-if value="{{ r.hasTag }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;margin-top:4px;font-size:12px;font-weight:600;padding:2px 7px;border:1px solid #5980a6;color:#416180;background:#eef6ff">{{ r.tag }}</span></sc-if>
+                    </div>
+                    <div style="font-size:15px;font-weight:600;font-variant-numeric:tabular-nums">{{ r.dur }}</div>
+                    <lu-i name="chevron-right" size="18" style="color:#98989b"></lu-i>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Registration detail" style="padding:4px 20px 28px;display:flex;flex-direction:column;gap:22px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ dDate }}</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:60px;line-height:.95;font-variant-numeric:tabular-nums">{{ dDur }}</div>
+              <sc-if value="{{ dHasTag }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;margin-top:6px;font-size:12px;font-weight:600;padding:2px 7px;border:1px solid #5980a6;color:#416180;background:#eef6ff">{{ dTag }}</span></sc-if>
+            </div>
+            <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:16px 18px;display:grid;grid-template-columns:24px 1fr auto;column-gap:12px;row-gap:0;align-items:center">
+              <bp-c></bp-c>
+              <lu-i name="log-in" size="20" style="color:#416180"></lu-i><div style="font-size:15px">{{ t.checkIn }}</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:24px;font-variant-numeric:tabular-nums">{{ dIn }}</div>
+              <div style="height:22px;display:flex;justify-content:center"><div style="width:1px;background:#98989b"></div></div><div></div><div></div>
+              <lu-i name="log-out" size="20" style="color:#416180"></lu-i><div style="font-size:15px">{{ t.checkOut }}</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:24px;font-variant-numeric:tabular-nums">{{ dOut }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 0;border-top:1px solid rgba(29,31,32,.16);font-size:15px"><span style="color:#5d5d60">{{ t.location }}</span><span><span style="font-weight:600">{{ dLoc }}</span><br>{{ dSpot }}</span></div>
+              <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 0;border-top:1px solid rgba(29,31,32,.16);font-size:15px"><span style="color:#5d5d60">{{ t.beacon }}</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6">major {{ dMajor }} · minor {{ dMinor }}<br><span style="color:#5d5d60">{{ uuidShort }}</span></span></div>
+              <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 0;border-top:1px solid rgba(29,31,32,.16);border-bottom:1px solid rgba(29,31,32,.16);font-size:15px"><span style="color:#5d5d60">{{ t.source }}</span><span style="text-wrap:pretty">{{ dSrc }}</span></div>
+            </div>
+            <sc-if value="{{ dPending }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:10px;padding:12px;background:#eef6ff;border:1px solid #b5d9fd;font-size:14px;color:#2c455d;text-wrap:pretty"><lu-i name="hourglass" size="18"></lu-i>{{ t.pendingNote }}</div>
+            </sc-if>
+            <sc-if value="{{ dCanReq }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ reqCorr }}" style="height:48px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;color:#1d1f20;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="pencil-line" size="18"></lu-i>{{ t.requestCorr }}</button>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isCorrect }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Request correction" style="padding:4px 20px 28px;display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:14px;color:#5d5d60">{{ dDate }} · {{ dRangeTxt }} · {{ dLoc }}</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:13px;font-weight:500;color:#5d5d60">{{ t.corrWhat }}</div>
+              <div style="display:flex;flex-direction:column;border:1px solid rgba(29,31,32,.16);border-radius:4px">
+                <sc-for list="{{ corrTypes }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;background:transparent;border:0;border-top:{{ c.bt }};text-align:left;font-size:15px;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.04)">
+                    <span style="width:18px;height:18px;border-radius:50%;border:1.5px solid {{ c.ring }};box-shadow:inset 0 0 0 4px #f2f2f3;background:{{ c.dot }};flex:none"></span>{{ c.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.newIn }}
+                <input type="time" value="{{ corrIn }}" onChange="{{ onCorrIn }}" style="height:48px;padding:0 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:18px;color:#1d1f20;font-variant-numeric:tabular-nums" style-focus="border-color:#5980a6"></input>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.newOut }}
+                <input type="time" value="{{ corrOut }}" onChange="{{ onCorrOut }}" style="height:48px;padding:0 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:18px;color:#1d1f20;font-variant-numeric:tabular-nums" style-focus="border-color:#5980a6"></input>
+              </label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#5d5d60">{{ t.note }}
+              <textarea value="{{ note }}" onChange="{{ onNote }}" placeholder="{{ t.notePh }}" style="min-height:88px;padding:10px 12px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:16px;color:#1d1f20;resize:none" style-focus="border-color:#5980a6"></textarea>
+            </label>
+            <div style="font-size:13px;color:#5d5d60;display:flex;gap:8px;text-wrap:pretty"><lu-i name="info" size="16"></lu-i>{{ t.corrInfo }}</div>
+            <button onClick="{{ submitCorr }}" style="position:relative;height:50px;background:#5980a6;color:#f2f2f3;border:0;border-radius:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;cursor:pointer" style-hover="background:#597ea3" style-active="background:#416180">{{ t.submit }}<bp-c></bp-c></button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Profile" style="padding:0 20px 28px;display:flex;flex-direction:column;gap:24px">
+            <div style="display:flex;gap:14px;align-items:center">
+              <div style="position:relative;width:60px;height:60px;border:1px solid rgba(29,31,32,.16);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:24px;color:#416180;flex:none">SV<bp-c></bp-c></div>
+              <div style="min-width:0">
+                <div style="font-weight:600;font-size:18px">Sanne de Vries</div>
+                <div style="font-size:14px;color:#5d5d60">{{ email }}</div>
+                <div style="font-size:13px;color:#416180;font-weight:600;margin-top:2px">Northpier Logistics · Operations</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500;padding-bottom:6px">{{ t.tracking }}</div>
+              <div style="display:flex;align-items:center;gap:12px;min-height:52px;border-top:1px solid rgba(29,31,32,.16)">
+                <lu-i name="radio-tower" size="20" style="color:#416180"></lu-i><div style="flex:1;font-size:16px">{{ t.bgDetect }}</div><div style="font-size:14px;font-weight:600;color:#416180">{{ t.active }}</div>
+              </div>
+              <sc-for list="{{ toggles }}" as="g" hint-placeholder-count="2">
+                <button onClick="{{ g.onClick }}" style="display:flex;align-items:center;gap:12px;min-height:52px;border:0;border-top:1px solid rgba(29,31,32,.16);background:transparent;text-align:left;cursor:pointer;color:#1d1f20;padding:0">
+                  <lu-i name="{{ g.icon }}" size="20" style="color:#416180"></lu-i><div style="flex:1;font-size:16px">{{ g.label }}</div>
+                  <sc-if value="{{ g.ios }}" hint-placeholder-val="{{ true }}">
+                    <span style="position:relative;width:51px;height:31px;border-radius:16px;background:{{ g.iosBg }};transition:background .2s;flex:none"><span style="position:absolute;top:2px;left:{{ g.iosX }};width:27px;height:27px;border-radius:50%;background:#ffffff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:left .2s"></span></span>
+                  </sc-if>
+                  <sc-if value="{{ g.android }}" hint-placeholder-val="{{ false }}">
+                    <span style="position:relative;width:52px;height:32px;border-radius:16px;background:{{ g.aTrack }};border:2px solid {{ g.aBorder }};transition:background .2s;flex:none"><span style="position:absolute;top:50%;left:{{ g.aX }};width:{{ g.aSize }};height:{{ g.aSize }};transform:translateY(-50%);border-radius:50%;background:{{ g.aThumb }};transition:all .2s"></span></span>
+                  </sc-if>
+                </button>
+              </sc-for>
+              <div style="display:flex;align-items:center;gap:12px;min-height:52px;border-top:1px solid rgba(29,31,32,.16);border-bottom:1px solid rgba(29,31,32,.16)">
+                <lu-i name="bluetooth-searching" size="20" style="color:#416180"></lu-i><div style="flex:1;font-size:16px">{{ t.nearby }}</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#5d5d60">{{ nearbyTxt }}</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500;padding-bottom:6px">{{ t.general }}</div>
+              <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:12px;min-height:52px;border:0;border-top:1px solid rgba(29,31,32,.16);background:transparent;text-align:left;cursor:pointer;color:#1d1f20;padding:0" style-hover="background:rgba(29,31,32,.04)">
+                <lu-i name="languages" size="20" style="color:#416180"></lu-i><div style="flex:1;font-size:16px">{{ t.language }}</div><div style="font-size:15px;color:#5d5d60">{{ t.langName }}</div><lu-i name="chevron-right" size="18" style="color:#98989b"></lu-i>
+              </button>
+              <div style="display:flex;align-items:center;gap:12px;min-height:52px;border-top:1px solid rgba(29,31,32,.16)">
+                <lu-i name="shield-check" size="20" style="color:#416180"></lu-i><div style="flex:1;font-size:16px">{{ t.permsLabel }}</div><div style="font-size:15px;color:#5d5d60">{{ t.permsVal }}</div>
+              </div>
+              <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(29,31,32,.16);border-bottom:1px solid rgba(29,31,32,.16)">
+                <lu-i name="lock" size="20" style="color:#416180"></lu-i><div style="flex:1;font-size:14px;color:#5d5d60;text-wrap:pretty">{{ t.privacyText }}</div>
+              </div>
+            </div>
+            <button onClick="{{ signOut }}" style="height:48px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;color:#1d1f20;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="log-out" size="18"></lu-i>{{ t.signOut }}</button>
+            <div style="font-size:12px;color:#7a7a7d;text-align:center;font-family:ui-monospace,Menlo,monospace">Timo 1.0 (42) · {{ platformName }}</div>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:none;height:84px;padding:6px 8px 0;display:grid;grid-template-columns:repeat(3,1fr);background:rgba(233,233,234,.94);border-top:1px solid rgba(29,31,32,.16)">
+            <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3">
+              <button onClick="{{ tb.onClick }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;height:48px;background:transparent;border:0;color:{{ tb.fg }};font-size:11px;font-weight:600;cursor:pointer"><lu-i name="{{ tb.icon }}" size="25"></lu-i>{{ tb.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:none;height:92px;padding:12px 8px 0;display:grid;grid-template-columns:repeat(3,1fr);background:#e9e9ea">
+            <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3">
+              <button onClick="{{ tb.onClick }}" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:0;color:#1d1f20;font-size:12px;font-weight:{{ tb.fw }};cursor:pointer">
+                <span style="width:64px;height:32px;border-radius:16px;display:grid;place-items:center;background:{{ tb.pill }};color:{{ tb.fg }}"><lu-i name="{{ tb.icon }}" size="22"></lu-i></span>{{ tb.label }}
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:16px;right:16px;bottom:104px;z-index:20;padding:12px 14px;background:#1d1f20;color:#f2f2f3;font-size:14px;display:flex;align-items:center;gap:10px;animation:tmFade .2s ease-out"><lu-i name="check" size="18"></lu-i>{{ toast }}</div>
+      </sc-if>
+
+      <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ closeConfirm }}" style="position:absolute;top:58px;left:12px;right:12px;z-index:30;display:flex;align-items:stretch;padding:0;background:#f2f2f3;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);text-align:left;cursor:pointer;color:#1d1f20;animation:tmDown .35s cubic-bezier(.2,.9,.3,1.1)">
+          <span style="width:64px;flex:none;display:grid;place-items:center;background:#5980a6;color:#f2f2f3"><lu-i name="{{ cIcon }}" size="26"></lu-i></span>
+          <span style="flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:1px">
+            <span style="display:flex;justify-content:space-between;gap:8px"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px">{{ cTitle }}</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;font-variant-numeric:tabular-nums">{{ cTime }}</span></span>
+            <span style="font-size:14px;color:#5d5d60">{{ cLoc }} · {{ cSpot }}</span>
+            <sc-if value="{{ cHasDur }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;color:#416180;font-weight:600">{{ cDur }}</span></sc-if>
+          </span>
+        </button>
+      </sc-if>
+
+      <sc-if value="{{ showSheet }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeConfirm }}" style="position:absolute;inset:0;z-index:30;background:rgba(29,31,32,.32);animation:tmFade .2s ease-out"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;z-index:31;background:#f2f2f3;border-radius:14px 14px 0 0;padding:10px 20px 36px;display:flex;flex-direction:column;gap:18px;animation:tmUp .35s cubic-bezier(.2,.9,.3,1)">
+          <div style="align-self:center;width:36px;height:5px;border-radius:3px;background:#b7b7ba"></div>
+          <div style="display:flex;gap:14px;align-items:center">
+            <div style="position:relative;width:56px;height:56px;flex:none;background:#5980a6;color:#f2f2f3;display:grid;place-items:center"><lu-i name="{{ cIcon }}" size="28"></lu-i><bp-c></bp-c></div>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:30px;line-height:1.05">{{ cTitle }}</div>
+              <div style="font-size:15px;color:#5d5d60">{{ cBody }}</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16)">
+            <div style="padding:12px 14px;border-right:1px solid rgba(29,31,32,.16)"><div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ t.time }}</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:30px;font-variant-numeric:tabular-nums">{{ cTime }}</div></div>
+            <div style="padding:12px 14px"><div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ cSideLabel }}</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:30px;font-variant-numeric:tabular-nums">{{ cSide }}</div></div>
+            <div style="grid-column:1 / -1;padding:12px 14px;border-top:1px solid rgba(29,31,32,.16);display:flex;gap:8px;align-items:center;font-size:15px"><lu-i name="map-pin" size="18" style="color:#416180"></lu-i><span style="font-weight:600">{{ cLoc }}</span><span style="color:#5d5d60">{{ cSpot }}</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button onClick="{{ closeConfirm }}" style="position:relative;height:50px;background:#5980a6;color:#f2f2f3;border:0;border-radius:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;cursor:pointer" style-hover="background:#597ea3" style-active="background:#416180">{{ t.done }}<bp-c></bp-c></button>
+            <button onClick="{{ confirmReq }}" style="height:42px;background:transparent;border:0;color:#416180;font-size:15px;font-weight:600;cursor:pointer">{{ t.notRight }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showFull }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ closeConfirm }}" style="position:absolute;inset:0;z-index:30;background:#1d2d3d;color:#f2f2f3;border:0;padding:96px 28px 56px;display:flex;flex-direction:column;align-items:flex-start;gap:0;text-align:left;cursor:pointer;animation:tmFade .25s ease-out">
+          <div style="position:relative;width:88px;height:88px;border:1px solid #749dc4;display:grid;place-items:center;animation:tmPop .4s cubic-bezier(.2,.9,.3,1.3)"><lu-i name="{{ cIcon }}" size="40"></lu-i><bp-c color="#94bce3"></bp-c></div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:52px;line-height:1;margin-top:40px">{{ cTitle }}</div>
+          <div style="font-size:18px;color:#d6ebff;margin-top:10px">{{ cLoc }} · {{ cSpot }}</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:120px;line-height:1;margin-top:28px;font-variant-numeric:tabular-nums;letter-spacing:-0.02em">{{ cTime }}</div>
+          <sc-if value="{{ cHasDur }}" hint-placeholder-val="{{ false }}"><div style="font-size:18px;color:#d6ebff;margin-top:6px">{{ cDur }}</div></sc-if>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#b5d9fd">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px">{{ cBeacon }}</span>
+            <span>{{ t.tapClose }}</span>
+          </div>
+        </button>
+      </sc-if>
+
+      <sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Lock screen" style="position:absolute;inset:0;z-index:40;background:#1d2d3d;color:#f2f2f3;display:flex;flex-direction:column;align-items:center;padding:64px 12px 30px">
+          <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:18px;font-weight:500;color:#d6ebff">{{ lockDate }}</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:104px;line-height:1;font-variant-numeric:tabular-nums">{{ clock }}</div>
+          </sc-if>
+          <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:400;font-size:112px;line-height:.86;font-variant-numeric:tabular-nums;text-align:center;margin-top:12px">{{ lockH }}<br>{{ lockM }}</div>
+            <div style="font-size:16px;color:#d6ebff;margin-top:14px">{{ lockDate }}</div>
+          </sc-if>
+          <div style="width:100%;margin-top:28px;display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="1">
+              <button onClick="{{ unlock }}" style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:start;padding:12px 14px;background:rgba(242,242,243,.9);color:#1d1f20;border:0;border-radius:{{ notifR }};text-align:left;cursor:pointer;animation:tmPop .35s ease-out">
+                <span style="width:38px;height:38px;border-radius:9px;background:#1d1f20;color:#f2f2f3;display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em">TIMO</span>
+                <span style="display:flex;flex-direction:column;gap:1px;min-width:0"><span style="font-size:15px;font-weight:600">{{ n.title }}</span><span style="font-size:14px;color:#424244">{{ n.body }}</span></span>
+                <span style="font-size:12px;color:#5d5d60">{{ n.ago }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <button onClick="{{ unlock }}" style="margin-top:auto;background:transparent;border:0;color:#d6ebff;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px"><lu-i name="lock-open" size="16"></lu-i>{{ unlockHint }}</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ dialog }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;z-index:45;background:rgba(29,31,32,.4);display:grid;place-items:center;animation:tmFade .15s ease-out">
+          <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
+            <div style="width:270px;border-radius:14px;background:rgba(242,242,243,.97);overflow:hidden;text-align:center;animation:tmPop .2s ease-out">
+              <div style="padding:20px 16px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:17px;font-weight:600;line-height:1.3">{{ dlgTitle }}</div><div style="font-size:13px;color:#424244;line-height:1.35">{{ permBody }}</div></div>
+              <button onClick="{{ permDeny }}" style="display:block;width:100%;height:44px;border:0;border-top:1px solid rgba(29,31,32,.16);background:transparent;color:#416180;font-size:17px;cursor:pointer">{{ t.deny }}</button>
+              <button onClick="{{ permAllow }}" style="display:block;width:100%;height:44px;border:0;border-top:1px solid rgba(29,31,32,.16);background:transparent;color:#416180;font-size:17px;font-weight:600;cursor:pointer">{{ dlgAllow }}</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+            <div style="width:312px;border-radius:28px;background:#e9e9ea;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;animation:tmPop .2s ease-out">
+              <lu-i name="{{ permIcon }}" size="24" style="color:#416180"></lu-i>
+              <div style="font-size:22px;line-height:1.3;text-align:center">{{ dlgTitle }}</div>
+              <div style="align-self:stretch;display:flex;flex-direction:column;gap:6px">
+                <button onClick="{{ permAllow }}" style="height:44px;border:0;border-radius:22px;background:#d6ebff;color:#2c455d;font-size:15px;font-weight:600;cursor:pointer">{{ dlgAllow }}</button>
+                <button onClick="{{ permDeny }}" style="height:44px;border:0;border-radius:22px;background:transparent;color:#416180;font-size:15px;font-weight:600;cursor:pointer">{{ t.deny }}</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isIOS }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;bottom:8px;left:50%;margin-left:-67px;width:134px;height:5px;border-radius:3px;background:{{ barColor }};z-index:60;pointer-events:none"></div>
+      </sc-if>
+      <sc-if value="{{ isAndroid }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;bottom:10px;left:50%;margin-left:-54px;width:108px;height:4px;border-radius:2px;background:{{ barColor }};z-index:60;pointer-events:none"></div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ simFull }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;width:392px;border:1px solid rgba(29,31,32,.16);padding:14px;display:flex;flex-direction:column;gap:12px">
+      <bp-c></bp-c>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;display:flex;align-items:center;gap:6px"><lu-i name="bluetooth" size="18" style="color:#416180"></lu-i>{{ t.simTitle }}</div>
+          <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5d5d60">UUID {{ uuidShort }} · major 1042</div>
+        </div>
+        <button onClick="{{ toggleSound }}" title="Sound" style="width:36px;height:36px;display:grid;place-items:center;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)"><lu-i name="{{ soundIcon }}" size="18"></lu-i></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16);border-radius:4px;overflow:hidden">
+        <sc-for list="{{ simModes }}" as="m" hint-placeholder-count="2">
+          <button onClick="{{ m.onClick }}" style="height:34px;border:0;background:{{ m.bg }};color:{{ m.fg }};font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><lu-i name="{{ m.icon }}" size="15"></lu-i>{{ m.label }}</button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ simNeed }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#416180;background:#eef6ff;border:1px solid #b5d9fd;padding:8px 10px">{{ t.simNeed }}</div></sc-if>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ simBeacons }}" as="b" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid rgba(29,31,32,.16)">
+            <div style="min-width:0">
+              <div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px">{{ b.name }}<sc-if value="{{ b.here }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;background:#5980a6"></span></sc-if></div>
+              <div style="font-size:12px;color:#5d5d60">{{ b.spot }} · <span style="font-family:ui-monospace,Menlo,monospace">minor {{ b.minor }}</span></div>
+            </div>
+            <button onClick="{{ b.inClick }}" style="height:32px;padding:0 10px;background:#5980a6;color:#f2f2f3;border:0;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="log-in" size="14"></lu-i>{{ t.walkIn }}</button>
+            <button onClick="{{ b.outClick }}" style="height:32px;padding:0 10px;background:transparent;color:#1d1f20;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="log-out" size="14"></lu-i>{{ t.leave }}</button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;border-top:1px solid rgba(29,31,32,.16);padding-top:10px">
+        <button onClick="{{ plusHour }}" style="flex:none;height:30px;padding:0 10px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:12px;font-weight:600;color:#1d1f20;cursor:pointer;display:flex;align-items:center;gap:4px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="fast-forward" size="14"></lu-i>+1h</button>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.5;color:#424244">
+          <sc-if value="{{ noEvents }}" hint-placeholder-val="{{ true }}"><span style="color:#7a7a7d">{{ t.listening }}</span></sc-if>
+          <sc-for list="{{ events }}" as="e" hint-placeholder-count="0"><span><span style="color:#7a7a7d">{{ e.t }}</span> {{ e.text }}</span></sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ simMini }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ miniTrigger }}" style="height:38px;padding:0 16px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;color:#1d1f20;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="bluetooth" size="16" style="color:#416180"></lu-i>{{ miniLabel }}</button>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:1200},&quot;platform&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ios&quot;,&quot;android&quot;],&quot;default&quot;:&quot;ios&quot;,&quot;tsType&quot;:&quot;'ios'|'android'&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;nl&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'nl'&quot;},&quot;start&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;register&quot;,&quot;magic&quot;,&quot;onboard&quot;,&quot;home&quot;,&quot;history&quot;,&quot;detail&quot;,&quot;correct&quot;,&quot;profile&quot;,&quot;lock&quot;],&quot;default&quot;:&quot;login&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;confirmStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;sheet&quot;,&quot;banner&quot;],&quot;default&quot;:&quot;sheet&quot;,&quot;tsType&quot;:&quot;'full'|'sheet'|'banner'&quot;},&quot;homeVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;status&quot;,&quot;timeline&quot;],&quot;default&quot;:&quot;status&quot;,&quot;tsType&quot;:&quot;'status'|'timeline'&quot;},&quot;sim&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;mini&quot;,&quot;none&quot;],&quot;default&quot;:&quot;full&quot;,&quot;tsType&quot;:&quot;'full'|'mini'|'none'&quot;},&quot;demo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;confirm&quot;,&quot;dialog&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const BASE = new Date(2026, 8, 24, 8, 52, 0).getTime();
+const UUID = '5A4B0C1E-7F3D-4E2A-9B61-0D8C2E4F7A10';
+const MAJOR = 1042;
+const LOCS = {
+  1: { name: 'HQ Utrecht', spot: { en: 'Main entrance', nl: 'Hoofdingang' }, city: 'utrecht' },
+  2: { name: 'HQ Utrecht', spot: { en: 'Warehouse B', nl: 'Magazijn B' }, city: 'utrecht' },
+  7: { name: 'Amsterdam Hub', spot: { en: 'Reception', nl: 'Receptie' }, city: 'amsterdam' }
+};
+const SEED = [[23,'08:03','12:31',1,'ok'],[23,'13:02','17:20',2,'ok'],[22,'08:47','17:05',7,'ok'],[21,'07:58','23:59',1,'auto'],
+  [18,'08:10','16:45',1,'ok'],[17,'08:32','12:15',1,'ok'],[17,'12:58','17:40',2,'pending'],[16,'09:05','17:31',7,'ok'],[15,'08:01','16:55',1,'ok'],[14,'08:15','17:02',1,'ok'],
+  [11,'08:20','16:10',1,'ok'],[10,'08:44','17:12',7,'ok'],[9,'08:05','16:58',1,'ok'],[8,'07:55','16:40',2,'ok'],[7,'08:30','17:15',1,'ok']];
+const at = (d, s) => { const [h, m] = s.split(':').map(Number); return new Date(2026, 8, d, h, m).getTime(); };
+const pad = n => String(n).padStart(2, '0');
+const hm = ts => { const d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+const T = {
+  en: { tagline: 'Time registration that starts when you walk in.', emailLabel: 'Work email', sendLink: 'Email me a sign-in link', or: 'or', sso: 'Sign in with company SSO', noAccount: 'No account yet?', register: 'Register', signIn: 'Sign in',
+    regTitle: 'Create account', regSub: "We'll email you a sign-in link — no password needed.", nameLabel: 'Full name', codeLabel: 'Company code (optional)', codeHelp: 'Invited by your employer? The code is in your invite email.', sendMagic: 'Send magic link',
+    magicTitle: 'Check your inbox', magicSub: 'We sent a sign-in link to', magicExp: 'It expires in 15 minutes.', openMail: 'Open mail app', resend: 'Resend link', demoOpen: 'demo: open the link', useOther: 'Use a different email',
+    setup: 'Setup', cont: 'Continue', later: 'Not now', deny: "Don't allow",
+    perms: [
+      { icon: 'bluetooth', title: 'Find beacons nearby', body: 'Timo listens for Timo beacons at your workplace entrances. Nothing is tracked anywhere else.', dlg: 'Allow “Timo” to find Bluetooth devices?', allow: 'Allow' },
+      { icon: 'map-pin', title: 'Location — always', body: 'Needed to detect beacons while the app is closed. Timo never stores your GPS position.', dlg: 'Allow “Timo” to use your location, even when you are not using the app?', allow: 'Allow all the time' },
+      { icon: 'bell', title: 'Check-in notifications', body: 'Get a notification and a sound every time you are checked in or out.', dlg: '“Timo” would like to send you notifications', allow: 'Allow' }],
+    morning: 'Good morning, Sanne', afternoon: 'Good afternoon, Sanne', evening: 'Good evening, Sanne', checkedIn: 'Checked in', notIn: 'Not checked in', since: 'since',
+    walkPast: 'Walk past a Timo beacon at the entrance to start your registration.', today: 'Today', thisWeek: 'This week', of40: 'of 40h contract', todayRegs: "Today's registrations", noneToday: 'No registrations yet today.', missing: 'Missing a registration?',
+    curLoc: 'Current location', offsite: 'Not at a work location', lastOut: 'Last check-out', h: 'h', m: 'm', running: 'running',
+    regs: 'Registrations', pWeek: 'This week', pLast: 'Last week', pMonth: 'September', allLocs: 'All', attention: 'Needs attention', count: 'registrations', empty: 'No registrations match these filters.',
+    tagAuto: 'Auto check-out · review', tagPending: 'Correction pending', tagOpen: 'Running',
+    detail: 'Registration', checkIn: 'Check-in', checkOut: 'Check-out', location: 'Location', beacon: 'Beacon', source: 'Source', srcBeacon: 'Automatic — beacon enter and exit', srcAuto: 'Closed at 23:59 — no exit detected', srcOpen: 'Automatic — still inside',
+    requestCorr: 'Request correction', pendingNote: 'Your manager is reviewing a correction for this registration.', back: 'Back',
+    corrTitle: 'Correction', corrWhat: "What's wrong?", cForgot: 'I forgot to check out', cWrong: 'Times are wrong', cMissing: 'Registration is missing', newIn: 'Correct check-in', newOut: 'Correct check-out', note: 'Note for your manager', notePh: 'e.g. Phone battery died at 17:30',
+    corrInfo: 'The original times stay on record. Your manager approves or declines the change.', submit: 'Send request', sent: 'Correction sent to your manager',
+    profile: 'Profile', tracking: 'Tracking', bgDetect: 'Background detection', active: 'Active', sounds: 'Check-in sounds', notifs: 'Notifications', nearby: 'Nearby beacons', general: 'General', language: 'Language', langName: 'English',
+    permsLabel: 'Permissions', permsVal: 'All granted', privacyText: 'Only check-in and check-out times at registered beacons are stored. No location history.', signOut: 'Sign out',
+    tabHome: 'Home', tabRegs: 'Registrations', tabProfile: 'Profile',
+    cIn: 'Checked in', cOut: 'Checked out', cInBody: 'Your time registration started', cOutBody: 'Registration saved', time: 'Time', worked: 'Worked', beaconL: 'Beacon', done: 'Done', notRight: 'Not right? Request a correction', tapClose: 'Tap anywhere to close',
+    nIn: 'Checked in', nOut: 'Checked out', nInBody: 'Time registration started at', nOutBody: 'Registered', ago: 'now', unlockIOS: 'Swipe up to open', unlockAnd: 'Swipe up to unlock',
+    simTitle: 'Beacon simulator', simOpen: 'App open', simLocked: 'Phone locked', walkIn: 'Walk in', leave: 'Leave', listening: 'Listening for beacons…', simNeed: 'Sign in and finish setup — then walk past a beacon.',
+    trigIn: 'Simulate check-in', trigOut: 'Simulate check-out' },
+  nl: { tagline: 'Tijdregistratie die start zodra je binnenloopt.', emailLabel: 'Zakelijk e-mailadres', sendLink: 'Stuur mij een inloglink', or: 'of', sso: 'Inloggen via bedrijfs-SSO', noAccount: 'Nog geen account?', register: 'Registreren', signIn: 'Inloggen',
+    regTitle: 'Account aanmaken', regSub: 'Je ontvangt een inloglink per e-mail — geen wachtwoord nodig.', nameLabel: 'Volledige naam', codeLabel: 'Bedrijfscode (optioneel)', codeHelp: 'Uitgenodigd door je werkgever? De code staat in je uitnodiging.', sendMagic: 'Stuur inloglink',
+    magicTitle: 'Check je inbox', magicSub: 'We hebben een inloglink gestuurd naar', magicExp: 'De link verloopt over 15 minuten.', openMail: 'Open mail-app', resend: 'Link opnieuw sturen', demoOpen: 'demo: open de link', useOther: 'Ander e-mailadres gebruiken',
+    setup: 'Instellen', cont: 'Doorgaan', later: 'Niet nu', deny: 'Niet toestaan',
+    perms: [
+      { icon: 'bluetooth', title: 'Beacons in de buurt vinden', body: 'Timo luistert naar Timo-beacons bij de ingangen van je werkplek. Nergens anders wordt iets gevolgd.', dlg: '“Timo” toegang geven tot Bluetooth-apparaten?', allow: 'Toestaan' },
+      { icon: 'map-pin', title: 'Locatie — altijd', body: 'Nodig om beacons te herkennen als de app gesloten is. Timo slaat nooit je GPS-positie op.', dlg: '“Timo” je locatie laten gebruiken, ook als je de app niet gebruikt?', allow: 'Altijd toestaan' },
+      { icon: 'bell', title: 'Meldingen bij in- en uitchecken', body: 'Ontvang een melding en een geluid bij elke in- en uitcheck.', dlg: '“Timo” wil je meldingen sturen', allow: 'Toestaan' }],
+    morning: 'Goedemorgen, Sanne', afternoon: 'Goedemiddag, Sanne', evening: 'Goedenavond, Sanne', checkedIn: 'Ingecheckt', notIn: 'Niet ingecheckt', since: 'sinds',
+    walkPast: 'Loop langs een Timo-beacon bij de ingang om je registratie te starten.', today: 'Vandaag', thisWeek: 'Deze week', of40: 'van 40u contract', todayRegs: 'Registraties vandaag', noneToday: 'Nog geen registraties vandaag.', missing: 'Mist er een registratie?',
+    curLoc: 'Huidige locatie', offsite: 'Niet op een werklocatie', lastOut: 'Laatst uitgecheckt', h: 'u', m: 'm', running: 'loopt',
+    regs: 'Registraties', pWeek: 'Deze week', pLast: 'Vorige week', pMonth: 'September', allLocs: 'Alle', attention: 'Aandacht nodig', count: 'registraties', empty: 'Geen registraties voor deze filters.',
+    tagAuto: 'Automatisch uitgecheckt · controleren', tagPending: 'Correctie in behandeling', tagOpen: 'Loopt',
+    detail: 'Registratie', checkIn: 'Check-in', checkOut: 'Check-out', location: 'Locatie', beacon: 'Beacon', source: 'Bron', srcBeacon: 'Automatisch — beacon binnen en buiten', srcAuto: 'Gesloten om 23:59 — geen vertrek gedetecteerd', srcOpen: 'Automatisch — nog binnen',
+    requestCorr: 'Correctie aanvragen', pendingNote: 'Je leidinggevende beoordeelt een correctie voor deze registratie.', back: 'Terug',
+    corrTitle: 'Correctie', corrWhat: 'Wat klopt er niet?', cForgot: 'Ik ben vergeten uit te checken', cWrong: 'De tijden kloppen niet', cMissing: 'Registratie ontbreekt', newIn: 'Juiste check-in', newOut: 'Juiste check-out', note: 'Toelichting voor je leidinggevende', notePh: 'bijv. Telefoon was leeg om 17:30',
+    corrInfo: 'De oorspronkelijke tijden blijven bewaard. Je leidinggevende keurt de wijziging goed of af.', submit: 'Verstuur aanvraag', sent: 'Correctie verstuurd naar je leidinggevende',
+    profile: 'Profiel', tracking: 'Registratie', bgDetect: 'Detectie op achtergrond', active: 'Actief', sounds: 'Geluid bij in-/uitchecken', notifs: 'Meldingen', nearby: 'Beacons in de buurt', general: 'Algemeen', language: 'Taal', langName: 'Nederlands',
+    permsLabel: 'Toestemmingen', permsVal: 'Alles toegestaan', privacyText: 'Alleen in- en uitchecktijden bij geregistreerde beacons worden opgeslagen. Geen locatiegeschiedenis.', signOut: 'Uitloggen',
+    tabHome: 'Home', tabRegs: 'Registraties', tabProfile: 'Profiel',
+    cIn: 'Ingecheckt', cOut: 'Uitgecheckt', cInBody: 'Je tijdregistratie is gestart', cOutBody: 'Registratie opgeslagen', time: 'Tijd', worked: 'Gewerkt', beaconL: 'Beacon', done: 'Klaar', notRight: 'Klopt niet? Vraag een correctie aan', tapClose: 'Tik om te sluiten',
+    nIn: 'Ingecheckt', nOut: 'Uitgecheckt', nInBody: 'Tijdregistratie gestart om', nOutBody: 'Geregistreerd', ago: 'nu', unlockIOS: 'Veeg omhoog om te openen', unlockAnd: 'Veeg omhoog om te ontgrendelen',
+    simTitle: 'Beacon-simulator', simOpen: 'App open', simLocked: 'Vergrendeld', walkIn: 'Binnen', leave: 'Weg', listening: 'Luisteren naar beacons…', simNeed: 'Log in en rond de setup af — loop dan langs een beacon.',
+    trigIn: 'Check-in simuleren', trigOut: 'Check-out simuleren' }
+};
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const s = props.start || 'login';
+    const pre = !['login', 'register', 'magic', 'onboard'].includes(s);
+    this.mount = Date.now();
+    const entries = SEED.map((r, i) => ({ id: i + 1, inAt: at(r[0], r[1]), outAt: at(r[0], r[2]), minor: r[3], status: r[4] }));
+    this.state = {
+      screen: s === 'lock' ? 'home' : s, locked: s === 'lock', lang: props.lang || 'en', offset: 0, auth: pre,
+      inside: pre ? { minor: 1, since: at(24, '07:58') } : null, entries, confirm: null, notifs: [], sound: true, notifOn: true,
+      period: 'week', locF: 'all', attn: false, detailId: 4, perm: props.demo === 'dialog' ? 1 : 0, dialog: props.demo === 'dialog',
+      corrType: 'forgot', corrIn: '07:58', corrOut: '17:30', note: '', toast: null, events: [], email: 'sanne.devries@northpier.nl', name: '', code: ''
+    };
+    if (s === 'lock') this.state.notifs = [{ type: 'in', minor: 1, at: at(24, '07:58') }];
+    if (props.demo === 'confirm') this.state.confirm = { type: 'in', minor: 1, at: at(24, '07:58'), persist: true };
+  }
+  componentDidMount() { this.iv = setInterval(() => this.forceUpdate(), 1000); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.ct); clearTimeout(this.tt); }
+  componentDidUpdate(pp) { if (pp.lang !== this.props.lang && this.props.lang) this.setState({ lang: this.props.lang }); }
+  now() { return BASE + (Date.now() - this.mount) + this.state.offset; }
+  t() { return T[this.state.lang] || T.en; }
+  dur(ms) { const t = this.t(); const m = Math.max(0, Math.round(ms / 60000)); return Math.floor(m / 60) + t.h + ' ' + pad(m % 60) + t.m; }
+  log(text) { const n = this.now(); this.setState(s => ({ events: [{ t: hm(n), text }, ...s.events].slice(0, 3) })); }
+  chime(type) {
+    if (!this.state.sound) return;
+    try {
+      const A = this.ac || (this.ac = new (window.AudioContext || window.webkitAudioContext)());
+      if (A.state === 'suspended') A.resume();
+      const f = type === 'in' ? [587.3, 880] : [880, 587.3];
+      f.forEach((hz, i) => {
+        const o = A.createOscillator(), g = A.createGain(), t0 = A.currentTime + i * 0.15;
+        o.type = 'sine'; o.frequency.value = hz;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.2, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.6);
+        o.connect(g); g.connect(A.destination); o.start(t0); o.stop(t0 + 0.65);
+      });
+    } catch (e) {}
+  }
+  fire(c) {
+    this.chime(c.type);
+    if (this.state.locked) { if (this.state.notifOn) this.setState(s => ({ notifs: [c, ...s.notifs].slice(0, 3) })); return; }
+    clearTimeout(this.ct);
+    this.setState({ confirm: c });
+    const style = this.props.confirmStyle || 'sheet';
+    if (!this.props.demo) this.ct = setTimeout(() => this.setState({ confirm: null }), style === 'banner' ? 3800 : 6000);
+  }
+  walkIn(minor) {
+    const s = this.state, n = this.now();
+    if (!s.auth) { this.log('ignored — not signed in'); return; }
+    if (s.inside && s.inside.minor === minor) { this.log(`${MAJOR}/${minor} still in range`); return; }
+    let entries = s.entries;
+    if (s.inside) entries = [{ id: Date.now() + 1, inAt: s.inside.since, outAt: n, minor: s.inside.minor, status: 'ok' }, ...entries];
+    this.setState({ inside: { minor, since: n }, entries });
+    this.log(`ENTER ${MAJOR}/${minor} → check-in`);
+    this.fire({ type: 'in', minor, at: n });
+  }
+  leave(minor) {
+    const s = this.state, n = this.now();
+    if (!s.inside || s.inside.minor !== minor) { this.log(`${MAJOR}/${minor} not active`); return; }
+    const e = { id: Date.now(), inAt: s.inside.since, outAt: n, minor, status: 'ok' };
+    this.setState({ inside: null, entries: [e, ...s.entries] });
+    this.log(`EXIT ${MAJOR}/${minor} → check-out`);
+    this.fire({ type: 'out', minor, at: n, dur: n - s.inside.since });
+  }
+  go(screen, extra) { this.setState({ screen, ...(extra || {}) }); }
+  showToast(msg) { clearTimeout(this.tt); this.setState({ toast: msg }); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); }
+  allEntries() {
+    const s = this.state, list = s.entries.slice();
+    if (s.inside) list.unshift({ id: 'run', inAt: s.inside.since, outAt: null, minor: s.inside.minor, status: 'open' });
+    return list.sort((a, b) => b.inAt - a.inAt);
+  }
+
+  renderVals() {
+    const s = this.state, p = this.props, t = this.t(), n = this.now();
+    const loc = s.lang === 'nl' ? 'nl-NL' : 'en-GB';
+    const isIOS = (p.platform || 'ios') !== 'android';
+    const scr = s.screen;
+    const all = this.allEntries();
+    const endOf = e => e.outAt || n;
+    const dayStart = d => new Date(new Date(d).getFullYear(), new Date(d).getMonth(), new Date(d).getDate()).getTime();
+    const today0 = dayStart(n);
+    const todayList = all.filter(e => e.inAt >= today0);
+    const weekStart = at(21, '00:00');
+    const weekMs = all.filter(e => e.inAt >= weekStart && e.status !== 'auto').reduce((a, e) => a + endOf(e) - e.inAt, 0);
+    const todayMs = todayList.reduce((a, e) => a + endOf(e) - e.inAt, 0);
+    const L = m => LOCS[m] || LOCS[1];
+    const spot = m => L(m).spot[s.lang] || L(m).spot.en;
+    const range = e => hm(e.inAt) + ' – ' + (e.outAt ? hm(e.outAt) : t.running);
+    const tagOf = e => e.status === 'auto' ? t.tagAuto : e.status === 'pending' ? t.tagPending : e.status === 'open' ? t.tagOpen : '';
+    const openDetail = id => () => this.go('detail', { detailId: id, from: scr });
+
+    // header
+    const tabRoot = { home: 1, history: 1, profile: 1 };
+    const titles = { history: t.regs, profile: t.profile, detail: t.detail, correct: t.corrTitle };
+    const showHdr = !!titles[scr] && !s.locked;
+    const showBack = scr === 'detail' || scr === 'correct';
+    const goBack = () => scr === 'correct' ? this.go('detail') : this.go(s.from === 'home' ? 'home' : 'history');
+    const backLabel = scr === 'correct' ? t.detail : (s.from === 'home' ? t.tabHome : t.regs);
+
+    // onboarding
+    const pi = Math.min(s.perm, 2), perm = t.perms[pi];
+    const finishOnboard = () => this.setState({ auth: true, screen: 'home', dialog: false, perm: 0 });
+    const nextPerm = () => { if (s.perm >= 2) finishOnboard(); else this.setState({ perm: s.perm + 1, dialog: false }); };
+
+    // home
+    const hr = new Date(n).getHours();
+    const inside = !!s.inside;
+    const lastOut = s.entries.slice().sort((a, b) => b.outAt - a.outAt)[0];
+    const trackStart = new Date(today0).setHours(7), span = 12 * 3600e3;
+    const pct = v => Math.max(0, Math.min(100, v)) + '%';
+    const trackSegs = todayList.map(e => ({ left: pct((e.inAt - trackStart) / span * 100), width: pct((endOf(e) - Math.max(e.inAt, trackStart)) / span * 100), bg: e.outAt ? '#5980a6' : 'repeating-linear-gradient(135deg,#5980a6 0,#5980a6 4px,#94bce3 4px,#94bce3 8px)' }));
+    const dayNames = s.lang === 'nl' ? ['ma', 'di', 'wo', 'do', 'vr'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+    const weekBars = [21, 22, 23, 24, 25].map((d, i) => {
+      const d0 = at(d, '00:00'), d1 = d0 + 864e5;
+      const ms = all.filter(e => e.inAt >= d0 && e.inAt < d1 && e.status !== 'auto').reduce((a, e) => a + endOf(e) - e.inAt, 0);
+      const auto = all.some(e => e.inAt >= d0 && e.inAt < d1 && e.status === 'auto');
+      const isT = d0 === today0;
+      return { label: dayNames[i], hrs: auto ? '?' : ms ? (ms / 3600e3).toFixed(1).replace('.', s.lang === 'nl' ? ',' : '.') : '–', h: auto ? '100%' : pct(ms / (10 * 3600e3) * 100), bg: auto ? 'repeating-linear-gradient(135deg,transparent 0,transparent 4px,#b5d9fd 4px,#b5d9fd 6px)' : isT ? '#5980a6' : '#b5d9fd', fg: isT ? '#1d1f20' : '#5d5d60' };
+    });
+
+    // history
+    const pr = { week: [weekStart, at(28, '00:00')], last: [at(14, '00:00'), weekStart], month: [at(1, '00:00'), at(31, '00:00')] }[s.period];
+    const filtered = all.filter(e => e.inAt >= pr[0] && e.inAt < pr[1] && (s.locF === 'all' || L(e.minor).city === s.locF) && (!s.attn || e.status === 'auto' || e.status === 'pending'));
+    const groups = [];
+    filtered.forEach(e => {
+      const k = dayStart(e.inAt); let g = groups.find(x => x.k === k);
+      if (!g) { g = { k, rows: [], ms: 0 }; groups.push(g); }
+      g.ms += endOf(e) - e.inAt;
+      g.rows.push({ range: range(e), loc: L(e.minor).name + ' · ' + spot(e.minor), dur: e.status === 'auto' ? '—' : this.dur(endOf(e) - e.inAt), tag: tagOf(e), hasTag: !!tagOf(e), onClick: openDetail(e.id) });
+    });
+    const days = groups.map(g => ({ label: new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'short' }).format(g.k), total: this.dur(g.ms), rows: g.rows }));
+    const sumMs = filtered.filter(e => e.status !== 'auto').reduce((a, e) => a + endOf(e) - e.inAt, 0);
+    const seg = (on, first) => ({ bg: on ? '#1d1f20' : 'transparent', fg: on ? '#f2f2f3' : '#1d1f20', bl: first ? '0' : '1px solid rgba(29,31,32,.16)' });
+    const periods = [['week', t.pWeek], ['last', t.pLast], ['month', t.pMonth]].map(([k, l], i) => ({ label: l, onClick: () => this.setState({ period: k }), ...seg(s.period === k, i === 0) }));
+    const chip = on => ({ bg: on ? '#d6ebff' : 'transparent', fg: on ? '#2c455d' : '#1d1f20', bd: on ? '#5980a6' : 'rgba(29,31,32,.16)' });
+    const chips = [
+      { label: t.allLocs, icon: 'layers', onClick: () => this.setState({ locF: 'all' }), ...chip(s.locF === 'all') },
+      { label: 'HQ Utrecht', icon: 'map-pin', onClick: () => this.setState({ locF: 'utrecht' }), ...chip(s.locF === 'utrecht') },
+      { label: 'Amsterdam Hub', icon: 'map-pin', onClick: () => this.setState({ locF: 'amsterdam' }), ...chip(s.locF === 'amsterdam') },
+      { label: t.attention, icon: 'triangle-alert', onClick: () => this.setState({ attn: !s.attn }), ...chip(s.attn) }];
+
+    // detail
+    const d = all.find(e => e.id === s.detailId) || all[0];
+    const dAuto = d.status === 'auto';
+
+    // confirm
+    const c = s.confirm;
+    const cs = p.confirmStyle || 'sheet';
+    const cOut = c && c.type === 'out';
+
+    // profile toggles
+    const tog = (on, label, icon, key) => ({ label, icon, ios: isIOS, android: !isIOS, onClick: () => this.setState({ [key]: !on }),
+      iosBg: on ? '#5980a6' : '#d4d4d7', iosX: on ? '22px' : '2px',
+      aTrack: on ? '#5980a6' : '#e7e7ea', aBorder: on ? '#5980a6' : '#7a7a7d', aThumb: on ? '#f2f2f3' : '#7a7a7d', aX: on ? '22px' : '6px', aSize: on ? '24px' : '16px' });
+
+    const tabs = [['home', t.tabHome, 'house'], ['history', t.tabRegs, 'list-checks'], ['profile', t.tabProfile, 'circle-user']].map(([k, l, ic]) => {
+      const on = scr === k || (k === 'history' && (scr === 'detail' || scr === 'correct'));
+      return { label: l, icon: ic, onClick: () => this.go(k), fg: on ? (isIOS ? '#416180' : '#2c455d') : (isIOS ? '#7a7a7d' : '#424244'), pill: on ? '#d6ebff' : 'transparent', fw: on ? 700 : 500 };
+    });
+
+    const needAuth = !s.auth;
+    const darkBar = s.locked || (c && cs === 'full');
+
+    return {
+      t, isIOS, isAndroid: !isIOS, platformName: isIOS ? 'iOS' : 'Android', clock: hm(n), noop: e => e && e.preventDefault && e.preventDefault(),
+      isLogin: scr === 'login', isRegister: scr === 'register', isMagic: scr === 'magic', isOnboard: scr === 'onboard', isHome: scr === 'home', isHistory: scr === 'history', isDetail: scr === 'detail', isCorrect: scr === 'correct', isProfile: scr === 'profile',
+      homeA: (p.homeVariant || 'status') !== 'timeline', homeB: p.homeVariant === 'timeline',
+      email: s.email, name: s.name, code: s.code,
+      onEmail: e => this.setState({ email: e.target.value }), onName: e => this.setState({ name: e.target.value }), onCode: e => this.setState({ code: e.target.value.toUpperCase() }),
+      sendLink: () => this.go('magic'), toRegister: e => { e && e.preventDefault(); this.go('register'); }, toLogin: e => { e && e.preventDefault && e.preventDefault(); this.go('login'); },
+      openLink: () => this.go('onboard', { perm: 0 }),
+      permStep: pi + 1, permIcon: perm.icon, permTitle: perm.title, permBody: perm.body, dlgTitle: perm.dlg, dlgAllow: perm.allow,
+      permDots: [0, 1, 2].map(i => ({ bg: i <= pi ? '#5980a6' : '#d4d4d7' })),
+      permContinue: () => this.setState({ dialog: true }), permSkip: nextPerm, permAllow: nextPerm, permDeny: nextPerm, dialog: s.dialog,
+      showHdr, showBack, largeTitle: !showBack, hdrTitle: titles[scr] || '', backLabel, goBack,
+      dateLong: new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format(n),
+      greeting: hr < 12 ? t.morning : hr < 18 ? t.afternoon : t.evening,
+      inside, notInside: !inside, stateLabel: inside ? t.checkedIn : t.notIn, stateColor: inside ? '#416180' : '#5d5d60',
+      timer: inside ? (() => { const x = Math.floor((n - s.inside.since) / 1000); return pad(Math.floor(x / 3600)) + ':' + pad(Math.floor(x / 60) % 60) + ':' + pad(x % 60); })() : '',
+      locName: inside ? L(s.inside.minor).name : '', locSpot: inside ? spot(s.inside.minor) : '', sinceTxt: inside ? hm(s.inside.since) : '',
+      beaconTxt: inside ? `${MAJOR} · ${s.inside.minor}` : '',
+      locIcon: inside ? 'map-pin' : 'map-pin-off', locLine: inside ? L(s.inside.minor).name + ' · ' + spot(s.inside.minor) : t.offsite,
+      locSub: inside ? t.since + ' ' + hm(s.inside.since) + ' · beacon ' + MAJOR + '/' + s.inside.minor : (lastOut ? t.lastOut + ' ' + hm(lastOut.outAt) + ' · ' + L(lastOut.minor).name : ''),
+      todayTotal: this.dur(todayMs), weekTotal: this.dur(weekMs), weekPct: pct(weekMs / (40 * 3600e3) * 100),
+      todayRows: todayList.map(e => ({ range: range(e), loc: L(e.minor).name + ' · ' + spot(e.minor), dur: this.dur(endOf(e) - e.inAt), onClick: () => this.go('detail', { detailId: e.id, from: 'home' }) })),
+      noToday: todayList.length === 0, goMissing: e => { e && e.preventDefault(); this.go('history', { attn: true }); },
+      trackSegs, nowLeft: pct((n - trackStart) / span * 100), weekBars,
+      periods, chips, days, noDays: days.length === 0, sumTotal: this.dur(sumMs), sumCount: filtered.length + ' ' + t.count,
+      dDate: new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format(d.inAt),
+      dDur: dAuto ? '—' : this.dur(endOf(d) - d.inAt), dIn: hm(d.inAt), dOut: d.outAt ? hm(d.outAt) : '—', dRangeTxt: range(d),
+      dLoc: L(d.minor).name, dSpot: spot(d.minor), dMajor: MAJOR, dMinor: d.minor, dTag: tagOf(d), dHasTag: !!tagOf(d),
+      dSrc: dAuto ? t.srcAuto : d.status === 'open' ? t.srcOpen : t.srcBeacon, dPending: d.status === 'pending', dCanReq: d.status !== 'pending' && d.status !== 'open',
+      uuidShort: UUID.slice(0, 13) + '…',
+      reqCorr: () => this.go('correct', { corrIn: hm(d.inAt), corrOut: dAuto ? '17:30' : (d.outAt ? hm(d.outAt) : '17:30'), corrType: dAuto ? 'forgot' : 'wrong' }),
+      corrTypes: [['forgot', t.cForgot], ['wrong', t.cWrong], ['missing', t.cMissing]].map(([k, l], i) => ({ label: l, onClick: () => this.setState({ corrType: k }), bt: i ? '1px solid rgba(29,31,32,.16)' : '0', ring: s.corrType === k ? '#5980a6' : '#98989b', dot: s.corrType === k ? '#5980a6' : 'transparent' })),
+      corrIn: s.corrIn, corrOut: s.corrOut, note: s.note,
+      onCorrIn: e => this.setState({ corrIn: e.target.value }), onCorrOut: e => this.setState({ corrOut: e.target.value }), onNote: e => this.setState({ note: e.target.value }),
+      submitCorr: () => { this.setState(st => ({ entries: st.entries.map(x => x.id === d.id ? { ...x, status: 'pending' } : x), screen: 'detail', note: '' })); this.showToast(t.sent); },
+      toggles: [tog(s.sound, t.sounds, 'volume-2', 'sound'), tog(s.notifOn, t.notifs, 'bell', 'notifOn')],
+      nearbyTxt: inside ? `${MAJOR}/${s.inside.minor} · −61 dBm` : '—',
+      toggleLang: () => this.setState({ lang: s.lang === 'en' ? 'nl' : 'en' }),
+      signOut: () => this.setState({ screen: 'login', auth: false, inside: null }),
+      showTabs: !!tabRoot[scr] || scr === 'detail' || scr === 'correct', tabs,
+      hasToast: !!s.toast, toast: s.toast,
+      showFull: !!c && cs === 'full', showSheet: !!c && cs === 'sheet', showBanner: !!c && cs === 'banner',
+      cIcon: cOut ? 'log-out' : 'log-in', cTitle: c ? (cOut ? t.cOut : t.cIn) : '', cBody: c ? (cOut ? t.cOutBody : t.cInBody) : '',
+      cTime: c ? hm(c.at) : '', cLoc: c ? L(c.minor).name : '', cSpot: c ? spot(c.minor) : '', cBeacon: c ? `UUID ${UUID.slice(0, 8)}… · major ${MAJOR} · minor ${c.minor}` : '',
+      cHasDur: !!(c && c.dur), cDur: c && c.dur ? t.worked + ' ' + this.dur(c.dur) : '',
+      cSideLabel: cOut ? t.worked : t.beaconL, cSide: c ? (cOut ? this.dur(c.dur) : `${MAJOR}·${c.minor}`) : '',
+      closeConfirm: () => { clearTimeout(this.ct); this.setState({ confirm: null }); },
+      confirmReq: () => { const last = this.allEntries()[0]; clearTimeout(this.ct); this.setState({ confirm: null, screen: 'detail', detailId: last.id, from: 'home' }); },
+      locked: s.locked, lockDate: new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long' }).format(n),
+      lockH: pad(new Date(n).getHours()), lockM: pad(new Date(n).getMinutes()), notifR: isIOS ? '20px' : '24px', unlockHint: isIOS ? t.unlockIOS : t.unlockAnd,
+      notifs: s.notifs.map(x => ({ title: (x.type === 'out' ? t.nOut : t.nIn) + ' · ' + L(x.minor).name, body: x.type === 'out' ? t.nOutBody + ' ' + this.dur(x.dur) + ' · ' + spot(x.minor) : t.nInBody + ' ' + hm(x.at) + ' · ' + spot(x.minor), ago: Math.abs(n - x.at) < 60000 ? t.ago : hm(x.at) })),
+      unlock: () => this.setState({ locked: false, notifs: [], screen: s.auth ? (scr === 'login' ? 'home' : scr) : scr }),
+      barColor: darkBar ? '#f2f2f3' : '#1d1f20',
+      simFull: (p.sim || 'full') === 'full', simMini: p.sim === 'mini', simNeed: needAuth,
+      simModes: [[false, t.simOpen, 'smartphone'], [true, t.simLocked, 'lock']].map(([v, l, ic]) => ({ label: l, icon: ic, onClick: () => this.setState({ locked: v, notifs: v ? [] : s.notifs }), bg: s.locked === v ? '#1d1f20' : 'transparent', fg: s.locked === v ? '#f2f2f3' : '#1d1f20' })),
+      simBeacons: [1, 2, 7].map(m => ({ name: L(m).name, spot: spot(m), minor: m, here: !!(s.inside && s.inside.minor === m), inClick: () => this.walkIn(m), outClick: () => this.leave(m) })),
+      plusHour: () => this.setState(st => ({ offset: st.offset + 3600e3 })),
+      events: s.events, noEvents: s.events.length === 0, soundIcon: s.sound ? 'volume-2' : 'volume-x', toggleSound: () => this.setState({ sound: !s.sound }),
+      miniLabel: inside ? t.trigOut : t.trigIn, miniTrigger: () => inside ? this.leave(s.inside.minor) : this.walkIn(1)
+    };
+  }
+}
+</script>
+</body>
+</html>

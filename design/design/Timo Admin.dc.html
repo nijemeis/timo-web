@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/styles.css">
+<script src="_ds/industry-8fb09618-febc-4165-8d68-8f74fa1f84d5/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="./lu-icon.js"></script>
+<style>
+body{margin:0;background:#f2f2f3;color:#1d1f20;font-family:Barlow,system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#416180;text-underline-offset:3px}a:hover{color:#2c455d}
+button,input,textarea,select{font-family:inherit}
+:focus{outline:none}:focus-visible{outline:2px solid #5980a6;outline-offset:2px}
+input::placeholder,textarea::placeholder{color:#7a7a7d}
+@keyframes tmFade{from{opacity:0}to{opacity:1}}
+@keyframes tmPing{0%{transform:scale(.7);opacity:.8}100%{transform:scale(2.4);opacity:0}}
+</style>
+</helmet>
+<div data-screen-label="Admin" style="position:relative;width:100%;min-width:1180px;min-height:880px;display:grid;grid-template-columns:236px minmax(0,1fr);background:#f2f2f3;color:#1d1f20;font-family:Barlow,system-ui,sans-serif;font-size:14px;line-height:1.45">
+  <aside style="border-right:1px solid rgba(29,31,32,.16);padding:22px 16px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:14px;padding:0 6px">
+      <div style="position:relative;align-self:flex-start;padding:6px 11px;border:1px solid rgba(29,31,32,.16);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px;letter-spacing:.14em;line-height:1;display:flex;align-items:center;gap:.45em"><span style="position:relative;width:.72em;height:.72em;display:grid;place-items:center;flex:none"><span style="position:absolute;inset:0;border-radius:50%;border:1px solid #749dc4"></span><span style="position:absolute;inset:-.24em;border-radius:50%;border:1px solid #d4d4d7"></span><span style="width:.26em;height:.26em;background:#5980a6"></span></span>TIMO<bp-c></bp-c></div>
+      <div>
+        <div style="font-weight:600;font-size:15px">Northpier Logistics</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5d5d60">major 1042 · 3 locations</div>
+      </div>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+        <button onClick="{{ n.onClick }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;border:0;border-radius:4px;background:{{ n.bg }};color:{{ n.fg }};font-size:14px;font-weight:{{ n.fw }};text-align:left;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">
+          <lu-i name="{{ n.icon }}" size="18"></lu-i><span style="flex:1">{{ n.label }}</span>
+          <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}"><span style="min-width:22px;height:20px;padding:0 6px;display:grid;place-items:center;background:#1d2d3d;color:#f2f2f3;font-size:12px;font-weight:600">{{ n.count }}</span></sc-if>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px;padding:0 6px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(29,31,32,.16);border-radius:4px;overflow:hidden">
+        <sc-for list="{{ langs }}" as="l" hint-placeholder-count="2">
+          <button onClick="{{ l.onClick }}" style="height:30px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:12px;font-weight:600;cursor:pointer">{{ l.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div style="width:34px;height:34px;border:1px solid rgba(29,31,32,.16);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:600;color:#416180">MJ</div>
+        <div><div style="font-weight:600">Mark Jansen</div><div style="font-size:12px;color:#5d5d60">{{ t.roleAdmin }}</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="min-width:0;padding:24px 32px 40px;display:flex;flex-direction:column;gap:22px">
+    <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ kicker }}</div>
+        <h1 style="margin:2px 0 0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:38px;line-height:1.05;letter-spacing:-0.01em">{{ title }}</h1>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <sc-if value="{{ showPeriod }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;border:1px solid rgba(29,31,32,.16);border-radius:4px;height:36px">
+            <button onClick="{{ prevWeek }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:#1d1f20" style-hover="background:rgba(29,31,32,.07)"><lu-i name="chevron-left" size="16"></lu-i></button>
+            <div style="padding:0 10px;font-weight:600;font-variant-numeric:tabular-nums;border-left:1px solid rgba(29,31,32,.16);border-right:1px solid rgba(29,31,32,.16);height:34px;display:flex;align-items:center">{{ weekLabel }}</div>
+            <button onClick="{{ nextWeek }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:#1d1f20" style-hover="background:rgba(29,31,32,.07)"><lu-i name="chevron-right" size="16"></lu-i></button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isPresence }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#416180;font-weight:600"><span style="position:relative;width:8px;height:8px;background:#5980a6"><span style="position:absolute;inset:0;border:1px solid #5980a6;animation:tmPing 2s ease-out infinite"></span></span>{{ t.live }} · {{ clock }}</div>
+        </sc-if>
+      </div>
+    </header>
+
+    <sc-if value="{{ isPresence }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid rgba(29,31,32,.16)">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="3">
+          <button onClick="{{ k.onClick }}" style="padding:16px 18px;border:0;border-left:{{ k.bl }};background:transparent;text-align:left;cursor:pointer;color:#1d1f20;display:flex;flex-direction:column;gap:2px" style-hover="background:rgba(29,31,32,.04)">
+            <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:500">{{ k.label }}</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:44px;line-height:1;font-variant-numeric:tabular-nums">{{ k.value }}<span style="font-size:20px;color:#5d5d60;font-weight:500"> {{ k.suffix }}</span></span>
+            <span style="font-size:13px;color:#5d5d60">{{ k.sub }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+        <sc-for list="{{ locCards }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.onClick }}" style="position:relative;padding:16px;border:1px solid {{ c.bd }};background:transparent;text-align:left;cursor:pointer;color:#1d1f20;display:flex;flex-direction:column;gap:10px" style-hover="background:rgba(29,31,32,.03)">
+            <bp-c></bp-c>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-weight:600;font-size:16px">{{ c.name }}</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5d5d60">{{ c.minors }}</span></div>
+            <div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1;font-variant-numeric:tabular-nums">{{ c.inNow }}</span><span style="color:#5d5d60">/ {{ c.cap }} {{ t.desks }}</span></div>
+            <div style="height:6px;background:#e7e7ea"><div style="height:6px;background:#5980a6;width:{{ c.pct }}"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#5d5d60"><span>{{ c.pctTxt }} {{ t.occupied }}</span><span>{{ c.peak }}</span></div>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.inNow }} <span style="color:#5d5d60;font-weight:500">{{ presentCount }}</span></div>
+            <sc-if value="{{ hasLocFilter }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearLoc }}" style="height:28px;padding:0 10px;border:1px solid #5980a6;background:#d6ebff;color:#2c455d;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px">{{ locFilterName }}<lu-i name="x" size="14"></lu-i></button></sc-if>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead><tr style="text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5d5d60">
+              <th style="padding:8px 8px 8px 0;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.employee }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.location }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.since }}</th><th style="padding:8px 0 8px 8px;font-weight:600;border-bottom:1px solid #1d1f20;text-align:right">{{ t.duration }}</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ present }}" as="r" hint-placeholder-count="6">
+                <tr style="border-bottom:1px solid rgba(29,31,32,.16)">
+                  <td style="padding:9px 8px 9px 0"><div style="font-weight:600">{{ r.name }}</div><div style="font-size:12px;color:#5d5d60">{{ r.team }}</div></td>
+                  <td style="padding:9px 8px">{{ r.loc }}<div style="font-size:12px;color:#5d5d60">{{ r.spot }}</div></td>
+                  <td style="padding:9px 8px;font-variant-numeric:tabular-nums">{{ r.since }}</td>
+                  <td style="padding:9px 0 9px 8px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600">{{ r.dur }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:16px;display:flex;flex-direction:column;gap:4px">
+          <bp-c></bp-c>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;padding-bottom:6px">{{ t.feed }}</div>
+          <sc-for list="{{ feed }}" as="f" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:42px 18px 1fr;gap:8px;align-items:start;padding:7px 0;border-top:1px solid rgba(29,31,32,.1);font-size:13px">
+              <span style="font-variant-numeric:tabular-nums;color:#5d5d60">{{ f.t }}</span><lu-i name="{{ f.icon }}" size="16" style="color:#416180;margin-top:1px"></lu-i>
+              <span><span style="font-weight:600">{{ f.name }}</span> <span style="color:#5d5d60">{{ f.what }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTimesheets }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ teamChips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.onClick }}" style="height:32px;padding:0 12px;border:1px solid {{ c.bd }};border-radius:4px;background:{{ c.bg }};color:{{ c.fg }};font-size:13px;font-weight:600;cursor:pointer">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ approveAll }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="check-check" size="17"></lu-i>{{ approveAllLabel }}<bp-c></bp-c></button>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="text-align:right;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5d5d60">
+          <th style="padding:8px 8px 8px 0;font-weight:600;border-bottom:1px solid #1d1f20;text-align:left">{{ t.employee }}</th>
+          <sc-for list="{{ dayHeads }}" as="d" hint-placeholder-count="5"><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;width:62px">{{ d }}</th></sc-for>
+          <th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.total }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.contract }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">+/−</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;text-align:left">{{ t.status }}</th><th style="padding:8px 0;border-bottom:1px solid #1d1f20"></th>
+        </tr></thead>
+        <tbody>
+          <sc-for list="{{ sheets }}" as="r" hint-placeholder-count="8">
+            <tr onClick="{{ r.onSelect }}" style="border-bottom:1px solid rgba(29,31,32,.16);background:{{ r.bg }};cursor:pointer;font-variant-numeric:tabular-nums;text-align:right">
+              <td style="padding:9px 8px 9px 0;text-align:left"><div style="font-weight:600">{{ r.name }}</div><div style="font-size:12px;color:#5d5d60">{{ r.team }}</div></td>
+              <sc-for list="{{ r.days }}" as="d" hint-placeholder-count="5"><td style="padding:9px 8px;color:{{ d.fg }};font-weight:{{ d.fw }}">{{ d.v }}</td></sc-for>
+              <td style="padding:9px 8px;font-weight:600">{{ r.total }}</td>
+              <td style="padding:9px 8px;color:#5d5d60">{{ r.contract }}</td>
+              <td style="padding:9px 8px;font-weight:600">{{ r.diff }}</td>
+              <td style="padding:9px 8px;text-align:left"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ r.sBd }};background:{{ r.sBg }};color:{{ r.sFg }}"><lu-i name="{{ r.sIcon }}" size="13"></lu-i>{{ r.status }}</span></td>
+              <td style="padding:9px 0;text-align:right"><sc-if value="{{ r.canApprove }}" hint-placeholder-val="{{ false }}"><button onClick="{{ r.onApprove }}" style="height:28px;padding:0 10px;border:1px solid rgba(29,31,32,.16);border-radius:4px;background:#f2f2f3;font-size:13px;font-weight:600;color:#1d1f20;cursor:pointer" style-hover="background:#e7e7ea">{{ t.approve }}</button></sc-if></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+      <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:18px;display:flex;flex-direction:column;gap:12px">
+        <bp-c></bp-c>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ selName }} <span style="color:#5d5d60;font-weight:500">· {{ weekLabel }}</span></div>
+          <div style="font-size:13px;color:#5d5d60">{{ t.rawNote }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px">
+          <sc-for list="{{ selDays }}" as="d" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;gap:6px;border-top:2px solid {{ d.top }};padding-top:8px">
+              <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:#5d5d60"><span>{{ d.label }}</span><span style="font-variant-numeric:tabular-nums">{{ d.total }}</span></div>
+              <sc-for list="{{ d.rows }}" as="e" hint-placeholder-count="1">
+                <div style="font-size:13px;font-variant-numeric:tabular-nums"><div style="font-weight:600">{{ e.range }}</div><div style="color:#5d5d60;font-size:12px">{{ e.loc }}</div></div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isAttention }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ noAttention }}" hint-placeholder-val="{{ false }}"><div style="padding:40px 0;color:#5d5d60;font-size:16px;display:flex;gap:10px;align-items:center"><lu-i name="circle-check" size="22" style="color:#416180"></lu-i>{{ t.allClear }}</div></sc-if>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.missingOut }} <span style="color:#5d5d60;font-weight:500">{{ missCount }}</span></div>
+          <div style="font-size:13px;color:#5d5d60;text-wrap:pretty">{{ t.missingOutHelp }}</div>
+          <sc-for list="{{ missing }}" as="m" hint-placeholder-count="2">
+            <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:14px;display:flex;flex-direction:column;gap:10px">
+              <bp-c></bp-c>
+              <div style="display:flex;justify-content:space-between;gap:8px"><div><div style="font-weight:600;font-size:15px">{{ m.name }}</div><div style="font-size:13px;color:#5d5d60">{{ m.when }} · {{ m.loc }}</div></div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px;font-variant-numeric:tabular-nums">{{ m.range }}</div></div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <span style="font-size:13px;color:#5d5d60">{{ t.setOut }}</span>
+                <input type="time" value="{{ m.val }}" onChange="{{ m.onVal }}" style="height:32px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"></input>
+                <button onClick="{{ m.onSave }}" style="position:relative;height:32px;padding:0 12px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;font-size:13px;cursor:pointer" style-hover="background:#597ea3">{{ t.save }}</button>
+                <button onClick="{{ m.onAsk }}" style="height:32px;padding:0 12px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-weight:600;font-size:13px;color:#1d1f20;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="background:rgba(29,31,32,.07)"><lu-i name="send" size="14"></lu-i>{{ t.askEmp }}</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.corrReqs }} <span style="color:#5d5d60;font-weight:500">{{ corrCount }}</span></div>
+          <div style="font-size:13px;color:#5d5d60">{{ t.corrHelp }}</div>
+          <sc-for list="{{ corrections }}" as="c" hint-placeholder-count="2">
+            <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:14px;display:flex;flex-direction:column;gap:10px">
+              <bp-c></bp-c>
+              <div><div style="font-weight:600;font-size:15px">{{ c.name }}</div><div style="font-size:13px;color:#5d5d60">{{ c.when }} · {{ c.loc }}</div></div>
+              <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-variant-numeric:tabular-nums">
+                <div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.recorded }}</div><div style="font-size:16px;color:#5d5d60;text-decoration:line-through">{{ c.from }}</div></div>
+                <lu-i name="arrow-right" size="16" style="color:#416180"></lu-i>
+                <div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.requested }}</div><div style="font-size:16px;font-weight:600">{{ c.to }}</div></div>
+              </div>
+              <div style="font-size:13px;padding:8px 10px;background:#e9e9ea;text-wrap:pretty">“{{ c.note }}”</div>
+              <div style="display:flex;gap:8px">
+                <button onClick="{{ c.onApprove }}" style="position:relative;height:32px;padding:0 12px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;font-size:13px;cursor:pointer" style-hover="background:#597ea3">{{ t.approve }}</button>
+                <button onClick="{{ c.onDecline }}" style="height:32px;padding:0 12px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-weight:600;font-size:13px;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">{{ t.decline }}</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isExport }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.period }}</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(29,31,32,.16);border-radius:4px;overflow:hidden">
+              <sc-for list="{{ exPeriods }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.onClick }}" style="height:34px;border:0;border-left:{{ p.bl }};background:{{ p.bg }};color:{{ p.fg }};font-size:13px;font-weight:600;cursor:pointer">{{ p.label }}</button></sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.format }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <sc-for list="{{ formats }}" as="f" hint-placeholder-count="6">
+                <button onClick="{{ f.onClick }}" style="position:relative;padding:10px 12px;border:1px solid {{ f.bd }};background:{{ f.bg }};text-align:left;cursor:pointer;color:#1d1f20;display:flex;flex-direction:column;gap:1px" style-hover="border-color:#5980a6">
+                  <span style="font-weight:600;font-size:14px">{{ f.label }}</span><span style="font-size:12px;color:#5d5d60">{{ f.sub }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.rows }}</div>
+            <sc-for list="{{ groupings }}" as="g" hint-placeholder-count="3">
+              <button onClick="{{ g.onClick }}" style="display:flex;align-items:center;gap:10px;background:transparent;border:0;padding:3px 0;font-size:14px;color:#1d1f20;cursor:pointer;text-align:left"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid {{ g.ring }};box-shadow:inset 0 0 0 3px #f2f2f3;background:{{ g.dot }};flex:none"></span>{{ g.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.include }}</div>
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+              <button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:10px;background:transparent;border:0;padding:3px 0;font-size:14px;color:#1d1f20;cursor:pointer;text-align:left"><span style="width:16px;height:16px;border:1.5px solid {{ f.ring }};background:{{ f.bg }};color:#f2f2f3;display:grid;place-items:center;flex:none"><lu-i name="{{ f.icon }}" size="12" stroke="3"></lu-i></span>{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ doExport }}" style="position:relative;height:46px;background:#5980a6;color:#f2f2f3;border:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#597ea3" style-active="background:#416180"><lu-i name="download" size="18"></lu-i>{{ exportLabel }}<bp-c></bp-c></button>
+          <sc-if value="{{ hasUnapproved }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#2c455d;background:#eef6ff;border:1px solid #b5d9fd;padding:8px 10px;display:flex;gap:8px"><lu-i name="info" size="16"></lu-i>{{ unapprovedNote }}</div></sc-if>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.preview }}</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#5d5d60">{{ fileName }}</div></div>
+          <div style="position:relative;border:1px solid rgba(29,31,32,.16);overflow-x:auto">
+            <bp-c></bp-c>
+            <table style="width:100%;border-collapse:collapse;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:nowrap">
+              <thead><tr><sc-for list="{{ pvHead }}" as="h" hint-placeholder-count="6"><th style="text-align:left;padding:8px 10px;background:#e9e9ea;font-weight:600;border-bottom:1px solid rgba(29,31,32,.16)">{{ h }}</th></sc-for></tr></thead>
+              <tbody><sc-for list="{{ pvRows }}" as="r" hint-placeholder-count="6"><tr style="border-bottom:1px solid rgba(29,31,32,.1)"><sc-for list="{{ r }}" as="c" hint-placeholder-count="6"><td style="padding:7px 10px">{{ c }}</td></sc-for></tr></sc-for></tbody>
+            </table>
+          </div>
+          <div style="font-size:13px;color:#5d5d60">{{ pvMore }}</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">{{ t.recent }}</div>
+            <sc-for list="{{ recent }}" as="r" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(29,31,32,.16);font-size:13px"><lu-i name="file-spreadsheet" size="16" style="color:#416180"></lu-i><span style="font-family:ui-monospace,Menlo,monospace">{{ r.file }}</span><span style="color:#5d5d60">{{ r.meta }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isBeacons }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid rgba(29,31,32,.16)">
+        <div style="padding:14px 16px"><div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Proximity UUID</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:13px;margin-top:4px;word-break:break-all">5A4B0C1E-7F3D-4E2A-9B61-0D8C2E4F7A10</div><div style="font-size:12px;color:#5d5d60;margin-top:2px">{{ t.uuidHelp }}</div></div>
+        <div style="padding:14px 16px;border-left:1px solid rgba(29,31,32,.16)"><div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Major</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1.1">1042</div><div style="font-size:12px;color:#5d5d60">{{ t.majorHelp }}</div></div>
+        <div style="padding:14px 16px;border-left:1px solid rgba(29,31,32,.16)"><div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Minor</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1.1">{{ minorsTxt }}</div><div style="font-size:12px;color:#5d5d60">{{ t.minorHelp }}</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.beacons }} <span style="color:#5d5d60;font-weight:500">{{ beaconCount }}</span></div>
+        <button onClick="{{ openReq }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#597ea3"><lu-i name="package-plus" size="17"></lu-i>{{ t.reqBeacons }}<bp-c></bp-c></button>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5d5d60">
+          <th style="padding:8px 8px 8px 0;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.location }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">Minor</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.role2 }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20;width:170px">{{ t.battery }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.lastSeen }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.today2 }}</th><th style="padding:8px 0 8px 8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.status }}</th>
+        </tr></thead>
+        <tbody>
+          <sc-for list="{{ beacons }}" as="b" hint-placeholder-count="6">
+            <tr style="border-bottom:1px solid rgba(29,31,32,.16)">
+              <td style="padding:10px 8px 10px 0"><div style="font-weight:600">{{ b.loc }}</div><div style="font-size:12px;color:#5d5d60">{{ b.spot }}</div></td>
+              <td style="padding:10px 8px;font-family:ui-monospace,Menlo,monospace">{{ b.minor }}</td>
+              <td style="padding:10px 8px;color:#5d5d60">{{ b.role }}</td>
+              <td style="padding:10px 8px"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;background:#e7e7ea"><div style="height:6px;width:{{ b.bat }};background:{{ b.batBg }}"></div></div><span style="font-variant-numeric:tabular-nums;width:34px;text-align:right">{{ b.bat }}</span></div></td>
+              <td style="padding:10px 8px;font-variant-numeric:tabular-nums">{{ b.seen }}</td>
+              <td style="padding:10px 8px;font-variant-numeric:tabular-nums">{{ b.events }}</td>
+              <td style="padding:10px 0 10px 8px"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ b.sBd }};background:{{ b.sBg }};color:{{ b.sFg }}">{{ b.status }}</span></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+      <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.spareT }} <span style="color:#5d5d60;font-weight:500">{{ spareCount }}</span></div>
+          <div style="font-size:13px;color:#5d5d60;text-wrap:pretty">{{ t.spareHelp }}</div>
+          <sc-if value="{{ noSpare }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:#5d5d60;padding:10px 0">{{ t.noSpare }}</div></sc-if>
+          <sc-for list="{{ spare }}" as="b" hint-placeholder-count="2">
+            <div style="position:relative;border:1px solid rgba(29,31,32,.16);padding:12px 14px;display:grid;grid-template-columns:86px minmax(0,1fr) minmax(0,1fr) 110px auto;gap:10px;align-items:end">
+              <bp-c></bp-c>
+              <div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5d5d60;font-weight:600">Minor</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:26px;line-height:1.1">{{ b.minor }}</div><div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#5d5d60">{{ b.serial }}</div></div>
+              <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#5d5d60">{{ t.location }}
+                <select value="{{ b.loc }}" onChange="{{ b.onLoc }}" style="height:34px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"><option>HQ Utrecht</option><option>Amsterdam Hub</option><option>Rotterdam Depot</option></select>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#5d5d60">{{ t.spotL }}
+                <input value="{{ b.spot }}" onChange="{{ b.onSpot }}" placeholder="{{ t.spotPh }}" style="height:34px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20" style-focus="border-color:#5980a6"></input>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#5d5d60">{{ t.role2 }}
+                <select value="{{ b.role }}" onChange="{{ b.onRole }}" style="height:34px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"><option value="entry">{{ t.entry }}</option><option value="zone">{{ t.zone }}</option></select>
+              </label>
+              <button onClick="{{ b.onActivate }}" style="position:relative;height:34px;padding:0 12px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;font-size:13px;cursor:pointer" style-hover="background:#597ea3" style-active="background:#416180">{{ t.activate }}</button>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px">{{ t.reqsT }}</div>
+          <sc-for list="{{ reqs }}" as="r" hint-placeholder-count="2">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-top:1px solid rgba(29,31,32,.16)">
+              <div style="font-weight:600">{{ r.title }}</div>
+              <span style="justify-self:end;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ r.sBd }};background:{{ r.sBg }};color:{{ r.sFg }}">{{ r.status }}</span>
+              <div style="font-size:13px;color:#5d5d60;grid-column:1 / -1">{{ r.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPeople }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#5d5d60">{{ t.selfCode }} <span style="position:relative;padding:4px 10px;border:1px solid rgba(29,31,32,.16);font-family:ui-monospace,Menlo,monospace;font-size:14px;color:#1d1f20;letter-spacing:.06em">NP-1042</span></div>
+        <button onClick="{{ openInvite }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#597ea3"><lu-i name="user-plus" size="17"></lu-i>{{ t.invite }}<bp-c></bp-c></button>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5d5d60">
+          <th style="padding:8px 8px 8px 0;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.employee }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.team }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.role }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.contract }}</th><th style="padding:8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.device }}</th><th style="padding:8px 0 8px 8px;font-weight:600;border-bottom:1px solid #1d1f20">{{ t.status }}</th>
+        </tr></thead>
+        <tbody>
+          <sc-for list="{{ people }}" as="p" hint-placeholder-count="8">
+            <tr style="border-bottom:1px solid rgba(29,31,32,.16)">
+              <td style="padding:9px 8px 9px 0"><div style="font-weight:600">{{ p.name }}</div><div style="font-size:12px;color:#5d5d60">{{ p.email }}</div></td>
+              <td style="padding:9px 8px">{{ p.team }}</td>
+              <td style="padding:9px 8px">{{ p.role }}</td>
+              <td style="padding:9px 8px;font-variant-numeric:tabular-nums">{{ p.contract }}</td>
+              <td style="padding:9px 8px;color:#5d5d60">{{ p.device }}</td>
+              <td style="padding:9px 0 9px 8px"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border:1px solid {{ p.sBd }};background:{{ p.sBg }};color:{{ p.sFg }}">{{ p.status }}</span></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </sc-if>
+  </main>
+
+  <sc-if value="{{ inviteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeInvite }}" style="position:absolute;inset:0;background:rgba(29,31,32,.32);z-index:10;animation:tmFade .15s ease-out"></div>
+    <div style="position:absolute;top:120px;left:50%;margin-left:-240px;width:480px;z-index:11;background:#f2f2f3;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);padding:24px;display:flex;flex-direction:column;gap:16px">
+      <bp-c></bp-c>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1.1">{{ t.invite }}</div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.emails }}
+        <textarea value="{{ inviteText }}" onChange="{{ onInviteText }}" placeholder="name@northpier.nl, …" style="min-height:90px;padding:8px 10px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20;resize:vertical" style-focus="border-color:#5980a6"></textarea>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.team }}
+          <select value="{{ inviteTeam }}" onChange="{{ onInviteTeam }}" style="height:36px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"><option>Warehouse</option><option>Operations</option><option>Customer service</option><option>Finance</option></select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.contract }}
+          <input type="number" value="{{ inviteHours }}" onChange="{{ onInviteHours }}" style="height:36px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"></input>
+        </label>
+      </div>
+      <div style="font-size:13px;color:#5d5d60;text-wrap:pretty">{{ t.inviteHelp }}</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button onClick="{{ closeInvite }}" style="height:36px;padding:0 14px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-weight:600;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">{{ t.cancel }}</button>
+        <button onClick="{{ sendInvites }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;cursor:pointer" style-hover="background:#597ea3">{{ t.sendInv }}</button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ reqOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeReq }}" style="position:absolute;inset:0;background:rgba(29,31,32,.32);z-index:10;animation:tmFade .15s ease-out"></div>
+    <div style="position:absolute;top:120px;left:50%;margin-left:-240px;width:480px;z-index:11;background:#f2f2f3;border:1px solid rgba(29,31,32,.16);box-shadow:0 12px 32px rgba(43,43,45,.22);padding:24px;display:flex;flex-direction:column;gap:16px">
+      <bp-c></bp-c>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;line-height:1.1">{{ t.reqBeacons }}</div>
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.qty }}
+          <input type="number" min="1" value="{{ reqQty }}" onChange="{{ onReqQty }}" style="height:36px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"></input>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.forLoc }}
+          <select value="{{ reqLoc }}" onChange="{{ onReqLoc }}" style="height:36px;padding:0 8px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20"><option>HQ Utrecht</option><option>Amsterdam Hub</option><option>Rotterdam Depot</option></select>
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5d5d60">{{ t.reqNote }}
+        <textarea value="{{ reqNoteV }}" onChange="{{ onReqNote }}" placeholder="{{ t.reqNotePh }}" style="min-height:72px;padding:8px 10px;background:#e9e9ea;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-size:14px;color:#1d1f20;resize:vertical" style-focus="border-color:#5980a6"></textarea>
+      </label>
+      <div style="font-size:13px;color:#5d5d60;text-wrap:pretty;display:flex;gap:8px"><lu-i name="info" size="16"></lu-i>{{ t.reqHelp }}</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button onClick="{{ closeReq }}" style="height:36px;padding:0 14px;background:transparent;border:1px solid rgba(29,31,32,.16);border-radius:4px;font-weight:600;color:#1d1f20;cursor:pointer" style-hover="background:rgba(29,31,32,.07)">{{ t.cancel }}</button>
+        <button onClick="{{ sendReq }}" style="position:relative;height:36px;padding:0 16px;background:#5980a6;color:#f2f2f3;border:0;font-weight:600;cursor:pointer" style-hover="background:#597ea3">{{ t.sendReq }}</button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:32px;bottom:28px;z-index:12;padding:12px 16px;background:#1d1f20;color:#f2f2f3;font-size:14px;display:flex;gap:10px;align-items:center;animation:tmFade .2s ease-out"><lu-i name="check" size="17"></lu-i>{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;nl&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'nl'&quot;},&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;presence&quot;,&quot;timesheets&quot;,&quot;attention&quot;,&quot;export&quot;,&quot;beacons&quot;,&quot;people&quot;],&quot;default&quot;:&quot;presence&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const BASE = new Date(2026, 8, 24, 8, 52, 0).getTime();
+const pad = n => String(n).padStart(2, '0');
+const hm = ts => { const d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+const at = (d, s) => { const [h, m] = s.split(':').map(Number); return new Date(2026, 8, d, h, m).getTime(); };
+const LOCS = { 1: ['HQ Utrecht', 'Main entrance'], 2: ['HQ Utrecht', 'Warehouse B'], 3: ['HQ Utrecht', 'Loading dock'], 7: ['Amsterdam Hub', 'Reception'], 8: ['Amsterdam Hub', 'Floor 2'], 12: ['Rotterdam Depot', 'Gate'] };
+const EMP = [
+  ['Sanne de Vries', 'sanne.devries', 'Operations', 'Employee', 40, 'iPhone 15', 'active', 1, '07:58', [8.47, 8.3, 8.77], null, 'auto'],
+  ['Priya Raman', 'priya.raman', 'Warehouse', 'Employee', 36, 'Pixel 8', 'active', 2, '06:31', [7.9, 7.6, 8.1], null],
+  ['Tom Bakker', 'tom.bakker', 'Warehouse', 'Manager', 40, 'Galaxy S23', 'active', 3, '06:02', [9.1, 8.9, 9.4], null],
+  ['Lotte Visser', 'lotte.visser', 'Finance', 'Admin', 32, 'iPhone 13', 'active', 7, '08:40', [8.0, 0, 8.2], null],
+  ['Ahmed El Idrissi', 'ahmed.elidrissi', 'Warehouse', 'Employee', 40, 'Galaxy A54', 'active', 2, '06:28', [8.6, 8.4, 8.0], null, 'pending'],
+  ['Eva Mulder', 'eva.mulder', 'Customer service', 'Employee', 24, 'iPhone 14', 'active', 8, '08:15', [0, 8.1, 7.9], null],
+  ['Daan Smit', 'daan.smit', 'Operations', 'Employee', 40, 'Pixel 7', 'active', null, null, [8.2, 8.5, 8.6], null],
+  ['Noor Hendriks', 'noor.hendriks', 'Operations', 'Manager', 36, 'iPhone 15', 'active', 1, '08:05', [8.0, 7.8, 8.4], null],
+  ['Jesse de Boer', 'jesse.deboer', 'Warehouse', 'Employee', 40, 'Galaxy S22', 'active', 12, '05:57', [9.3, 9.0, 0], null, 'auto'],
+  ['Fleur Kok', 'fleur.kok', 'Customer service', 'Employee', 32, 'iPhone 12', 'active', null, null, [8.1, 8.0, 7.7], null],
+  ['Bram Peters', 'bram.peters', 'Operations', 'Employee', 40, '—', 'invited', null, null, [0, 0, 0], null],
+  ['Mark Jansen', 'mark.jansen', 'Management', 'Admin', 40, 'iPhone 15 Pro', 'active', 1, '08:31', [8.8, 8.9, 9.2], null]
+];
+const T = {
+  en: { live: 'Live', roleAdmin: 'Company admin', nav: ['Presence', 'Timesheets', 'Needs attention', 'Export', 'Locations & beacons', 'People'],
+    kick: ['Thursday 24 September', 'Week 39', 'Review before payroll', 'Payroll & analysis', 'Beacon network', 'Employees & invites'],
+    inNowK: 'In now', notYet: 'Expected, not in', attnK: 'Needs attention', ofActive: 'of', active: 'active', notYetSub: 'Usually in before 09:00', attnSub: 'Missing check-outs & corrections',
+    desks: 'workplaces', occupied: 'occupied', peak: 'Peak today', inNow: 'Checked in now', employee: 'Employee', location: 'Location', since: 'Since', duration: 'Duration', feed: 'Beacon events',
+    evIn: 'checked in ·', evOut: 'checked out ·', total: 'Total', contract: 'Contract', status: 'Status', approve: 'Approve', approveAll: 'Approve all ready', approved: 'Approved', ready: 'Ready', review: 'Review', invited: 'Invited', allTeams: 'All teams',
+    rawNote: 'Raw beacon registrations', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], allClear: 'Nothing needs attention. Timesheets are ready for export.',
+    missingOut: 'Missing check-outs', missingOutHelp: 'No exit event was detected, so the registration was closed at 23:59. Set the real time or ask the employee.', setOut: 'Check-out at', save: 'Save', askEmp: 'Ask employee',
+    corrReqs: 'Correction requests', corrHelp: 'Submitted from the app. Original times stay in the audit log.', recorded: 'Recorded', requested: 'Requested', decline: 'Decline',
+    period: 'Period', format: 'Format', rows: 'One row per', include: 'Include', preview: 'Preview', recent: 'Recent exports', export: 'Export', exportN: 'rows',
+    pWeek: 'Week 39', pLast: 'Week 38', pMonth: 'September', gReg: 'Registration', gDay: 'Employee per day', gEmp: 'Employee per period',
+    fLoc: 'Location & beacon IDs', fCorr: 'Corrections (audit trail)', fOver: 'Overtime vs. contract', fOnly: 'Approved hours only',
+    unapproved: 'timesheets in this period are not approved yet and will be excluded.', more: 'more rows',
+    uuidHelp: 'Same for every Timo beacon', majorHelp: 'Northpier Logistics — assigned by Timo', minorHelp: 'Programmed by Timo — one per beacon', reqBeacons: 'Request beacons', spareT: 'Supplied, not yet placed', spareHelp: 'Delivered by Timo with the minor ID already programmed. Mount the beacon, then link it to a location and spot to start registering.', noSpare: 'All supplied beacons are in use.', spotL: 'Spot', spotPh: 'e.g. Side entrance', activate: 'Activate', reqsT: 'Beacon requests', qty: 'Beacons', forLoc: 'For location', reqNote: 'Note for Timo', reqNotePh: 'e.g. Second entrance at the loading bay', reqHelp: 'Timo programs new minor IDs under major 1042 and ships the beacons. They show up here under Supplied.', sendReq: 'Send request', stReq: 'Requested', stShip: 'Shipped', stDone: 'Delivered', tReq: 'Request sent to Timo', tAct: 'Beacon activated — minor', reqBy: 'requested by', beaconsN: 'beacons for', beacons: 'Beacons', addBeacon: 'Add beacon', role2: 'Placement', battery: 'Battery', lastSeen: 'Last seen', today2: 'Events today',
+    online: 'Online', lowBat: 'Low battery', offline: 'Offline', entry: 'Entrance', zone: 'Zone',
+    selfCode: 'Company code for self-registration', invite: 'Invite people', team: 'Team', role: 'Role', device: 'Device', emails: 'Email addresses', inviteHelp: 'Invitees get an email with a magic link and the company code. Their registrations start after they finish setup in the app.', cancel: 'Cancel', sendInv: 'Send invites',
+    tApproved: 'Timesheet approved', tAllApproved: 'timesheets approved', tSaved: 'Check-out saved', tAsked: 'Request sent to', tCorrA: 'Correction approved', tCorrD: 'Correction declined', tExport: 'Export ready —', tInvited: 'invites sent', tBeacon: 'New beacon registered — minor 13', ago: 'min ago', employeeR: 'Employee', managerR: 'Manager', adminR: 'Admin' },
+  nl: { live: 'Live', roleAdmin: 'Bedrijfsbeheerder', nav: ['Aanwezigheid', 'Urenstaten', 'Aandacht nodig', 'Exporteren', 'Locaties & beacons', 'Medewerkers'],
+    kick: ['Donderdag 24 september', 'Week 39', 'Controleren vóór salarisrun', 'Salaris & analyse', 'Beacon-netwerk', 'Medewerkers & uitnodigingen'],
+    inNowK: 'Nu binnen', notYet: 'Verwacht, nog niet binnen', attnK: 'Aandacht nodig', ofActive: 'van', active: 'actief', notYetSub: 'Meestal vóór 09:00 binnen', attnSub: 'Ontbrekende check-outs & correcties',
+    desks: 'werkplekken', occupied: 'bezet', peak: 'Piek vandaag', inNow: 'Nu ingecheckt', employee: 'Medewerker', location: 'Locatie', since: 'Sinds', duration: 'Duur', feed: 'Beacon-events',
+    evIn: 'ingecheckt ·', evOut: 'uitgecheckt ·', total: 'Totaal', contract: 'Contract', status: 'Status', approve: 'Goedkeuren', approveAll: 'Keur alle klare goed', approved: 'Goedgekeurd', ready: 'Klaar', review: 'Controleren', invited: 'Uitgenodigd', allTeams: 'Alle teams',
+    rawNote: 'Ruwe beacon-registraties', days: ['ma', 'di', 'wo', 'do', 'vr'], allClear: 'Niets vraagt aandacht. Urenstaten zijn klaar voor export.',
+    missingOut: 'Ontbrekende check-outs', missingOutHelp: 'Er is geen vertrek gedetecteerd, dus de registratie is om 23:59 gesloten. Vul de echte tijd in of vraag de medewerker.', setOut: 'Check-out om', save: 'Opslaan', askEmp: 'Vraag medewerker',
+    corrReqs: 'Correctieverzoeken', corrHelp: 'Ingediend via de app. Oorspronkelijke tijden blijven in het auditlog.', recorded: 'Geregistreerd', requested: 'Gevraagd', decline: 'Afwijzen',
+    period: 'Periode', format: 'Formaat', rows: 'Eén regel per', include: 'Meenemen', preview: 'Voorbeeld', recent: 'Recente exports', export: 'Exporteer', exportN: 'regels',
+    pWeek: 'Week 39', pLast: 'Week 38', pMonth: 'September', gReg: 'Registratie', gDay: 'Medewerker per dag', gEmp: 'Medewerker per periode',
+    fLoc: 'Locatie & beacon-ID\u2019s', fCorr: 'Correcties (audittrail)', fOver: 'Overuren t.o.v. contract', fOnly: 'Alleen goedgekeurde uren',
+    unapproved: 'urenstaten in deze periode zijn nog niet goedgekeurd en worden overgeslagen.', more: 'regels meer',
+    uuidHelp: 'Gelijk voor elke Timo-beacon', majorHelp: 'Northpier Logistics — toegekend door Timo', minorHelp: 'Geprogrammeerd door Timo — één per beacon', reqBeacons: 'Beacons aanvragen', spareT: 'Geleverd, nog niet geplaatst', spareHelp: 'Door Timo geleverd met het minor-ID al geprogrammeerd. Monteer de beacon en koppel hem aan een locatie en plek om te starten.', noSpare: 'Alle geleverde beacons zijn in gebruik.', spotL: 'Plek', spotPh: 'bijv. Zij-ingang', activate: 'Activeren', reqsT: 'Beacon-aanvragen', qty: 'Beacons', forLoc: 'Voor locatie', reqNote: 'Opmerking voor Timo', reqNotePh: 'bijv. Tweede ingang bij het laadperron', reqHelp: 'Timo programmeert nieuwe minor-ID\u2019s onder major 1042 en verzendt de beacons. Ze verschijnen hier onder Geleverd.', sendReq: 'Aanvraag versturen', stReq: 'Aangevraagd', stShip: 'Verzonden', stDone: 'Geleverd', tReq: 'Aanvraag verstuurd naar Timo', tAct: 'Beacon geactiveerd — minor', reqBy: 'aangevraagd door', beaconsN: 'beacons voor', beacons: 'Beacons', addBeacon: 'Beacon toevoegen', role2: 'Plaatsing', battery: 'Batterij', lastSeen: 'Laatst gezien', today2: 'Events vandaag',
+    online: 'Online', lowBat: 'Batterij bijna leeg', offline: 'Offline', entry: 'Ingang', zone: 'Zone',
+    selfCode: 'Bedrijfscode voor zelfregistratie', invite: 'Medewerkers uitnodigen', team: 'Team', role: 'Rol', device: 'Toestel', emails: 'E-mailadressen', inviteHelp: 'Genodigden krijgen een e-mail met een inloglink en de bedrijfscode. Registraties starten zodra ze de app hebben ingesteld.', cancel: 'Annuleren', sendInv: 'Verstuur uitnodigingen',
+    tApproved: 'Urenstaat goedgekeurd', tAllApproved: 'urenstaten goedgekeurd', tSaved: 'Check-out opgeslagen', tAsked: 'Verzoek verstuurd naar', tCorrA: 'Correctie goedgekeurd', tCorrD: 'Correctie afgewezen', tExport: 'Export klaar —', tInvited: 'uitnodigingen verstuurd', tBeacon: 'Nieuwe beacon geregistreerd — minor 13', ago: 'min geleden', employeeR: 'Medewerker', managerR: 'Manager', adminR: 'Beheerder' }
+};
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.mount = Date.now();
+    this.state = {
+      view: props.view || 'presence', lang: props.lang || 'en', week: 39, locF: null, team: 'all', sel: 0,
+      approved: { 1: true, 2: true, 7: true, 9: true }, missing: [
+        { id: 'm1', emp: 0, day: 21, inT: '07:58', minor: 1, val: '17:30' },
+        { id: 'm2', emp: 8, day: 23, inT: '05:49', minor: 12, val: '15:10' }],
+      corrections: [
+        { id: 'c1', emp: 4, day: 17, from: '12:58 – 17:40', to: '12:58 – 18:25', minor: 2, note: 'Unloaded the late truck; phone was in my locker from 17:40.' },
+        { id: 'c2', emp: 5, day: 22, from: '—', to: '08:30 – 16:45', minor: 8, note: 'Bluetooth was off after an update, I was in all day.' }],
+      exP: 'week', fmt: 'csv', grp: 'day', flds: { loc: true, corr: false, over: true, only: true },
+      extraPeople: [], inviteOpen: false, inviteText: '', inviteTeam: 'Warehouse', inviteHours: 40, toast: null, placed: [], spare: [{ minor: 13, serial: 'TB-26-04113', loc: 'Rotterdam Depot', spot: '', role: 'entry' }, { minor: 14, serial: 'TB-26-04114', loc: 'Rotterdam Depot', spot: '', role: 'zone' }], reqs: [{ id: 'R-0091', qty: 2, loc: 'Amsterdam Hub', by: 'Mark Jansen', date: '23 Sep', st: 'ship', minors: '15–16' }, { id: 'R-0087', qty: 2, loc: 'Rotterdam Depot', by: 'Lotte Visser', date: '12 Sep', st: 'done', minors: '13–14' }], reqOpen: false, reqQty: 1, reqLoc: 'HQ Utrecht', reqNote: ''
+    };
+  }
+  componentDidMount() { this.iv = setInterval(() => this.forceUpdate(), 1000); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.tt); }
+  componentDidUpdate(pp) { if (pp.lang !== this.props.lang && this.props.lang) this.setState({ lang: this.props.lang }); }
+  toast(m) { clearTimeout(this.tt); this.setState({ toast: m }); this.tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+  renderVals() {
+    const s = this.state, t = T[s.lang] || T.en, n = BASE + (Date.now() - this.mount);
+    const nl = s.lang === 'nl';
+    const num = v => v.toFixed(1).replace('.', nl ? ',' : '.');
+    const dur = ms => { const m = Math.max(0, Math.round(ms / 60000)); return Math.floor(m / 60) + (nl ? 'u ' : 'h ') + pad(m % 60) + 'm'; };
+    const views = ['presence', 'timesheets', 'attention', 'export', 'beacons', 'people'];
+    const icons = ['users', 'calendar-range', 'triangle-alert', 'download', 'radio-tower', 'user-plus'];
+    const attnCount = s.missing.length + s.corrections.length;
+    const vi = views.indexOf(s.view);
+    const nav = views.map((v, i) => ({ label: t.nav[i], icon: icons[i], onClick: () => this.setState({ view: v }), bg: s.view === v ? '#1d1f20' : 'transparent', fg: s.view === v ? '#f2f2f3' : '#1d1f20', fw: s.view === v ? 600 : 500, hasCount: i === 2 && attnCount > 0, count: attnCount }));
+    const tag = kind => ({ ok: { sBd: 'rgba(29,31,32,.16)', sBg: '#e7e7ea', sFg: '#424244' }, ready: { sBd: '#5980a6', sBg: '#eef6ff', sFg: '#416180' }, alert: { sBd: '#1d2d3d', sBg: '#1d2d3d', sFg: '#f2f2f3' } })[kind];
+
+    // presence
+    const present = EMP.map((e, i) => ({ e, i })).filter(x => x.e[7] && (!s.locF || LOCS[x.e[7]][0] === s.locF))
+      .map(({ e }) => ({ name: e[0], team: e[2], loc: LOCS[e[7]][0], spot: LOCS[e[7]][1], since: e[8], dur: dur(n - at(24, e[8])) }))
+      .sort((a, b) => a.since < b.since ? -1 : 1);
+    const inAll = EMP.filter(e => e[7]).length, activeN = EMP.filter(e => e[6] === 'active').length;
+    const cityIn = c => EMP.filter(e => e[7] && LOCS[e[7]][0] === c).length;
+    const locCards = [['HQ Utrecht', 24, 'minor 1 · 2 · 3', '11:00 · 19'], ['Amsterdam Hub', 12, 'minor 7 · 8', '10:30 · 9'], ['Rotterdam Depot', 8, 'minor 12', '07:00 · 4']].map(([c, cap, minors, peak]) => {
+      const k = cityIn(c); return { name: c, cap, minors, inNow: k, pct: Math.round(k / cap * 100) + '%', pctTxt: Math.round(k / cap * 100) + '%', peak: t.peak + ' ' + peak, bd: s.locF === c ? '#5980a6' : 'rgba(29,31,32,.16)', onClick: () => this.setState({ locF: s.locF === c ? null : c }) };
+    });
+    const feed = [['08:31', 'Mark Jansen', 'in', 1], ['08:15', 'Eva Mulder', 'in', 8], ['08:05', 'Noor Hendriks', 'in', 1], ['08:02', 'Tom Bakker', 'out', 3], ['08:02', 'Tom Bakker', 'in', 2], ['07:58', 'Sanne de Vries', 'in', 1], ['06:31', 'Priya Raman', 'in', 2]]
+      .map(([tm, nm, k, m]) => ({ t: tm, name: nm, icon: k === 'in' ? 'log-in' : 'log-out', what: (k === 'in' ? t.evIn : t.evOut) + ' ' + LOCS[m][0] + ', ' + LOCS[m][1] + ' (' + m + ')' }));
+
+    // timesheets
+    const teams = ['all', 'Warehouse', 'Operations', 'Customer service', 'Finance'];
+    const statusOf = i => s.approved[i] ? 'ok' : (EMP[i][11] || s.missing.some(m => m.emp === i) || s.corrections.some(c => c.emp === i)) && (s.missing.some(m => m.emp === i) || s.corrections.some(c => c.emp === i)) ? 'alert' : 'ready';
+    const rowsIdx = EMP.map((e, i) => i).filter(i => EMP[i][6] === 'active' && (s.team === 'all' || EMP[i][2] === s.team));
+    const sheets = rowsIdx.map(i => {
+      const e = EMP[i]; const thu = e[8] ? (n - at(24, e[8])) / 3600e3 : 0;
+      const hrs = [...e[9], thu, 0];
+      const autoDay = (s.missing.find(m => m.emp === i) || {}).day;
+      const tot = hrs.reduce((a, b) => a + b, 0) - (autoDay ? hrs[autoDay - 21] : 0);
+      const st = statusOf(i);
+      const diff = tot - e[4] * (4 / 5);
+      return { name: e[0], team: e[2], bg: s.sel === i ? '#e7e7ea' : 'transparent', onSelect: () => this.setState({ sel: i }),
+        days: hrs.map((h, di) => ({ v: autoDay === 21 + di ? '?' : h ? num(h) : '–', fg: autoDay === 21 + di ? '#1d2d3d' : di === 3 ? '#416180' : '#1d1f20', fw: autoDay === 21 + di ? 700 : 400 })),
+        total: num(tot), contract: e[4], diff: (diff >= 0 ? '+' : '−') + num(Math.abs(diff)), status: st === 'ok' ? t.approved : st === 'alert' ? t.review : t.ready, sIcon: st === 'ok' ? 'check' : st === 'alert' ? 'triangle-alert' : 'clock', ...tag(st),
+        canApprove: st === 'ready', onApprove: ev => { ev.stopPropagation(); this.setState({ approved: { ...s.approved, [i]: true } }); this.toast(t.tApproved + ' — ' + e[0]); } };
+    });
+    const readyIdx = rowsIdx.filter(i => statusOf(i) === 'ready');
+    const se = EMP[s.sel] || EMP[0];
+    const selDays = [21, 22, 23, 24, 25].map((d, di) => {
+      const h = [...se[9], se[8] ? (n - at(24, se[8])) / 3600e3 : 0, 0][di];
+      const isAuto = (s.missing.find(m => m.emp === s.sel) || {}).day === d;
+      const minor = se[7] || 1;
+      let rows = [];
+      if (isAuto) rows = [{ range: (s.missing.find(m => m.emp === s.sel)).inT + ' – 23:59 ?', loc: LOCS[minor][0] }];
+      else if (di === 3 && se[8]) rows = [{ range: se[8] + ' – …', loc: LOCS[minor][0] + ' · ' + LOCS[minor][1] }];
+      else if (h > 0) { const st = 8 * 60 + (di * 7) % 20; const en = st + Math.round(h * 60); rows = [{ range: pad(Math.floor(st / 60)) + ':' + pad(st % 60) + ' – ' + pad(Math.floor(en / 60)) + ':' + pad(en % 60), loc: LOCS[minor][0] + ' · ' + LOCS[minor][1] }]; }
+      return { label: t.days[di] + ' ' + d, total: isAuto ? '?' : h ? num(h) : '–', rows, top: isAuto ? '#1d2d3d' : di === 3 ? '#5980a6' : '#1d1f20' };
+    });
+
+    // attention
+    const dayLbl = d => new Intl.DateTimeFormat(nl ? 'nl-NL' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(2026, 8, d));
+    const missing = s.missing.map(m => ({ name: EMP[m.emp][0], when: dayLbl(m.day), loc: LOCS[m.minor][0] + ' · ' + LOCS[m.minor][1], range: m.inT + ' – 23:59', val: m.val,
+      onVal: e => this.setState({ missing: s.missing.map(x => x.id === m.id ? { ...x, val: e.target.value } : x) }),
+      onSave: () => { this.setState({ missing: s.missing.filter(x => x.id !== m.id) }); this.toast(t.tSaved + ' — ' + EMP[m.emp][0] + ', ' + m.val); },
+      onAsk: () => this.toast(t.tAsked + ' ' + EMP[m.emp][0]) }));
+    const corrections = s.corrections.map(c => ({ name: EMP[c.emp][0], when: dayLbl(c.day), loc: LOCS[c.minor][0] + ' · ' + LOCS[c.minor][1], from: c.from, to: c.to, note: c.note,
+      onApprove: () => { this.setState({ corrections: s.corrections.filter(x => x.id !== c.id) }); this.toast(t.tCorrA + ' — ' + EMP[c.emp][0]); },
+      onDecline: () => { this.setState({ corrections: s.corrections.filter(x => x.id !== c.id) }); this.toast(t.tCorrD + ' — ' + EMP[c.emp][0]); } }));
+
+    // export
+    const segs = (list, cur, key) => list.map(([k, l], i) => ({ label: l, onClick: () => this.setState({ [key]: k }), bg: cur === k ? '#1d1f20' : 'transparent', fg: cur === k ? '#f2f2f3' : '#1d1f20', bl: i ? '1px solid rgba(29,31,32,.16)' : '0' }));
+    const formats = [['csv', 'CSV', 'UTF-8, ; separated'], ['xlsx', 'Excel', '.xlsx workbook'], ['afas', 'AFAS Profit', 'Payroll import'], ['nmbrs', 'Nmbrs', 'Hours import'], ['loket', 'Loket.nl', 'Variable data'], ['api', 'JSON / API', 'For BI & planning']]
+      .map(([k, l, sub]) => ({ label: l, sub, onClick: () => this.setState({ fmt: k }), bd: s.fmt === k ? '#5980a6' : 'rgba(29,31,32,.16)', bg: s.fmt === k ? '#eef6ff' : 'transparent' }));
+    const groupings = [['reg', t.gReg], ['day', t.gDay], ['emp', t.gEmp]].map(([k, l]) => ({ label: l, onClick: () => this.setState({ grp: k }), ring: s.grp === k ? '#5980a6' : '#98989b', dot: s.grp === k ? '#5980a6' : 'transparent' }));
+    const fields = [['loc', t.fLoc], ['corr', t.fCorr], ['over', t.fOver], ['only', t.fOnly]].map(([k, l]) => ({ label: l, onClick: () => this.setState({ flds: { ...s.flds, [k]: !s.flds[k] } }), ring: s.flds[k] ? '#5980a6' : '#98989b', bg: s.flds[k] ? '#5980a6' : 'transparent', icon: s.flds[k] ? 'check' : '' }));
+    const ext = { csv: 'csv', xlsx: 'xlsx', afas: 'csv', nmbrs: 'csv', loket: 'csv', api: 'json' }[s.fmt];
+    const perTxt = { week: '2026-W39', last: '2026-W38', month: '2026-09' }[s.exP];
+    const fileName = `northpier_hours_${perTxt}_${s.fmt}.${ext}`;
+    let pvHead, pvRows, total;
+    const act = EMP.filter(e => e[6] === 'active');
+    if (s.grp === 'emp') {
+      pvHead = ['employee_id', 'name', 'team', 'hours', 'contract'].concat(s.flds.over ? ['overtime'] : []);
+      pvRows = act.slice(0, 6).map((e, i) => { const h = e[9].reduce((a, b) => a + b, 0) + 8; return ['NP' + (1001 + i), e[0], e[2], h.toFixed(2), e[4].toFixed(2)].concat(s.flds.over ? [Math.max(0, h - e[4]).toFixed(2)] : []); });
+      total = act.length;
+    } else {
+      pvHead = ['employee_id', 'name', 'date'].concat(s.grp === 'reg' ? ['check_in', 'check_out'] : []).concat(['hours']).concat(s.flds.loc ? ['location', 'minor'] : []).concat(s.flds.corr ? ['corrected'] : []);
+      pvRows = [];
+      act.slice(0, 3).forEach((e, i) => [21, 22].forEach((d, di) => {
+        const h = e[9][di] || 0; if (!h) return; const minor = e[7] || 1;
+        pvRows.push(['NP' + (1001 + i), e[0], '2026-09-' + d].concat(s.grp === 'reg' ? ['08:0' + (i + di), hm(at(d, '08:0' + (i + di)) + h * 3600e3)] : []).concat([h.toFixed(2)]).concat(s.flds.loc ? [LOCS[minor][0], String(minor)] : []).concat(s.flds.corr ? [i === 0 && di === 0 ? 'yes' : 'no'] : []));
+      }));
+      total = act.length * (s.exP === 'month' ? 17 : 5) * (s.grp === 'reg' ? 1.3 : 1) | 0;
+    }
+    const unappr = EMP.filter((e, i) => e[6] === 'active' && !s.approved[i]).length;
+
+    // beacons
+    const bRows = [[1, 'entry', 96, '12 s', 214, 'ok'], [2, 'entry', 71, '40 s', 96, 'ok'], [3, 'zone', 14, '3 min', 38, 'low'], [7, 'entry', 88, '8 s', 61, 'ok'], [8, 'zone', 63, '1 min', 22, 'ok'], [12, 'entry', 0, '2 h 14 min', 0, 'off']]
+      .concat(s.placed.map(p => [p.minor, p.role, 100, '—', 0, 'ok', p.loc, p.spot]));
+    const beacons = bRows.map(([m, r, bat, seen, ev, st, pl, ps]) => ({ loc: pl || LOCS[m][0], spot: pl ? (ps || '—') : LOCS[m][1], minor: m, role: r === 'entry' ? t.entry : t.zone,
+      bat: bat + '%', batBg: bat < 20 ? '#1d2d3d' : '#5980a6', seen, events: ev, status: st === 'ok' ? t.online : st === 'low' ? t.lowBat : t.offline, ...tag(st === 'ok' ? 'ok' : st === 'low' ? 'ready' : 'alert') }));
+
+    // people
+    const roleName = r => r === 'Admin' ? t.adminR : r === 'Manager' ? t.managerR : t.employeeR;
+    const people = s.extraPeople.map(p => ({ name: p.email.split('@')[0].replace(/[._]/g, ' '), email: p.email, team: p.team, role: t.employeeR, contract: p.hours + (nl ? 'u' : 'h'), device: '—', status: t.invited, ...tag('ready') }))
+      .concat(EMP.map(e => ({ name: e[0], email: e[1] + '@northpier.nl', team: e[2], role: roleName(e[3]), contract: e[4] + (nl ? 'u' : 'h'), device: e[5], status: e[6] === 'invited' ? t.invited : e[7] ? t.inNowK : t.active.charAt(0).toUpperCase() + t.active.slice(1), ...tag(e[6] === 'invited' ? 'ready' : 'ok') })));
+
+    const titles = t.nav;
+    return {
+      t, clock: hm(n), nav, kicker: t.kick[vi], title: titles[vi],
+      langs: [['en', 'EN'], ['nl', 'NL']].map(([k, l]) => ({ label: l, onClick: () => this.setState({ lang: k }), bg: s.lang === k ? '#1d1f20' : 'transparent', fg: s.lang === k ? '#f2f2f3' : '#1d1f20' })),
+      isPresence: s.view === 'presence', isTimesheets: s.view === 'timesheets', isAttention: s.view === 'attention', isExport: s.view === 'export', isBeacons: s.view === 'beacons', isPeople: s.view === 'people',
+      showPeriod: s.view === 'timesheets', weekLabel: (nl ? 'Week ' : 'Week ') + s.week + ' · ' + (s.week === 39 ? '21–27 Sep' : s.week === 38 ? '14–20 Sep' : '28 Sep–4 Oct'),
+      prevWeek: () => this.setState({ week: Math.max(38, s.week - 1) }), nextWeek: () => this.setState({ week: Math.min(40, s.week + 1) }),
+      kpis: [
+        { label: t.inNowK, value: inAll, suffix: t.ofActive + ' ' + activeN, sub: 'HQ ' + cityIn('HQ Utrecht') + ' · AMS ' + cityIn('Amsterdam Hub') + ' · RTM ' + cityIn('Rotterdam Depot'), bl: '0', onClick: () => this.setState({ locF: null }) },
+        { label: t.notYet, value: 2, suffix: '', sub: 'Daan Smit, Fleur Kok · ' + t.notYetSub, bl: '1px solid rgba(29,31,32,.16)', onClick: () => this.setState({ view: 'people' }) },
+        { label: t.attnK, value: attnCount, suffix: '', sub: t.attnSub, bl: '1px solid rgba(29,31,32,.16)', onClick: () => this.setState({ view: 'attention' }) }],
+      locCards, present, presentCount: present.length, feed, hasLocFilter: !!s.locF, locFilterName: s.locF || '', clearLoc: () => this.setState({ locF: null }),
+      teamChips: teams.map(k => ({ label: k === 'all' ? t.allTeams : k, onClick: () => this.setState({ team: k }), bd: s.team === k ? '#5980a6' : 'rgba(29,31,32,.16)', bg: s.team === k ? '#d6ebff' : 'transparent', fg: s.team === k ? '#2c455d' : '#1d1f20' })),
+      dayHeads: t.days.map((d, i) => d + ' ' + (21 + i)), sheets, selName: se[0], selDays,
+      approveAllLabel: t.approveAll + (readyIdx.length ? ' (' + readyIdx.length + ')' : ''),
+      approveAll: () => { if (!readyIdx.length) return; const a = { ...s.approved }; readyIdx.forEach(i => a[i] = true); this.setState({ approved: a }); this.toast(readyIdx.length + ' ' + t.tAllApproved); },
+      missing, corrections, missCount: s.missing.length, corrCount: s.corrections.length, noAttention: attnCount === 0,
+      exPeriods: segs([['week', t.pWeek], ['last', t.pLast], ['month', t.pMonth]], s.exP, 'exP'), formats, groupings, fields, fileName, pvHead, pvRows,
+      pvMore: '+ ' + Math.max(0, total - pvRows.length) + ' ' + t.more, exportLabel: t.export + ' · ' + total + ' ' + t.exportN,
+      hasUnapproved: s.flds.only && unappr > 0, unapprovedNote: unappr + ' ' + t.unapproved,
+      doExport: () => this.toast(t.tExport + ' ' + fileName),
+      recent: [['northpier_hours_2026-W38_afas.csv', '21 Sep · Lotte Visser'], ['northpier_hours_2026-08_nmbrs.csv', '1 Sep · Lotte Visser'], ['northpier_occupancy_2026-08.xlsx', '1 Sep · Mark Jansen']].map(([f, m]) => ({ file: f, meta: m })),
+      beacons, beaconCount: beacons.length, minorsTxt: [...bRows.map(r => r[0]), ...s.spare.map(b => b.minor)].sort((a, b) => a - b).join(' · '),
+      spareCount: s.spare.length, noSpare: s.spare.length === 0,
+      spare: s.spare.map(b => { const upd = patch => this.setState({ spare: s.spare.map(x => x.minor === b.minor ? { ...x, ...patch } : x) }); return { ...b,
+        onLoc: e => upd({ loc: e.target.value }), onSpot: e => upd({ spot: e.target.value }), onRole: e => upd({ role: e.target.value }),
+        onActivate: () => { this.setState({ spare: s.spare.filter(x => x.minor !== b.minor), placed: [...s.placed, b] }); this.toast(t.tAct + ' ' + b.minor + ' · ' + b.loc); } }; }),
+      reqs: s.reqs.map(r => ({ title: r.id + ' · ' + r.qty + ' ' + t.beaconsN + ' ' + r.loc, meta: r.date + ' · ' + t.reqBy + ' ' + r.by + (r.minors ? ' · minor ' + r.minors : '') + (r.note ? ' · “' + r.note + '”' : ''), status: r.st === 'req' ? t.stReq : r.st === 'ship' ? t.stShip : t.stDone, ...tag(r.st === 'done' ? 'ok' : 'ready') })),
+      reqOpen: s.reqOpen, reqQty: s.reqQty, reqLoc: s.reqLoc, reqNoteV: s.reqNote,
+      openReq: () => this.setState({ reqOpen: true }), closeReq: () => this.setState({ reqOpen: false }),
+      onReqQty: e => this.setState({ reqQty: e.target.value }), onReqLoc: e => this.setState({ reqLoc: e.target.value }), onReqNote: e => this.setState({ reqNote: e.target.value }),
+      sendReq: () => { this.setState({ reqOpen: false, reqNote: '', reqs: [{ id: 'R-0' + (93 + s.reqs.length - 2), qty: s.reqQty, loc: s.reqLoc, by: 'Mark Jansen', date: '24 Sep', st: 'req', note: s.reqNote }, ...s.reqs] }); this.toast(t.tReq); },
+      people, openInvite: () => this.setState({ inviteOpen: true }), closeInvite: () => this.setState({ inviteOpen: false }), inviteOpen: s.inviteOpen,
+      inviteText: s.inviteText, inviteTeam: s.inviteTeam, inviteHours: s.inviteHours,
+      onInviteText: e => this.setState({ inviteText: e.target.value }), onInviteTeam: e => this.setState({ inviteTeam: e.target.value }), onInviteHours: e => this.setState({ inviteHours: e.target.value }),
+      sendInvites: () => {
+        const emails = (s.inviteText || 'bram.peters@northpier.nl').split(/[\s,;]+/).filter(x => x.includes('@'));
+        this.setState({ inviteOpen: false, inviteText: '', extraPeople: [...emails.map(e => ({ email: e, team: s.inviteTeam, hours: s.inviteHours })), ...s.extraPeople] });
+        this.toast(emails.length + ' ' + t.tInvited);
+      },
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

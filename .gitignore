@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+*.log
+.env
+.env.local
+.DS_Store
+tsconfig.tsbuildinfo
+next-env.d.ts
+# uploaded images (local object storage)
+storage/
+
+# Local Netlify folder
+.netlify
+.neon
+.next-*
