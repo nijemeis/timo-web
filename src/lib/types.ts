@@ -27,7 +27,8 @@ export interface MeCompany {
   major: number;
   code: string;
   timezone: string;
-  graceMinutes: number;
+  awayMinutes: number;
+  passLockMinutes: number;
 }
 
 export interface LocationDTO {
@@ -57,7 +58,12 @@ export interface BeaconConfig {
   uuid: string;
   major: number | null;
   beacons: BeaconConfigEntry[];
-  graceMinutes: number;
+  /** A sighting counts as a new pass only after the beacon was out of sight this long… */
+  awayMinutes: number;
+  /** …and at least this long after the previous pass. */
+  passLockMinutes: number;
+  /** The server's open registration, so a fresh install (or another phone) starts in the right state. */
+  open: { minor: number | null; checkInAt: string } | null;
 }
 
 export interface RegistrationDTO {
@@ -93,7 +99,7 @@ export interface RegistrationsResponse {
   totalMs: number;
 }
 
-/** One queued enter/exit event from the phone. `seq` is per device and strictly increasing. */
+/** One queued pass from the phone: "enter" = checked in by this pass, "exit" = checked out. `seq` is per device and strictly increasing. */
 export interface BeaconEventIn {
   seq: number;
   type: "enter" | "exit";

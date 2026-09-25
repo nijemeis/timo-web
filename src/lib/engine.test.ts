@@ -4,36 +4,26 @@ import { decide, countedMs, sheetStatus, validateCorrection } from "./engine";
 import { autoCloseAt, isoWeek, weekStartFromIso, startOfWeek, zonedTime, hm, dayKey } from "./time";
 
 const t = (hhmm: string) => new Date(`2026-09-24T${hhmm}:00Z`);
-const G = 3 * 60_000;
 const open = { id: "r1", minor: 1, locationId: "hq", checkInAt: t("06:00") };
 
-test("enter while out checks in", () => {
-  assert.deepEqual(decide(null, null, { type: "enter", minor: 1, locationId: "hq", at: t("06:00") }, G), { kind: "checkin", at: t("06:00") });
+test("a pass while out checks in", () => {
+  assert.deepEqual(decide(null, null, { type: "enter", minor: 1, locationId: "hq", at: t("06:00") }), { kind: "checkin", at: t("06:00") });
 });
-test("same minor again is a no-op (seen)", () => {
-  assert.equal(decide(open, null, { type: "enter", minor: 1, locationId: "hq", at: t("07:00") }, G).kind, "seen");
+test("a check-in pass while already in (second phone, replay) changes nothing", () => {
+  assert.equal(decide(open, null, { type: "enter", minor: 2, locationId: "ams", at: t("07:00") }).kind, "seen");
 });
-test("different minor while in switches", () => {
-  assert.deepEqual(decide(open, null, { type: "enter", minor: 2, locationId: "hq", at: t("07:00") }, G), { kind: "switch", closeId: "r1", at: t("07:00") });
+test("a check-out pass closes at the pass time, whichever company beacon", () => {
+  assert.deepEqual(decide(open, null, { type: "exit", minor: 1, locationId: "hq", at: t("15:00") }), { kind: "checkout", regId: "r1", at: t("15:00") });
+  assert.deepEqual(decide(open, null, { type: "exit", minor: 7, locationId: "ams", at: t("15:00") }), { kind: "checkout", regId: "r1", at: t("15:00") });
 });
-test("exit of the active minor checks out at the reported time", () => {
-  assert.deepEqual(decide(open, null, { type: "exit", minor: 1, locationId: "hq", at: t("15:00") }, G), { kind: "checkout", regId: "r1", at: t("15:00") });
+test("a check-out pass while out is ignored", () => {
+  assert.deepEqual(decide(null, null, { type: "exit", minor: 1, locationId: "hq", at: t("15:00") }), { kind: "ignore", reason: "not_active" });
 });
-test("exit of another minor is ignored", () => {
-  assert.deepEqual(decide(open, null, { type: "exit", minor: 2, locationId: "hq", at: t("15:00") }, G), { kind: "ignore", reason: "not_active" });
-  assert.deepEqual(decide(null, null, { type: "exit", minor: 1, locationId: "hq", at: t("15:00") }, G), { kind: "ignore", reason: "not_active" });
-});
-test("re-entry within grace at the same location reopens", () => {
+test("passes older than the current state are stale", () => {
+  assert.deepEqual(decide(open, null, { type: "exit", minor: 1, locationId: "hq", at: t("05:00") }), { kind: "ignore", reason: "stale" });
   const closed = { id: "r1", locationId: "hq", checkOutAt: t("15:00"), status: "ok", source: "beacon" };
-  assert.equal(decide(null, closed, { type: "enter", minor: 3, locationId: "hq", at: t("15:02") }, G).kind, "reopen");
-  assert.equal(decide(null, closed, { type: "enter", minor: 3, locationId: "hq", at: t("15:04") }, G).kind, "checkin");
-  assert.equal(decide(null, closed, { type: "enter", minor: 7, locationId: "ams", at: t("15:01") }, G).kind, "checkin");
-  assert.equal(decide(null, { ...closed, source: "manual_correction" }, { type: "enter", minor: 1, locationId: "hq", at: t("15:01") }, G).kind, "checkin");
-});
-test("events older than the current state are stale", () => {
-  assert.deepEqual(decide(open, null, { type: "enter", minor: 2, locationId: "hq", at: t("05:00") }, G), { kind: "ignore", reason: "stale" });
-  const closed = { id: "r1", locationId: "hq", checkOutAt: t("15:00"), status: "ok", source: "beacon" };
-  assert.deepEqual(decide(null, closed, { type: "enter", minor: 1, locationId: "hq", at: t("14:00") }, G), { kind: "ignore", reason: "stale" });
+  assert.deepEqual(decide(null, closed, { type: "enter", minor: 1, locationId: "hq", at: t("14:00") }), { kind: "ignore", reason: "stale" });
+  assert.equal(decide(null, closed, { type: "enter", minor: 1, locationId: "hq", at: t("15:20") }).kind, "checkin");
 });
 test("auto registrations count zero; open ones count to now", () => {
   assert.equal(countedMs({ checkInAt: t("06:00"), checkOutAt: t("08:00"), status: "auto" }, t("09:00")), 0);

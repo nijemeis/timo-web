@@ -1,14 +1,16 @@
 /**
- * The check-in/check-out rules from the handoff, as a pure decision function so they can be tested
- * without a database. `events.ts` feeds it one event at a time and applies what it returns.
+ * Pass-the-gate rules, as a pure decision function so they can be tested without a database. `events.ts`
+ * feeds it one event at a time and applies what it returns.
  *
- * - enter while not checked in → check in at the event time
- * - enter the same minor while in → just "still seen"
- * - enter a different minor while in → close the current registration at that moment, open a new one
- * - exit of the active minor → check out at the event time (the phone reports the *last seen* time,
- *   after its own grace period)
- * - enter again at the same location within the grace period after a beacon check-out → reopen
- *   (a safety net for phones that sent an exit too early, e.g. when the app was killed)
+ * The phone decides what a pass means — it toggles: out → "enter" (check in), in → "exit" (check out), and
+ * a pass only counts after the beacon was out of sight for the company's away time and the pass lock has
+ * elapsed. Being out of range in between means nothing: a field worker miles from the gate stays checked in.
+ * The server applies the intent:
+ * - enter while not checked in → check in at the pass time
+ * - enter while already checked in (another phone of the same person, a replay) → "seen", nothing changes
+ * - exit while checked in → check out at the pass time (any company beacon; the gate needn't be the same)
+ * - exit while not checked in → ignored
+ * Nothing by 23:59 local → the sweep closes it with status `auto` (see registrations.ts).
  */
 export type EngineOpen = { id: string; minor: number | null; locationId: string | null; checkInAt: Date };
 export type EngineClosed = { id: string; locationId: string | null; checkOutAt: Date; status: string; source: string } | null;
@@ -18,31 +20,15 @@ export type Decision =
   | { kind: "ignore"; reason: "stale" | "not_active" }
   | { kind: "seen"; regId: string; at: Date }
   | { kind: "checkin"; at: Date }
-  | { kind: "checkout"; regId: string; at: Date }
-  | { kind: "switch"; closeId: string; at: Date }
-  | { kind: "reopen"; regId: string; at: Date };
+  | { kind: "checkout"; regId: string; at: Date };
 
-export function decide(open: EngineOpen | null, lastClosed: EngineClosed, ev: EngineEvent, graceMs: number): Decision {
+export function decide(open: EngineOpen | null, lastClosed: EngineClosed, ev: EngineEvent): Decision {
   if (ev.type === "enter") {
-    if (open) {
-      if (ev.at < open.checkInAt) return { kind: "ignore", reason: "stale" };
-      if (open.minor === ev.minor) return { kind: "seen", regId: open.id, at: ev.at };
-      return { kind: "switch", closeId: open.id, at: ev.at };
-    }
-    if (
-      lastClosed &&
-      lastClosed.status === "ok" &&
-      lastClosed.source === "beacon" &&
-      lastClosed.locationId === ev.locationId &&
-      ev.at >= lastClosed.checkOutAt &&
-      ev.at.getTime() - lastClosed.checkOutAt.getTime() <= graceMs
-    ) {
-      return { kind: "reopen", regId: lastClosed.id, at: ev.at };
-    }
+    if (open) return ev.at < open.checkInAt ? { kind: "ignore", reason: "stale" } : { kind: "seen", regId: open.id, at: ev.at };
     if (lastClosed && ev.at < lastClosed.checkOutAt) return { kind: "ignore", reason: "stale" };
     return { kind: "checkin", at: ev.at };
   }
-  if (!open || open.minor !== ev.minor) return { kind: "ignore", reason: "not_active" };
+  if (!open) return { kind: "ignore", reason: "not_active" };
   if (ev.at < open.checkInAt) return { kind: "ignore", reason: "stale" };
   return { kind: "checkout", regId: open.id, at: ev.at };
 }

@@ -326,8 +326,9 @@ export const en = {
   tStock: "beacons added to stock",
   settings: "SSO & settings",
   settingsT: "Company settings",
-  graceL: "Check-out grace period (minutes)",
-  graceHelp: "How long a phone may miss the beacon before it checks out.",
+  awayL: "Away before next pass (minutes)",
+  lockL: "Minimum between passes (minutes)",
+  passHelp: "Pass the gate: every pass of a company beacon checks in or out. A pass only counts when the beacon was out of sight for the away time and the minimum time since the previous pass has passed.",
   ssoT: "Company SSO (OpenID Connect)",
   ssoDomains: "Email domains",
   ssoDomainsPh: "company.nl, company.com",
@@ -339,7 +340,7 @@ export const en = {
   ssoCallback: "Redirect URI for the identity provider",
   ssoOn: "SSO configured",
   ssoOff: "SSO not configured",
-  graceShort: "grace",
+  passShort: "pass",
   tSettings: "Settings saved —",
 };
 

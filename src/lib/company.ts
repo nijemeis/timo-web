@@ -62,7 +62,7 @@ export async function presence(user: Staff) {
   });
 
   const events = await db.beaconEvent.findMany({
-    where: { user: { companyId: company.id, ...scope }, outcome: { in: ["checkin", "checkout", "switch", "checkout:late"] } },
+    where: { user: { companyId: company.id, ...scope }, outcome: { in: ["checkin", "checkout", "checkout:late"] } },
     orderBy: { at: "desc" },
     take: 25,
     include: { user: { select: { name: true } } },

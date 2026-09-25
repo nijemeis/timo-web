@@ -2,6 +2,6 @@ export type Minor = { minor: number | null; serial: string; placedAt: string | n
 export type Company = {
   id: string; major: number; name: string; code: string; status: "onboarding" | "active"; adminEmail: string | null; createdAt: string;
   locations: number; users: number; beaconsActive: number; beaconsTotal: number;
-  graceMinutes: number; ssoDomains: string | null; ssoIssuer: string | null; ssoClientId: string | null; ssoConfigured: boolean;
+  awayMinutes: number; passLockMinutes: number; ssoDomains: string | null; ssoIssuer: string | null; ssoClientId: string | null; ssoConfigured: boolean;
   minors: Minor[];
 };

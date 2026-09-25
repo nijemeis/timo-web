@@ -22,15 +22,17 @@ Stack: Next.js 16 (App Router) · Prisma 6 · PostgreSQL · zod. EN/NL throughou
 - The apps only act on (major, minor) pairs of *active* beacons from `GET /api/me/beacon-config`, so the other
   apps' beacons on the same UUID are ignored.
 
-## Check-in / check-out
-The phone decides (natively — see the app repo) and uploads raw enter/exit events to `POST /api/events`
-(idempotent on deviceId + seq). The server replays them through `src/lib/engine.ts`:
-enter → check in · other location → switch · exit of the active beacon → check out at the last-seen time ·
-re-entry at the same location within the company's grace period (default 3 min) → reopen · nothing by 23:59
-local → closed with status `auto` (excluded from totals, listed under Needs attention) — a late exit from an
-offline phone still resolves it. Decisions on the handoff's open questions: zone beacons at the same location
-never split a registration; grace is per company; exports ship as CSV/Excel/JSON (AFAS/Nmbrs/Loket use the
-generic CSV until their import mappings are verified).
+## Check-in / check-out: pass the gate
+Every pass of a company beacon toggles: checked out → **check in**, checked in → **check out**, timestamped at
+the pass. Being out of range in between means nothing — a field worker miles from the gate stays checked in,
+and walls or lifts inside an office don't matter. A sighting only counts as a pass when no company beacon
+was heard for the company's **away time** (default 3 min) and the **pass lock** (default 15 min) has elapsed
+since the previous pass, so lingering at the gate never flips the state back. Both are set per company by
+the system admin. The phone decides (natively — see the app repo) and uploads the pass as `enter`
+(checked in) or `exit` (checked out) to `POST /api/events` (idempotent on deviceId + seq); the server applies
+it through `src/lib/engine.ts`. Nothing by 23:59 local → closed with status `auto` (excluded from totals,
+listed under Needs attention); a late check-out pass from an offline phone still resolves it. Mount the
+beacons right at the gate and keep their transmit power low, so they are only heard when passing.
 
 ## Run locally
 ```bash

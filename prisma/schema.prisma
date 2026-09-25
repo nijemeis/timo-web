@@ -83,7 +83,10 @@ model Company {
   status          CompanyStatus @default(onboarding)
   /// Self-registration code, e.g. NP-1042.
   code            String        @unique
-  graceMinutes    Int           @default(3)
+  /// Pass-the-gate: the beacon must have been out of sight this long before a sighting counts as a new pass.
+  awayMinutes     Int           @default(3)
+  /// Pass-the-gate: at least this long between two passes (so lingering at the gate never flips the state).
+  passLockMinutes Int           @default(15)
   timezone        String        @default("Europe/Amsterdam")
   /// Email domain(s) used to route "Sign in with company SSO", comma separated.
   ssoDomains      String?

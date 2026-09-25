@@ -118,12 +118,12 @@ export async function companies() {
     id: c.id, major: c.major, name: c.name, code: c.code, status: c.status, adminEmail: c.users[0]?.email ?? null, createdAt: c.createdAt.toISOString(),
     locations: c._count.locations, users: c._count.users,
     beaconsActive: c.beacons.filter((b) => b.status === "active").length, beaconsTotal: c.beacons.length,
-    graceMinutes: c.graceMinutes, ssoDomains: c.ssoDomains, ssoIssuer: c.ssoIssuer, ssoClientId: c.ssoClientId, ssoConfigured: !!(c.ssoIssuer && c.ssoClientId),
+    awayMinutes: c.awayMinutes, passLockMinutes: c.passLockMinutes, ssoDomains: c.ssoDomains, ssoIssuer: c.ssoIssuer, ssoClientId: c.ssoClientId, ssoConfigured: !!(c.ssoIssuer && c.ssoClientId),
     minors: c.beacons.map((b) => ({ minor: b.minor, serial: b.serial, placedAt: b.location ? `${b.location.name}${b.spot ? ` · ${b.spot}` : ""}` : null, status: b.status, health: b.status === "active" ? beaconHealth(b) : null })),
   }));
 }
 
-export async function updateCompany(actor: User, id: string, data: { name?: string; status?: "onboarding" | "active"; graceMinutes?: number; ssoDomains?: string | null; ssoIssuer?: string | null; ssoClientId?: string | null; ssoClientSecret?: string | null }) {
+export async function updateCompany(actor: User, id: string, data: { name?: string; status?: "onboarding" | "active"; awayMinutes?: number; passLockMinutes?: number; ssoDomains?: string | null; ssoIssuer?: string | null; ssoClientId?: string | null; ssoClientSecret?: string | null }) {
   const c = await db.company.update({ where: { id }, data });
   await audit(id, actor.id, "company.update", "company", id, { ...data, ssoClientSecret: data.ssoClientSecret ? "•••" : undefined });
   return c;

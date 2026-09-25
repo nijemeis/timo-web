@@ -80,7 +80,7 @@ export function Companies() {
               <button className="btn btn-s btn-md" onClick={() => setDlg("prog")}><Cpu size={16} strokeWidth={1.5} />{t.programFor} {sel.major}</button>
               <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingTop: 12, borderTop: "1px solid var(--divider)" }}>
                 <div className="help">
-                  {sel.ssoConfigured ? t.ssoOn : t.ssoOff}{sel.ssoDomains ? ` · ${sel.ssoDomains}` : ""} · {t.graceShort} {sel.graceMinutes} {t.min} · code <span className="mono">{sel.code}</span>
+                  {sel.ssoConfigured ? t.ssoOn : t.ssoOff}{sel.ssoDomains ? ` · ${sel.ssoDomains}` : ""} · {t.passShort} {sel.awayMinutes}/{sel.passLockMinutes} {t.min} · code <span className="mono">{sel.code}</span>
                 </div>
                 <button className="btn btn-s btn-md" onClick={() => setDlg("settings")}><Settings size={16} strokeWidth={1.5} />{t.settings}</button>
               </div>
@@ -179,7 +179,8 @@ function RegisterDialog({ nextMajor, onClose, onDone }: { nextMajor: number | nu
 
 function SettingsDialog({ company, onClose, onDone }: { company: Company; onClose: () => void; onDone: () => void }) {
   const { t } = useI18n();
-  const [grace, setGrace] = useState(String(company.graceMinutes));
+  const [away, setAway] = useState(String(company.awayMinutes));
+  const [lock, setLock] = useState(String(company.passLockMinutes));
   const [domains, setDomains] = useState(company.ssoDomains ?? "");
   const [issuer, setIssuer] = useState(company.ssoIssuer ?? "");
   const [clientId, setClientId] = useState(company.ssoClientId ?? "");
@@ -195,7 +196,8 @@ function SettingsDialog({ company, onClose, onDone }: { company: Company; onClos
       await api(`/api/sys/companies/${company.id}`, {
         method: "PATCH",
         body: {
-          graceMinutes: Math.max(0, Math.min(60, Math.floor(Number(grace) || 0))),
+          awayMinutes: Math.max(1, Math.min(60, Math.floor(Number(away) || 3))),
+          passLockMinutes: Math.max(1, Math.min(240, Math.floor(Number(lock) || 15))),
           ssoDomains: domains.trim() || null,
           ssoIssuer: issuer.trim() || null,
           ssoClientId: clientId.trim() || null,
@@ -215,8 +217,11 @@ function SettingsDialog({ company, onClose, onDone }: { company: Company; onClos
     <Dialog title={t.settingsT} onClose={onClose} wide>
       <div className="help" style={{ marginTop: -8 }}>{company.name} · major {company.major}</div>
       <form onSubmit={save} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        <label className="field" style={{ maxWidth: 240 }}>{t.graceL}<input className="inp" type="number" min={0} max={60} value={grace} onChange={(e) => setGrace(e.target.value)} /></label>
-        <div className="help" style={{ marginTop: -10 }}>{t.graceHelp}</div>
+        <div style={{ display: "flex", gap: 16 }}>
+          <label className="field" style={{ maxWidth: 240 }}>{t.awayL}<input className="inp" type="number" min={1} max={60} value={away} onChange={(e) => setAway(e.target.value)} /></label>
+          <label className="field" style={{ maxWidth: 240 }}>{t.lockL}<input className="inp" type="number" min={1} max={240} value={lock} onChange={(e) => setLock(e.target.value)} /></label>
+        </div>
+        <div className="help" style={{ marginTop: -10 }}>{t.passHelp}</div>
         <div className="lbl" style={{ paddingTop: 6, borderTop: "1px solid var(--divider)" }}>{t.ssoT}</div>
         <label className="field">{t.ssoDomains}<input className="inp" value={domains} placeholder={t.ssoDomainsPh} onChange={(e) => setDomains(e.target.value)} /></label>
         <label className="field">{t.ssoIssuer}<input className="inp" value={issuer} placeholder={t.ssoIssuerPh} onChange={(e) => setIssuer(e.target.value)} aria-invalid={!!fieldErr.ssoIssuer} style={fieldErr.ssoIssuer ? { borderColor: "var(--accent-900)" } : undefined} /></label>
